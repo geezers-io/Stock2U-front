@@ -1,4 +1,4 @@
-# Front Beginners
+# Stock2U-Front
 
 ## Git branching model
 
