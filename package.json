@@ -7,10 +7,20 @@
     "url": "git@github.com:geezers-io/Stock2U-front.git"
   },
   "scripts": {
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint 'src/**/*.{js,jsx}' --fix",
     "preview": "vite preview"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix"
+    ],
+    "*.{svg,md,html,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -40,6 +50,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "prettier": "3.0.3",
     "vite": "^4.4.5"
   },
