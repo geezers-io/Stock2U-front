@@ -1,19 +1,59 @@
 {
-  "name": "front-beginners",
-  "version": "0.1.0",
+  "name": "stock2u-front",
+  "version": "0.0.1",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git@github.com:geezers-io/front-beginners.git"
+    "url": "git@github.com:geezers-io/Stock2U-front.git"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint 'src/**/*.{js,jsx}' --fix",
+    "preview": "vite preview"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix"
+    ],
+    "*.{svg,md,html,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-router-dom": "^6.16.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.15",
+    "@babel/preset-react": "^7.22.15",
+    "@emotion/eslint-plugin": "^11.11.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "3.0.3",
+    "vite": "^4.4.5"
   },
   "engines": {
     "node": ">=18.18.0",
