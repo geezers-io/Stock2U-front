@@ -1,11 +1,16 @@
 import { Outlet } from 'react-router-dom';
+import PageAside from './parts/PageAside';
+import PageHeader from './parts/PageHeader';
 
 const ServiceLayout = () => {
   return (
-    <div>
-      layout:Service
-      <Outlet />
-    </div>
+    <>
+      <PageHeader>layout:Service pageHeader</PageHeader>
+      <main>
+        <Outlet />
+      </main>
+      <PageAside>layout:Service pageAside</PageAside>
+    </>
   );
 };
 
