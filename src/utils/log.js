@@ -6,6 +6,8 @@ const COLORS = {
 };
 
 export function printRequestLog({ method, endPoint, requestData, requestParams, config }) {
+  if (!window.debug) return;
+
   if (Object.keys(requestParams ?? {}).length) {
     console.log(
       `%c${method?.toUpperCase()} ${endPoint} [REQ PARAMS]`,
@@ -31,6 +33,8 @@ export function printRequestLog({ method, endPoint, requestData, requestParams, 
 }
 
 export function printResponseLog({ method, endPoint, responseObj }) {
+  if (!window.debug) return;
+
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [RES BODY]`,
     `color: ${COLORS.SUCCESS};font-weight: bold`,
@@ -39,6 +43,8 @@ export function printResponseLog({ method, endPoint, responseObj }) {
 }
 
 export function printErrorLog({ method, endPoint, errorMessage, errorObj }) {
+  if (!window.debug) return;
+
   console.log(
     `%c${method?.toUpperCase()} ${endPoint} [ERR]`,
     `color: ${COLORS.ERROR};font-weight: bold`,
