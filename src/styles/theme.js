@@ -56,6 +56,7 @@ const styles = {
     body: {
       width: '100%',
       minHeight: '100vh',
+      color: colors.gray['900'],
       fontFamily:
         '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
     },
