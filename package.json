@@ -12,7 +12,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint 'src/**/*.{js,jsx}' --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-enums": "node scripts/copyJavaEnums"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -27,6 +28,8 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "axios": "^1.5.1",
+    "debug": "^4.3.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -9,7 +9,6 @@ import theme from '@/styles/theme';
 const router = createBrowserRouter([
   {
     path: '/',
-    hasErrorBoundary: true,
     element: <ServiceLayout />,
     children: [
       {
@@ -20,7 +19,6 @@ const router = createBrowserRouter([
   },
   {
     path: 'auth',
-    hasErrorBoundary: true,
     element: <AuthLayout />,
     children: [
       {
