@@ -3,8 +3,8 @@ name: lint check
 on: pull_request
 
 jobs:
-  eslint-test:
-    name: eslint test
+  type-test:
+    name: type test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
