@@ -1,6 +1,9 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 
-const config = {} as const;
+const config: ThemeConfig = {
+  initialColorMode: 'light',
+  useSystemColorMode: false,
+};
 
 const colors = {
   white: '#ffffff',
@@ -56,14 +59,14 @@ const styles = {
     body: {
       width: '100%',
       minHeight: '100vh',
-      color: colors.gray['900'],
+      color: 'gray.900',
       fontFamily:
         '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
     },
     '#root': {
       width: '100%',
       minHeight: '100vh',
-      background: colors.gray['50'],
+      background: 'gray.50',
     },
     main: {
       width: '100%',
@@ -73,7 +76,7 @@ const styles = {
       },
       maxWidth: APP_STYLES.MAX_WIDTH,
       margin: '0 auto',
-      background: colors.white,
+      background: 'white',
       paddingBottom: '13.6rem',
       padding: `0 ${APP_STYLES.PADDING_X}`,
     },
