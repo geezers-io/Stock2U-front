@@ -11,16 +11,16 @@
     "lint-staged": "lint-staged",
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint 'src/**/*.{js,jsx}' --fix",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --fix",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "generate-enums": "node scripts/copyJavaEnums"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{ts,tsx}": [
       "eslint --fix"
     ],
-    "*.{svg,md,html,json}": [
+    "*.{js,jsx,svg,md,html,json}": [
       "prettier --write"
     ]
   },
