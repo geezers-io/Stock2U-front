@@ -6,7 +6,7 @@ export interface LoginRequest {
 }
 export interface LoginResponse {
   exists: boolean;
-  email: string;
+  email?: string;
 }
 
 export interface VerifyCodeRequest {
