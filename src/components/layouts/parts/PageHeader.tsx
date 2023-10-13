@@ -21,7 +21,7 @@ const PageHeader: FC<PropsWithChildren> = ({ children }) => {
         display="flex"
         alignItems="center"
         margin="0 auto"
-        padding={`0 ${APP_STYLES.PADDING_X}`}
+        padding={`0 calc(${APP_STYLES.PADDING_X} - 10px)`}
       >
         {children}
       </Box>
