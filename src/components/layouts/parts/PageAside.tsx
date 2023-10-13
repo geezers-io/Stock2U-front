@@ -1,8 +1,8 @@
+import { FC, PropsWithChildren } from 'react';
 import { Box } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
 import { APP_STYLES } from '@/styles/theme';
 
-const PageAside = ({ children }) => {
+const PageAside: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Box
       as="aside"
@@ -25,10 +25,6 @@ const PageAside = ({ children }) => {
       </Box>
     </Box>
   );
-};
-
-PageAside.propTypes = {
-  children: PropTypes.node,
 };
 
 export default PageAside;

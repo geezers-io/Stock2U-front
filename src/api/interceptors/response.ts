@@ -1,7 +1,8 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import { getErrorMessage } from '@/api/helper';
 import { printErrorLog, printResponseLog } from '@/utils/log';
 
-export function logResponse(response) {
+export function logResponse(response: AxiosResponse) {
   const { config, data } = response;
 
   printResponseLog({
@@ -13,11 +14,11 @@ export function logResponse(response) {
   return response;
 }
 
-export function unwrapResponse(response) {
+export function unwrapResponse(response: AxiosResponse) {
   return response.data?.data ?? response.data;
 }
 
-export function logError(e) {
+export function logError(e: AxiosError) {
   const url = e.config?.url;
   const method = e.config?.method;
 
@@ -33,7 +34,7 @@ export function logError(e) {
   return Promise.reject(e);
 }
 
-export function processError(e) {
+export function processError(e: AxiosError) {
   if (e.status === 401 || e.response?.status === 401) {
     // TODO: 에러 없이 로그인 페이지로 리디렉션
     // return;

@@ -1,0 +1,7 @@
+dist/
+build/
+node_modules/
+public/
+*.min.js
+.github/
+.husky/

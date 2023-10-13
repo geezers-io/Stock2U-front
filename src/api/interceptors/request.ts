@@ -1,6 +1,7 @@
+import { InternalAxiosRequestConfig } from 'axios';
 import { printRequestLog } from '@/utils/log';
 
-export function logRequest(config) {
+export function logRequest(config: InternalAxiosRequestConfig) {
   printRequestLog({
     method: config.method,
     endPoint: config.url,

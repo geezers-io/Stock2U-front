@@ -1,8 +1,8 @@
+import { FC, PropsWithChildren } from 'react';
 import { Box } from '@chakra-ui/react';
-import PropTypes from 'prop-types';
 import { APP_STYLES } from '@/styles/theme';
 
-const PageHeader = ({ children }) => {
+const PageHeader: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Box
       as="header"
@@ -27,10 +27,6 @@ const PageHeader = ({ children }) => {
       </Box>
     </Box>
   );
-};
-
-PageHeader.propTypes = {
-  children: PropTypes.node,
 };
 
 export default PageHeader;

@@ -1,7 +1,8 @@
 module.exports = {
   root: true,
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   extends: [
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:promise/recommended',
@@ -18,6 +19,31 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    '@typescript-eslint/ban-ts-comment': 2,
+    '@typescript-eslint/camelcase': 0,
+    '@typescript-eslint/consistent-type-assertions': 2,
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/explicit-member-accessibility': 2,
+    '@typescript-eslint/interface-name-prefix': 0,
+    '@typescript-eslint/no-empty-function': 1,
+    '@typescript-eslint/no-empty-interface': 0,
+    '@typescript-eslint/no-explicit-any': 1,
+    '@typescript-eslint/no-inferrable-types': 0,
+    '@typescript-eslint/no-namespace': 0,
+    '@typescript-eslint/no-non-null-assertion': 2,
+    '@typescript-eslint/no-unnecessary-type-constraint': 0,
+    '@typescript-eslint/no-unsafe-call': 0,
+    '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/no-unused-vars': [
+      2,
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/no-use-before-define': 0,
     'no-else-return': 2,
     'unused-imports/no-unused-imports': 2,
     'no-restricted-syntax': [

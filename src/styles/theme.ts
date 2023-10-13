@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 
-const config = {};
+const config = {} as const;
 
 const colors = {
   white: '#ffffff',
@@ -43,14 +43,14 @@ const colors = {
     800: '#262626',
     900: '#0d0d0d',
   },
-};
+} as const;
 
 export const APP_STYLES = {
   MAX_WIDTH: '768px',
   PADDING_X: '12px',
   HEADER_HEIGHT: { base: '48px', md: '56px' },
   ASIDE_HEIGHT: '56px',
-};
+} as const;
 const styles = {
   global: {
     body: {

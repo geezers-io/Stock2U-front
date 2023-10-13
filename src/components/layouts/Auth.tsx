@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import PageHeader from './parts/PageHeader';
+import PageHeader from '@/components/layouts/parts/PageHeader';
 
-const AuthLayout = () => {
+const AuthLayout: FC = () => {
   return (
     <>
       <PageHeader>layout:Auth</PageHeader>
