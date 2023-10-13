@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# environment values
+!env.local
+.env
+
+# typescript
+*.tsbuildinfo

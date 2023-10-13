@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { logRequest } from './interceptors/request';
-import { logError, logResponse, processError, unwrapResponse } from './interceptors/response';
+import { logRequest } from '@/api/interceptors/request';
+import { logError, logResponse, processError, unwrapResponse } from '@/api/interceptors/response';
 import { flow } from '@/utils/flow';
 
 export const axiosInstance = axios.create({
