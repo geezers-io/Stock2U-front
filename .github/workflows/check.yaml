@@ -1,0 +1,41 @@
+name: Checks
+
+on: pull_request
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      timestamp: ${{ steps.timestamp.outputs.timestamp }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18.18.0'
+      - run: npm install
+      - id: timestamp
+        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"
+
+  build-check:
+    name: build-check
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Reusing setup from ${{ needs.setup.outputs.timestamp }}"
+      - run: npm run build
+
+  eslint-check:
+    name: eslint check
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Reusing setup from ${{ needs.setup.outputs.timestamp }}"
+      - run: npm run lint
+
+  type-check:
+    name: type check
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Reusing setup from ${{ needs.setup.outputs.timestamp }}"
+      - run: npm run typecheck
