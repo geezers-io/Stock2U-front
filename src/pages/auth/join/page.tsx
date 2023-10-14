@@ -27,7 +27,18 @@ const JoinPage: FC = () => {
         당신은 누구신가요?
       </Heading>
 
-      <Flex justifyContent="center" gap={{ base: theme.appStyles.paddingX, sm: '24px', md: '36px' }}>
+      <Flex
+        justifyContent="center"
+        gap={{
+          base: theme.appStyles.paddingX,
+          sm: `calc(${theme.appStyles.paddingX} + 8px)`,
+          md: '36px',
+        }}
+        px={{
+          base: 0,
+          sm: '8px',
+        }}
+      >
         <LinkBox to="./general" style={{ borderTopColor: theme.colors.brand['600'] }}>
           <PersonFill fontSize="4rem" color={theme.colors.gray['900']} />
           <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.GENERAL]}</Text>
