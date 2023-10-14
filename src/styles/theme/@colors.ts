@@ -1,5 +1,12 @@
 import { generateSameColorScale } from '@/utils/color';
 
+/**
+ * @description
+ * Chakra 컴포넌트가 보통 아래와 같이 컬러를 씀
+ *  200 - border color
+ *  600 - bg color
+ */
+
 export const colors = {
   brand: {
     50: '#def3ff',
