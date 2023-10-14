@@ -7,9 +7,11 @@ const ServiceLayout: FC = () => {
   return (
     <>
       <PageHeader>layout:Service pageHeader</PageHeader>
+
       <main>
         <Outlet />
       </main>
+
       <PageAside>layout:Service pageAside</PageAside>
     </>
   );
