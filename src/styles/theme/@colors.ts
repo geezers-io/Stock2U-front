@@ -35,11 +35,6 @@ export const colors = {
     800: '#262626',
     900: '#0d0d0d',
   },
-  oauth: {
-    kakao: '#fae100',
-    naver: '#2db400',
-    google: '#4285F4',
-  },
   state: {
     success: '#4CAF50',
     error: '#DC3545',
