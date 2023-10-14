@@ -4,6 +4,7 @@ import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import LoginPage from '@/pages/auth/login/page';
 import IndexPage from '@/pages/page';
+import ProductDetailPage from '@/pages/product/id/page';
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -24,6 +25,16 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+    ],
+  },
+  {
+    path: 'product',
+    element: <AuthLayout />,
+    children: [
+      {
+        path: ':id',
+        element: <ProductDetailPage />,
       },
     ],
   },
