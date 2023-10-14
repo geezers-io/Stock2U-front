@@ -39,12 +39,12 @@ const JoinPage: FC = () => {
           sm: '8px',
         }}
       >
-        <LinkBox to="./general" style={{ borderTopColor: theme.colors.brand['600'] }}>
-          <PersonFill fontSize="4rem" color={theme.colors.gray['900']} />
+        <LinkBox to="./general" style={{ borderTopColor: theme.colors.brand['500'] }}>
+          <PersonFill fontSize="4rem" color={theme.colors.gray['800']} />
           <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.GENERAL]}</Text>
         </LinkBox>
-        <LinkBox to="./seller" style={{ borderTopColor: theme.colors.accent['600'] }}>
-          <PersonVcard fontSize="4rem" color={theme.colors.gray['900']} />
+        <LinkBox to="./seller" style={{ borderTopColor: theme.colors.accent['500'] }}>
+          <PersonVcard fontSize="4rem" color={theme.colors.gray['800']} />
           <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.SELLER]}</Text>
         </LinkBox>
       </Flex>
