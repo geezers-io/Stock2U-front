@@ -23,16 +23,14 @@ const LoginPage: FC = () => {
   );
 
   return (
-    <Flex minHeight="inherit" flexDirection="column" justifyContent="center">
-      <Flex position="relative" flexDirection="column" alignItems="center" gap="20px">
-        <Box position="absolute" top={0} transform="translateY(calc(-100% - 32px))">
-          <Image src="/svg/brand/logo-text.svg" width={160} />
-        </Box>
+    <Flex position="relative" flexDirection="column" alignItems="center" gap="20px">
+      <Box position="absolute" top={0} transform="translateY(calc(-100% - 32px))">
+        <Image src="/svg/brand/logo-text.svg" width={160} />
+      </Box>
 
-        {Object.entries(AUTH_VENDOR_LABEL).map(([vendor, label]) => (
-          <OAuthButton key={vendor} vendor={vendor as AuthVendor} label={label} onClick={oauthHandlers[vendor]} />
-        ))}
-      </Flex>
+      {Object.entries(AUTH_VENDOR_LABEL).map(([vendor, label]) => (
+        <OAuthButton key={vendor} vendor={vendor as AuthVendor} label={label} onClick={oauthHandlers[vendor]} />
+      ))}
     </Flex>
   );
 };

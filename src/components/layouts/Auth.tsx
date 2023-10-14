@@ -29,7 +29,9 @@ const AuthLayout: FC = () => {
       </PageHeader>
 
       <main>
-        <Outlet />
+        <Flex minHeight="inherit" flexDirection="column" justifyContent="center">
+          <Outlet />
+        </Flex>
       </main>
     </>
   );
