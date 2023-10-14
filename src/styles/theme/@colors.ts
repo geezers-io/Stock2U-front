@@ -1,3 +1,5 @@
+import { generateSameColorScale } from '@/utils/color';
+
 export const colors = {
   brand: {
     50: '#def3ff',
@@ -35,10 +37,8 @@ export const colors = {
     800: '#262626',
     900: '#0d0d0d',
   },
-  state: {
-    success: '#4CAF50',
-    error: '#DC3545',
-  },
+  success: generateSameColorScale('#4CAF50'),
+  error: generateSameColorScale('#DC3545'),
   white: '#ffffff',
   black: '#000000',
 } as const;
