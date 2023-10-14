@@ -3,10 +3,10 @@ import { ChakraProvider } from '@chakra-ui/react';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import CodeVerificationPage from '@/pages/auth/code-verification/page';
-import GeneralJoinPage from '@/pages/auth/join/general/page';
-import JoinPage from '@/pages/auth/join/page';
-import SellerJoinPage from '@/pages/auth/join/seller/page';
-import LoginPage from '@/pages/auth/login/page';
+import SignInPage from '@/pages/auth/sign-in/page';
+import GeneralSignUpPage from '@/pages/auth/sign-up/general/page';
+import ChoiceRolePage from '@/pages/auth/sign-up/page';
+import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import IndexPage from '@/pages/page';
 import theme from '@/styles/theme';
 
@@ -26,23 +26,23 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        path: 'login',
-        element: <LoginPage />,
+        path: 'sign-in',
+        element: <SignInPage />,
       },
       {
-        path: 'join',
+        path: 'sign-up',
         children: [
           {
             index: true,
-            element: <JoinPage />,
+            element: <ChoiceRolePage />,
           },
           {
             path: 'general',
-            element: <GeneralJoinPage />,
+            element: <GeneralSignUpPage />,
           },
           {
             path: 'seller',
-            element: <SellerJoinPage />,
+            element: <SellerSignUpPage />,
           },
         ],
       },

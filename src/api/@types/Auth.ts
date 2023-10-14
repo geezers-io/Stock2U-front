@@ -1,10 +1,10 @@
 import { AuthVendor } from './@enums';
 import { Pageable } from '@/api/@types/@shared';
 
-export interface LoginRequest {
+export interface SignInRequest {
   token: string;
 }
-export interface LoginResponse {
+export interface SignInResponse {
   exists: boolean;
   email?: string;
 }
@@ -53,7 +53,7 @@ export interface FindAddressResponse {
 }
 
 export interface AuthClient {
-  login(request: LoginRequest): Promise<LoginResponse>;
+  signIn(request: SignInRequest): Promise<SignInResponse>;
   verifyCode(request: VerifyCodeRequest): Promise<void>;
   loginURL(request: LoginURLRequest): Promise<LoginURLResponse>;
   sendCode(request: SendCodeRequest): Promise<void>;

@@ -4,7 +4,7 @@ import { AuthVendor } from '@/api/@types/@enums';
 import OAuthButton from '@/components/domains/auth/OAuthButton';
 import { AUTH_VENDOR_LABEL } from '@/constants/labels';
 
-const LoginPage: FC = () => {
+const SignInPage: FC = () => {
   const oauthHandlers = useMemo<Record<AuthVendor, () => void>>(
     () => ({
       [AuthVendor.GOOGLE]: () => {
@@ -35,4 +35,4 @@ const LoginPage: FC = () => {
   );
 };
 
-export default LoginPage;
+export default SignInPage;

@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { UserRole } from '@/api/@types/@enums';
 import { USER_ROLE_LABEL } from '@/constants/labels';
 
-const JoinPage: FC = () => {
+const ChoiceRolePage: FC = () => {
   const theme = useTheme();
 
   return (
@@ -77,4 +77,4 @@ const LinkBox = styled(Link)`
   }
 `;
 
-export default JoinPage;
+export default ChoiceRolePage;

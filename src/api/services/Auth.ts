@@ -4,8 +4,8 @@ import { axiosInstance } from '@/api/client';
 const ROUTE = 'auth';
 
 export const AuthService: AuthClient = {
-  login: async request => {
-    return await axiosInstance.post(`${ROUTE}/login`, request);
+  signIn: async request => {
+    return await axiosInstance.post(`${ROUTE}/sign-in`, request);
   },
   verifyCode: async request => {
     return await axiosInstance.post(`${ROUTE}/code/verify`, request);
