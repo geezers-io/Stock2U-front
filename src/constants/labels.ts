@@ -19,7 +19,7 @@ export const RESERVATION_STATUS_LABEL: Record<ReservationStatus, string> = {
 };
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
-  [UserRole.GENERAL]: '구매자',
+  [UserRole.PURCHASER]: '구매자',
   [UserRole.SELLER]: '판매자',
   [UserRole.ADMIN]: '관리자',
 };

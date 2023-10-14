@@ -41,7 +41,7 @@ const ChoiceRolePage: FC = () => {
       >
         <LinkBox to="./general" style={{ borderTopColor: theme.colors.brand['500'] }}>
           <PersonFill fontSize="4rem" color={theme.colors.gray['800']} />
-          <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.GENERAL]}</Text>
+          <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.PURCHASER]}</Text>
         </LinkBox>
         <LinkBox to="./seller" style={{ borderTopColor: theme.colors.accent['500'] }}>
           <PersonVcard fontSize="4rem" color={theme.colors.gray['800']} />
