@@ -1,26 +1,28 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect } from 'react';
 import { Box, Flex, Image } from '@chakra-ui/react';
 import { AuthVendor } from '@/api/@types/@enums';
+import { AuthService } from '@/api/services/Auth';
 import OAuthButton from '@/components/domains/auth/OAuthButton';
 import { AUTH_VENDOR_LABEL } from '@/constants/labels';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const SignInPage: FC = () => {
-  const oauthHandlers = useMemo<Record<AuthVendor, () => void>>(
-    () => ({
-      [AuthVendor.GOOGLE]: () => {
-        // TODO: OAuth
-      },
+  // const [searchParams] = useSearchParams();
+  const toast = useCustomToast();
 
-      [AuthVendor.KAKAO]: () => {
-        // TODO: OAuth
-      },
+  const oauthHandler = async (vendor: AuthVendor) => {
+    try {
+      const { url } = await AuthService.signInURL({ vendor });
 
-      [AuthVendor.NAVER]: () => {
-        // TODO: OAuth
-      },
-    }),
-    [],
-  );
+      // const redirect = searchParams.get('redirect');
+
+      location.href = url;
+    } catch (e) {
+      toast.error(e);
+    }
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <Flex position="relative" flexDirection="column" alignItems="center" gap="20px">
@@ -28,11 +30,11 @@ const SignInPage: FC = () => {
         <Image src="/svg/brand/logo-text.svg" width={160} />
       </Box>
 
-      {Object.entries(AUTH_VENDOR_LABEL).map(([vendor, label]) => (
-        <OAuthButton key={vendor} vendor={vendor as AuthVendor} label={label} onClick={oauthHandlers[vendor]} />
-      ))}
+      {Object.entries(AUTH_VENDOR_LABEL).map(([vendor_, label]) => {
+        const vendor = vendor_ as AuthVendor;
+        return <OAuthButton key={vendor} vendor={vendor} label={label} onClick={() => oauthHandler(vendor)} />;
+      })}
     </Flex>
   );
 };
-
 export default SignInPage;

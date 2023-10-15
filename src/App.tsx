@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import CodeVerificationPage from '@/pages/auth/code-verification/page';
+import OAuthRedirectPage from '@/pages/auth/oauth-redirect/page';
 import SignInPage from '@/pages/auth/sign-in/page';
 import GeneralSignUpPage from '@/pages/auth/sign-up/general/page';
 import ChoiceRolePage from '@/pages/auth/sign-up/page';
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: 'code-verification',
         element: <CodeVerificationPage />,
+      },
+      {
+        path: 'oauth-redirect',
+        element: <OAuthRedirectPage />,
       },
     ],
   },

@@ -40,7 +40,7 @@ export type SignInResponse =
     }
   | {
       exists: false;
-      email: string;
+      email?: string;
       verification: string;
     };
 
