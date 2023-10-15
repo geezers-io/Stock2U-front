@@ -1,4 +1,5 @@
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Flex, Image } from '@chakra-ui/react';
 import { AuthVendor } from '@/api/@types/@enums';
 import { AuthService } from '@/api/services/Auth';
@@ -7,22 +8,59 @@ import { AUTH_VENDOR_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const SignInPage: FC = () => {
-  // const [searchParams] = useSearchParams();
   const toast = useCustomToast();
+  const popupWindow = useRef<Window | null>(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const tryLogin = useCallback(async (authCode: string) => {
+    try {
+      const res = await AuthService.signIn({ authCode });
+
+      if (res.exists) {
+        navigate(searchParams.get('redirect') || '/');
+      } else {
+        navigate('/auth/sign-up');
+      }
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      popupWindow.current?.close();
+    }
+  }, []);
+
+  const openPopupWindow = (url: string, size?: string) => {
+    if (!popupWindow.current || popupWindow.current.closed) {
+      popupWindow.current = window.open(url, 'popupWindow', size);
+    } else {
+      popupWindow.current.focus();
+    }
+  };
 
   const oauthHandler = async (vendor: AuthVendor) => {
     try {
       const { url } = await AuthService.signInURL({ vendor });
 
-      // const redirect = searchParams.get('redirect');
-
-      location.href = url;
+      openPopupWindow(url, 'width=500,height=600');
     } catch (e) {
       toast.error(e);
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      const { authCode } = e.data;
+      if (authCode) {
+        tryLogin(authCode);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   return (
     <Flex position="relative" flexDirection="column" alignItems="center" gap="20px">
