@@ -1,6 +1,7 @@
 import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 import { colors } from './@colors';
 import { buttonTheme } from './button';
+import { badgeTheme } from '@/styles/theme/badge';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -37,8 +38,7 @@ const styles = {
       maxWidth: appStyles.maxWidth,
       margin: '0 auto',
       background: 'white',
-      paddingBottom: '13.6rem',
-      padding: `0 ${appStyles.paddingX}`,
+      padding: `0 ${appStyles.paddingX} 10rem`,
     },
   },
 };
@@ -47,7 +47,7 @@ const theme = extendTheme({
   config,
   colors,
   styles,
-  components: { Button: buttonTheme },
+  components: { Button: buttonTheme, Badge: badgeTheme },
   appStyles,
 });
 
