@@ -4,7 +4,7 @@ import { AuthVendor } from '@/api/@types/@enums';
 import OAuthButton from '@/components/domains/auth/OAuthButton';
 import { AUTH_VENDOR_LABEL } from '@/constants/labels';
 
-const LoginPage: FC = () => {
+const SignInPage: FC = () => {
   const oauthHandlers = useMemo<Record<AuthVendor, () => void>>(
     () => ({
       [AuthVendor.GOOGLE]: () => {
@@ -23,18 +23,16 @@ const LoginPage: FC = () => {
   );
 
   return (
-    <Flex minHeight="inherit" flexDirection="column" justifyContent="center">
-      <Flex position="relative" flexDirection="column" alignItems="center" gap="20px">
-        <Box position="absolute" top={0} transform="translateY(calc(-100% - 32px))">
-          <Image src="/svg/brand/logo-text.svg" width={160} />
-        </Box>
+    <Flex position="relative" flexDirection="column" alignItems="center" gap="20px">
+      <Box position="absolute" top={0} transform="translateY(calc(-100% - 32px))">
+        <Image src="/svg/brand/logo-text.svg" width={160} />
+      </Box>
 
-        {Object.entries(AUTH_VENDOR_LABEL).map(([vendor, label]) => (
-          <OAuthButton key={vendor} vendor={vendor as AuthVendor} label={label} onClick={oauthHandlers[vendor]} />
-        ))}
-      </Flex>
+      {Object.entries(AUTH_VENDOR_LABEL).map(([vendor, label]) => (
+        <OAuthButton key={vendor} vendor={vendor as AuthVendor} label={label} onClick={oauthHandlers[vendor]} />
+      ))}
     </Flex>
   );
 };
 
-export default LoginPage;
+export default SignInPage;

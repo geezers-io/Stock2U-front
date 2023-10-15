@@ -17,7 +17,7 @@ export enum ReservationStatus {
 }
 
 export enum UserRole {
-  GENERAL = 'GENERAL',
+  PURCHASER = 'PURCHASER',
   SELLER = 'SELLER',
   ADMIN = 'ADMIN',
 }

@@ -56,7 +56,7 @@ module.exports = {
     'promise/param-names': 0,
     'promise/catch-or-return': 0,
     'promise/always-return': 0,
-    'react/prop-types': 2,
+    'react/prop-types': 0,
     'react/jsx-no-target-blank': 0,
     'react-hooks/exhaustive-deps': 1,
     'react/display-name': 0,
