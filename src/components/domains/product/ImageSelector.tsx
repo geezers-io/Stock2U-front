@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import ImageGallery from 'react-image-gallery';
 import { MockProductDetail } from '@/api/__mock__/product';
 
 /*const images: string[] = [
@@ -33,7 +32,7 @@ const ImageSelector: FC = () => {
     return null;
   }
 
-  return <ImageGallery items={images} />;
+  return null;
 };
 
 export default ImageSelector;
