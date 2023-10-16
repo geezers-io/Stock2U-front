@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import ProductRegistrationPage from './pages/products/seller/page';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import OAuthRedirectPage from '@/pages/auth/oauth-redirect/page';
@@ -49,6 +50,16 @@ const router = createBrowserRouter([
       {
         path: 'oauth-redirect',
         element: <OAuthRedirectPage />,
+      },
+    ],
+  },
+  {
+    path: 'products',
+    element: <ServiceLayout />,
+    children: [
+      {
+        path: 'sellers',
+        element: <ProductRegistrationPage />,
       },
     ],
   },
