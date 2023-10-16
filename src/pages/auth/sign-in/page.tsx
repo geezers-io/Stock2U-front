@@ -6,21 +6,26 @@ import OAuthButton from '@/components/domains/auth/OAuthButton';
 import { AUTH_VENDOR_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useRedirect } from '@/hooks/useRedirect';
+import { useBoundedStore } from '@/stores';
+import { pick } from '@/utils/object';
 
 const SignInPage: FC = () => {
   const toast = useCustomToast();
   const popupWindow = useRef<Window | null>(null);
   const { redirect, navigateWithRedirectPath } = useRedirect();
+  const setUser = useBoundedStore(state => state.setUser);
 
   const tryLogin = async (authCode: string) => {
     try {
       const res = await AuthService.signIn({ authCode });
 
-      if (res.exists) {
-        redirect();
-      } else {
-        navigateWithRedirectPath('/auth/sign-up');
+      if (!res.exists) {
+        navigateWithRedirectPath('/auth/sign-up', undefined, pick(res, ['email', 'verification']));
+        return;
       }
+
+      setUser(res.user);
+      redirect();
     } catch (e) {
       toast.error(e);
     } finally {

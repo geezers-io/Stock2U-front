@@ -11,7 +11,7 @@ export function useRedirect() {
     navigate(to);
   };
 
-  const navigateWithRedirectPath = (path: string, redirectPath: string = to, params?: Record<string, string>) => {
+  const navigateWithRedirectPath = (path: string, redirectPath: string = to, params?: Record<string, unknown>) => {
     navigate(
       withParams(path, {
         ...params,
@@ -26,7 +26,7 @@ export function useRedirect() {
   };
 }
 
-function withParams(path: string, params: Record<string, string>): string {
+function withParams(path: string, params: Record<string, unknown>): string {
   // URL 과 해시(#) 부분을 분리
   const [baseUrl, hash] = path.split('#');
   // URL 을 기본 경로와 쿼리 파라미터로 분리
@@ -34,7 +34,9 @@ function withParams(path: string, params: Record<string, string>): string {
 
   const searchParams = new URLSearchParams(search);
   for (const [key, value] of Object.entries(params)) {
-    searchParams.set(key, value);
+    if (typeof value === 'string') {
+      searchParams.set(key, value);
+    }
   }
   const newSearch = searchParams.toString();
 
