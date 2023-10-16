@@ -16,13 +16,13 @@ const IndexPage: FC = () => {
   const fetchRecommendedProducts = async () => {
     try {
       await delay();
-      setRecommendedProducts(mockProducts.slice(0, 8));
+      setRecommendedProducts(mockProducts.slice(0, 4));
     } catch (e) {}
   };
   const fetchNearExpirationProducts = async () => {
     try {
       await delay();
-      setNearExpirationProducts(mockProducts.slice(0, 12));
+      setNearExpirationProducts(mockProducts.slice(0, 8));
     } catch (e) {}
   };
   const fetchNearProducts = async () => {

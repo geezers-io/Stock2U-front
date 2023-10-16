@@ -23,7 +23,7 @@ const MOCK_IMAGE_SRC =
 export const mockProducts: MockProduct[] = [
   {
     id: 1,
-    title: 'title 1 long long long long long long long long long long',
+    title: '청포도',
     name: 'name 1',
     type: ProductType.FOOD,
     userId: 1,
@@ -39,9 +39,9 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 2,
-    title: 'title 2 loooooooooooooooooooooooooooooooooooooooong',
+    title: '청포도',
     name: 'name 2',
-    type: ProductType.TICKET,
+    type: ProductType.FOOD,
     userId: 2,
     description: 'description 2',
     checkOnlyOneReserve: false,
@@ -55,9 +55,9 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 3,
-    title: 'title 3',
+    title: '청포도',
     name: 'name 3',
-    type: ProductType.ACCOMMODATION,
+    type: ProductType.FOOD,
     userId: 3,
     description: 'description 3',
     checkOnlyOneReserve: false,
@@ -71,10 +71,10 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 4,
-    title: 'title 1',
+    title: '청포도',
     name: 'name 1',
     type: ProductType.FOOD,
-    userId: 1,
+    userId: 4,
     description: 'description 2',
     checkOnlyOneReserve: false,
     showAccountDetails: false,
@@ -87,10 +87,10 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 5,
-    title: 'title 2',
+    title: '청포도',
     name: 'name 2',
     type: ProductType.TICKET,
-    userId: 2,
+    userId: 5,
     description: 'description 2',
     checkOnlyOneReserve: false,
     showAccountDetails: false,
@@ -103,7 +103,7 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 6,
-    title: 'title 3',
+    title: '청포도',
     name: 'name 3',
     type: ProductType.ACCOMMODATION,
     userId: 3,
@@ -119,7 +119,7 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 7,
-    title: 'title 1',
+    title: '청포도',
     name: 'name 1',
     type: ProductType.FOOD,
     userId: 1,
@@ -135,7 +135,7 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 8,
-    title: 'title 2',
+    title: '청포도',
     name: 'name 2',
     type: ProductType.TICKET,
     userId: 2,
@@ -151,7 +151,7 @@ export const mockProducts: MockProduct[] = [
   },
   {
     id: 9,
-    title: 'title 3',
+    title: '청포도',
     name: 'name 3',
     type: ProductType.ACCOMMODATION,
     userId: 3,
