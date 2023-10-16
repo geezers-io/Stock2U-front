@@ -1,20 +1,7 @@
 import { FC, useState, useEffect } from 'react';
+import { Flex, Box } from '@chakra-ui/react';
 import { MockProductDetail } from '@/api/__mock__/product';
 
-/*const images: string[] = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-]; */
 const ImageSelector: FC = () => {
   const [images, setImages] = useState<MockProductDetail>();
 
@@ -32,7 +19,11 @@ const ImageSelector: FC = () => {
     return null;
   }
 
-  return null;
+  return (
+    <Box w="100%" h="100%" display="flex" justifyContent="center" alignItems="center" bgColor={colors.brand[100]}>
+      <Flex mb="1rem"></Flex>
+    </Box>
+  );
 };
 
 export default ImageSelector;
