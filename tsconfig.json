@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2015",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": false,
-    "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "removeComments": true,
