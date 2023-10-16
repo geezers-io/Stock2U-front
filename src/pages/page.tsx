@@ -44,17 +44,29 @@ const IndexPage: FC = () => {
         Banner
       </Flex>
 
-      <Heading size="md" mt="60px" mb="20px">
-        AI가 추천하는 재고 매물!
+      <Heading size="lg" mt="60px" mb="20px">
+        {' '}
+        <span
+          style={{
+            background: `linear-gradient(145deg, ${theme.colors.brand[500]}, ${theme.colors.accent[200]})`,
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
+          AI
+        </span>
+        가 추천하는 재고 매물!
       </Heading>
       <ProductCards
         uniqueKey="recommended"
         products={recommendedProducts}
         emptyComment="아직 추천된 상품이 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
+        expiredAt={new Date('2023-10-20')}
+        coordinates={{ longitude: 1, latitude: 1 }} // 이 부분을 수정
       />
 
-      <Heading size="md" mt="60px" mb="20px">
+      <Heading size="lg" mt="60px" mb="20px">
         마감 임박 <Fire style={{ display: 'inline', verticalAlign: 'text-top', color: theme.colors['red']['500'] }} />
       </Heading>
       <ProductCards
@@ -62,6 +74,8 @@ const IndexPage: FC = () => {
         products={nearExpirationProducts}
         emptyComment="아직 마감 임박된 상품이 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
+        expiredAt={new Date('2023-10-20')}
+        coordinates={{ longitude: 1, latitude: 1 }} // 이 부분을 수정
       />
       {nearExpirationProducts && (
         <>
@@ -86,7 +100,7 @@ const IndexPage: FC = () => {
         </>
       )}
 
-      <Heading size="md" display="flex" alignItems="center" gap={1} mt="60px" mb="20px">
+      <Heading size="lg" display="flex" alignItems="center" gap={1} mt="60px" mb="20px">
         근처에 있어요
       </Heading>
       <ProductCards
@@ -94,6 +108,8 @@ const IndexPage: FC = () => {
         products={nearProducts}
         emptyComment="근처에 있는 상품이 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail */}
+        expiredAt={new Date('2023-10-20')}
+        coordinates={{ longitude: 1, latitude: 1 }} // 이 부분을 수정
       />
       {nearProducts && (
         <>
@@ -103,7 +119,8 @@ const IndexPage: FC = () => {
               flexDirection="column"
               alignItems="center"
               py="30px"
-              border="1px solid"
+              border="1px
+              solid"
               borderColor="brand.500"
               borderRadius="6px"
             >
