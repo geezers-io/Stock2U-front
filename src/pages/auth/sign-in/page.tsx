@@ -1,33 +1,32 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { FC, useEffect, useRef } from 'react';
 import { Box, Flex, Image } from '@chakra-ui/react';
 import { AuthVendor } from '@/api/@types/@enums';
 import { AuthService } from '@/api/services/Auth';
 import OAuthButton from '@/components/domains/auth/OAuthButton';
 import { AUTH_VENDOR_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { useRedirect } from '@/hooks/useRedirect';
 
 const SignInPage: FC = () => {
   const toast = useCustomToast();
   const popupWindow = useRef<Window | null>(null);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { redirect, navigateWithRedirectPath } = useRedirect();
 
-  const tryLogin = useCallback(async (authCode: string) => {
+  const tryLogin = async (authCode: string) => {
     try {
       const res = await AuthService.signIn({ authCode });
 
       if (res.exists) {
-        navigate(searchParams.get('redirect') || '/');
+        redirect();
       } else {
-        navigate('/auth/sign-up');
+        navigateWithRedirectPath('/auth/sign-up');
       }
     } catch (e) {
       toast.error(e);
     } finally {
       popupWindow.current?.close();
     }
-  }, []);
+  };
 
   const openPopupWindow = (url: string, size?: string) => {
     if (!popupWindow.current || popupWindow.current.closed) {
@@ -75,4 +74,5 @@ const SignInPage: FC = () => {
     </Flex>
   );
 };
+
 export default SignInPage;
