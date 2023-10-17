@@ -22,7 +22,8 @@ interface Props {
 }
 
 const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
-  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState<string>('에러입니다.');
 
   const clearError = () => {
@@ -32,26 +33,26 @@ const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
   const sendCode = async () => {
     try {
       clearError();
-      setLoading(true);
+      setSending(true);
 
       await AuthService.sendCode({ phone });
     } catch (e) {
       setError(getErrorMessage(e));
     } finally {
-      setLoading(false);
+      setSending(false);
     }
   };
 
   const onComplete = async (code: string) => {
     try {
-      setLoading(true);
+      setVerifying(true);
 
       await AuthService.verifyCode({ phone, authCode: code });
       await onSuccess();
     } catch (e) {
       setError(getErrorMessage(e));
     } finally {
-      setLoading(false);
+      setVerifying(false);
     }
   };
 
@@ -87,7 +88,7 @@ const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
               </Box>
 
               <Flex flexDirection="column" alignItems="center" gap="10px">
-                <VerificationInput onComplete={onComplete} onChange={clearError} loading={loading} />
+                <VerificationInput onComplete={onComplete} onChange={clearError} loading={sending || verifying} />
               </Flex>
 
               <Flex
@@ -110,14 +111,14 @@ const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
                   tabIndex={0}
                   size="sm"
                   mt="10px"
-                  color="gray.800"
-                  cursor="pointer"
+                  color={sending || verifying ? 'gray.400' : 'gray.800'}
+                  cursor={sending || verifying ? 'not-allowed' : 'pointer'}
                   textAlign="center"
                   textDecoration="underline"
                   textUnderlineOffset="2px"
-                  onClick={loading ? undefined : sendCode}
+                  onClick={sending || verifying ? undefined : sendCode}
                 >
-                  {!loading && <>인증번호 다시 보내기</>}
+                  {!sending && <>인증번호 다시 보내기</>}
                 </Text>
               </Flex>
             </Flex>
