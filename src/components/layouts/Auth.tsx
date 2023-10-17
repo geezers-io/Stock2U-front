@@ -22,8 +22,8 @@ const AuthLayout: FC = () => {
           />
 
           <Heading fontSize="xl" fontWeight={500}>
-            {pathname.includes('login') && '로그인'}
-            {pathname.includes('join') && '회원가입'}
+            {pathname.includes('sign-in') && '로그인'}
+            {pathname.includes('sign-up') && '회원가입'}
           </Heading>
         </Flex>
       </PageHeader>

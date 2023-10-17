@@ -3,7 +3,7 @@ import { Box, Flex, keyframes, Spinner } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 interface Props {
-  verifying: boolean;
+  loading: boolean;
   initialValue?: string;
   length?: number;
   validChars?: string;
@@ -20,7 +20,7 @@ interface Props {
 const VerificationInput = forwardRef<HTMLInputElement, Props>(
   (
     {
-      verifying,
+      loading,
       initialValue = '',
       length = 6,
       validChars = '0-9',
@@ -72,6 +72,12 @@ const VerificationInput = forwardRef<HTMLInputElement, Props>(
     );
 
     useEffect(() => {
+      if (!loading) {
+        inputRef?.focus();
+      }
+    }, [loading]);
+
+    useEffect(() => {
       if (autoFocus) {
         inputRef?.focus();
       }
@@ -93,7 +99,7 @@ const VerificationInput = forwardRef<HTMLInputElement, Props>(
           onFocus={inputHandlers.focus}
           onBlur={inputHandlers.blur}
           onSelect={inputHandlers.select}
-          disabled={verifying}
+          disabled={loading}
           spellCheck={false}
           style={{ height }}
         />
@@ -112,14 +118,14 @@ const VerificationInput = forwardRef<HTMLInputElement, Props>(
                 textAlign="center"
                 lineHeight={height}
                 color="black"
-                bgColor={verifying ? 'gray.50' : 'white'}
+                bgColor={loading ? 'gray.50' : 'white'}
                 border="1px solid"
                 borderColor="gray.500"
                 borderRadius="4px"
                 cursor={selected ? 'text' : 'default'}
                 userSelect="none"
                 outline="2px solid"
-                outlineColor={selected && !verifying ? 'brand.500' : 'transparent'}
+                outlineColor={selected && !loading ? 'brand.500' : 'transparent'}
               >
                 {localValue[i] || placeholder}
 
@@ -128,9 +134,11 @@ const VerificationInput = forwardRef<HTMLInputElement, Props>(
             );
           })}
         </Flex>
-        <Box position="absolute" right="-1.66rem" top="50%" transform="translateY(-50%)">
-          {verifying && <Spinner size="sm" />}
-        </Box>
+        {loading && (
+          <Box position="absolute" right="-1.66rem" top="50%" transform="translateY(-50%)">
+            <Spinner size="sm" />
+          </Box>
+        )}
       </Box>
     );
   },

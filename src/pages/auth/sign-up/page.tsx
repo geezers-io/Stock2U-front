@@ -1,80 +1,60 @@
 import { FC } from 'react';
-import { PersonFill, PersonVcard } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Person, PersonVcard } from 'react-bootstrap-icons';
+import { Button, ButtonProps, Flex, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 import { UserRole } from '@/api/@types/@enums';
 import { USER_ROLE_LABEL } from '@/constants/labels';
+import { useRedirect } from '@/hooks/useRedirect';
+import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 
 const ChoiceRolePage: FC = () => {
   const theme = useTheme();
+  const { navigateWithRedirectPath } = useRedirect();
+  const [searchParams] = useSearchParamsObject();
+
+  const handleClickBox = (type: UserRole) => {
+    const path = type === UserRole.PURCHASER ? './purchaser' : './seller';
+
+    navigateWithRedirectPath(path, undefined, searchParams);
+  };
 
   return (
-    <Box position="relative">
-      <Heading
-        width="100%"
-        position="absolute"
-        top={0}
-        transform={{
-          base: 'translateY(calc(-100% - 32px))',
-          md: 'translateY(calc(-100% - 40px))',
-        }}
-        size="md"
-        fontWeight="500"
-        textAlign="center"
-      >
-        당신은 누구신가요?
-      </Heading>
-
-      <Flex
-        justifyContent="center"
-        gap={{
-          base: theme.appStyles.paddingX,
-          sm: `calc(${theme.appStyles.paddingX} + 8px)`,
-          md: '36px',
-        }}
-        px={{
-          base: 0,
-          sm: '8px',
-        }}
-      >
-        <LinkBox to="./general" style={{ borderTopColor: theme.colors.brand['500'] }}>
-          <PersonFill fontSize="4rem" color={theme.colors.gray['800']} />
-          <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.PURCHASER]}</Text>
-        </LinkBox>
-        <LinkBox to="./seller" style={{ borderTopColor: theme.colors.accent['500'] }}>
-          <PersonVcard fontSize="4rem" color={theme.colors.gray['800']} />
-          <Text fontWeight={500}>{USER_ROLE_LABEL[UserRole.SELLER]}</Text>
-        </LinkBox>
-      </Flex>
-    </Box>
+    <Flex
+      minH="inherit"
+      py={theme.appStyles.paddingX}
+      flexDirection="column"
+      alignItems="center"
+      gap={theme.appStyles.paddingX}
+    >
+      <FullButton colorScheme="brand" bgColor="brand.700" onClick={() => handleClickBox(UserRole.PURCHASER)}>
+        <Person color="white" fontSize="4rem" />
+        <Text color="white" fontWeight={500}>
+          {USER_ROLE_LABEL[UserRole.PURCHASER]}로 가입하기
+        </Text>
+      </FullButton>
+      <FullButton colorScheme="accent" bgColor="accent.700" onClick={() => handleClickBox(UserRole.SELLER)}>
+        <PersonVcard color="white" fontSize="4rem" />
+        <Text color="white" fontWeight={500}>
+          {USER_ROLE_LABEL[UserRole.SELLER]}로 가입하기
+        </Text>
+      </FullButton>
+    </Flex>
   );
 };
 
-const LinkBox = styled(Link)`
-  flex: 1;
-  max-width: 280px;
-  height: 160px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 24px;
-  border-color: ${({ theme }) => theme.colors.gray['200']};
-  border-width: 1px;
-  border-top-width: 10px;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.gray['50']};
-  }
-
-  &:focus,
-  &:active {
-    transform: scale(0.99);
-  }
-`;
+function FullButton(props: ButtonProps) {
+  return (
+    <Button
+      flex="1"
+      w="100%"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      p="24px"
+      borderRadius="10px"
+      {...props}
+    />
+  );
+}
 
 export default ChoiceRolePage;

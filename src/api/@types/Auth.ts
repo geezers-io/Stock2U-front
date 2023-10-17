@@ -36,11 +36,10 @@ export type SignInResponse =
   | {
       exists: true;
       user: User;
-      verification: string;
     }
   | {
       exists: false;
-      email: string;
+      email?: string;
       verification: string;
     };
 
