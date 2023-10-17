@@ -26,13 +26,13 @@ const ProductImageStorage: FC = () => {
         </Flex>
       </Flex>
       <Grid>
-        <div onClick={handleImageClick}>
+        <Grid onClick={handleImageClick}>
           <Button color="white" bgColor={colors.brand[700]} variant="solid" onClick={handleImageChange}>
             {image ? <img src={URL.createObjectURL(image)} alt="" /> : <img src="./photo.png" alt="" />}
             파일 업로드하기 {''}
             <input type="file" ref={inputRef} onChange={handleImageChange} />
           </Button>
-        </div>
+        </Grid>
       </Grid>
     </div>
   );
