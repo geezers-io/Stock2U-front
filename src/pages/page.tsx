@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { Box, Button, Flex, Heading, Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { MockProduct, mockProducts } from '@/api/__mock__/mockProduct';
 import ProductCards from '@/components/domains/product/ProductCards';
@@ -45,8 +45,8 @@ const IndexPage: FC = () => {
       </Flex>
 
       <Heading size="lg" mt="60px" mb="20px">
-        {' '}
-        <span
+        <Text
+          as="span"
           style={{
             background: `linear-gradient(145deg, ${theme.colors.brand[500]}, ${theme.colors.accent[200]})`,
             WebkitBackgroundClip: 'text',
@@ -54,16 +54,15 @@ const IndexPage: FC = () => {
           }}
         >
           AI
-        </span>
+        </Text>
         가 추천하는 재고 매물!
       </Heading>
+
       <ProductCards
         uniqueKey="recommended"
         products={recommendedProducts}
         emptyComment="아직 추천된 상품이 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
-        expiredAt={new Date('2023-10-20')}
-        coordinates={{ longitude: 1, latitude: 1 }} // 이 부분을 수정
       />
 
       <Heading size="lg" mt="60px" mb="20px">
@@ -74,8 +73,6 @@ const IndexPage: FC = () => {
         products={nearExpirationProducts}
         emptyComment="아직 마감 임박된 상품이 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
-        expiredAt={new Date('2023-10-20')}
-        coordinates={{ longitude: 1, latitude: 1 }} // 이 부분을 수정
       />
       {nearExpirationProducts && (
         <>
@@ -108,8 +105,6 @@ const IndexPage: FC = () => {
         products={nearProducts}
         emptyComment="근처에 있는 상품이 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail */}
-        expiredAt={new Date('2023-10-20')}
-        coordinates={{ longitude: 1, latitude: 1 }} // 이 부분을 수정
       />
       {nearProducts && (
         <>
@@ -119,8 +114,7 @@ const IndexPage: FC = () => {
               flexDirection="column"
               alignItems="center"
               py="30px"
-              border="1px
-              solid"
+              border="1px solid"
               borderColor="brand.500"
               borderRadius="6px"
             >

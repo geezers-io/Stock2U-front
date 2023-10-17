@@ -10,11 +10,9 @@ interface Props {
   emptyComment: string;
   linkTo: (id: number) => string;
   mockCount?: number;
-  coordinates: { latitude: number; longitude: number };
-  expiredAt: Date;
 }
 
-const ProductCards: FC<Props> = ({ uniqueKey, emptyComment, products, linkTo, mockCount = 8, coordinates }) => {
+const ProductCards: FC<Props> = ({ uniqueKey, emptyComment, products, linkTo, mockCount = 8 }) => {
   if (products && !products.length) {
     return (
       <Flex h="200px" justifyContent="center" alignItems="center">
@@ -48,7 +46,8 @@ const ProductCards: FC<Props> = ({ uniqueKey, emptyComment, products, linkTo, mo
             title={product.title}
             price={product.price}
             expiredAt={product.expiredAt}
-            coordinates={coordinates} // coordinates를 전달
+            latitude={product.latitude}
+            longitude={product.longitude}
           />
         </Link>
       ))}
