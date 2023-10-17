@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 
 const OAuthRedirectPage = () => {
-  const [searchParams] = useSearchParams();
+  const [{ code }] = useSearchParamsObject();
 
   useEffect(() => {
-    const authCode = searchParams.get('code');
-
-    window.opener.postMessage({ authCode });
+    window.opener.postMessage({ authCode: code });
   }, []);
 
   return null;

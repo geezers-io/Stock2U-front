@@ -1,14 +1,15 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 
 const PARAM_KEY = 'redirect';
 
 export function useRedirect() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const to = searchParams.get(PARAM_KEY) || '/';
+  const [searchParams] = useSearchParamsObject();
+  const to = searchParams[PARAM_KEY] || '/';
 
   const redirect = () => {
-    navigate(to);
+    navigate(to, { replace: true });
   };
 
   const navigateWithRedirectPath = (path: string, redirectPath: string = to, params?: Record<string, unknown>) => {
