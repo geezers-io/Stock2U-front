@@ -38,7 +38,7 @@ const styles = {
       maxWidth: appStyles.maxWidth,
       margin: '0 auto',
       background: 'white',
-      padding: `0 ${appStyles.paddingX} 10rem`,
+      padding: `0 ${appStyles.paddingX}`,
     },
   },
 };
