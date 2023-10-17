@@ -10,17 +10,22 @@ import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
 
 const SignInPage: FC = () => {
+  const setUser = useBoundedStore(state => state.setUser);
   const toast = useCustomToast();
   const popupWindow = useRef<Window | null>(null);
   const { redirect, navigateWithRedirectPath } = useRedirect();
-  const setUser = useBoundedStore(state => state.setUser);
+  const currVendor = useRef<AuthVendor>();
 
   const tryLogin = async (authCode: string) => {
     try {
       const res = await AuthService.signIn({ authCode });
 
       if (!res.exists) {
-        navigateWithRedirectPath('/auth/sign-up', undefined, pick(res, ['email', 'verification']));
+        const searchParams = {
+          ...pick(res, ['email', 'verification']),
+          vendor: currVendor.current,
+        };
+        navigateWithRedirectPath('/auth/sign-up', undefined, searchParams);
         return;
       }
 
@@ -45,6 +50,7 @@ const SignInPage: FC = () => {
     try {
       const { url } = await AuthService.signInURL({ vendor });
 
+      currVendor.current = vendor;
       openPopupWindow(url, 'width=500,height=600');
     } catch (e) {
       toast.error(e);

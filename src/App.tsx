@@ -4,8 +4,8 @@ import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import OAuthRedirectPage from '@/pages/auth/oauth-redirect/page';
 import SignInPage from '@/pages/auth/sign-in/page';
-import GeneralSignUpPage from '@/pages/auth/sign-up/general/page';
 import ChoiceRolePage from '@/pages/auth/sign-up/page';
+import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import IndexPage from '@/pages/page';
 import theme from '@/styles/theme';
@@ -37,8 +37,8 @@ const router = createBrowserRouter([
             element: <ChoiceRolePage />,
           },
           {
-            path: 'general',
-            element: <GeneralSignUpPage />,
+            path: 'purchaser',
+            element: <PurchaserSignUpPage />,
           },
           {
             path: 'seller',
