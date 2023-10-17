@@ -1,8 +1,18 @@
-import { FC } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Flex, Image, Button, Grid, Box } from '@chakra-ui/react';
 import { colors } from '@/styles/theme/@colors';
 
 const ProductImageStorage: FC = () => {
+  const inputRef = useRef(null);
+  const [image, setImage] = useState('');
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
+  const handleImageChange = event => {
+    const file = event.target.files[0];
+    console.log(file);
+    setImage(event.target.files[0]);
+  };
   return (
     <div>
       <Flex flexDirection="row">
@@ -16,9 +26,13 @@ const ProductImageStorage: FC = () => {
         </Flex>
       </Flex>
       <Grid>
-        <Button color="white" bgColor={colors.brand[700]} variant="solid">
-          이미지 업로드
-        </Button>
+        <div onClick={handleImageClick}>
+          <Button color="white" bgColor={colors.brand[700]} variant="solid" onClick={handleImageChange}>
+            {image ? <img src={URL.createObjectURL(image)} alt="" /> : <img src="./photo.png" alt="" />}
+            파일 업로드하기 {''}
+            <input type="file" ref={inputRef} onChange={handleImageChange} />
+          </Button>
+        </div>
       </Grid>
     </div>
   );
