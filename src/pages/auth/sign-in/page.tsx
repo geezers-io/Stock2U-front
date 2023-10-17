@@ -9,6 +9,12 @@ import { useRedirect } from '@/hooks/useRedirect';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
 
+const popupDefaultSize: Record<AuthVendor, { width: number; height: number }> = {
+  [AuthVendor.GOOGLE]: { width: 485, height: 710 },
+  [AuthVendor.KAKAO]: { width: 480, height: 690 },
+  [AuthVendor.NAVER]: { width: 480, height: 680 },
+};
+
 const SignInPage: FC = () => {
   const setUser = useBoundedStore(state => state.setUser);
   const toast = useCustomToast();
@@ -51,7 +57,11 @@ const SignInPage: FC = () => {
       const { url } = await AuthService.signInURL({ vendor });
 
       currVendor.current = vendor;
-      openPopupWindow(url, 'width=500,height=600');
+
+      const { width, height } = popupDefaultSize[vendor];
+      const { innerWidth, innerHeight } = window;
+
+      openPopupWindow(url, `width=${Math.min(width, innerWidth)},height=${Math.min(height, innerHeight)}`);
     } catch (e) {
       toast.error(e);
     }
