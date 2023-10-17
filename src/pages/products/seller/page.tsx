@@ -1,15 +1,18 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Flex, Heading, Input, Checkbox, CheckboxGroup, Stack, Text } from '@chakra-ui/react';
+import ProductImageStorage from '@/components/domains/products/ProductStorage';
 import { colors } from '@/styles/theme/@colors';
 
 const ProductRegistrationPage: FC = () => {
+  const [checkedItems, setCheckedItems] = useState([false, false, false]);
   return (
     <Flex flexDirection="column" padding="1.2rem 0">
+      <ProductImageStorage />
       {/*게시 정책 설정*/}
       <Heading as="h4" size="md">
         게시 정책 설정
       </Heading>
-      <CheckboxGroup colorScheme={colors.brand[700]} defaultValue={[]}>
+      <CheckboxGroup colorScheme="brand.700" defaultValue={[]}>
         <Stack spacing={[1, 5]} direction={['column', 'row']}>
           <Checkbox value="onlyreservation">예약 한 건만 받기</Checkbox>
           <Checkbox value="deposit-information">예약자에게 입금 정보 보이기</Checkbox>
@@ -34,9 +37,12 @@ const ProductRegistrationPage: FC = () => {
       </Heading>
       <CheckboxGroup colorScheme={colors.brand[700]} defaultValue={[0]}>
         <Stack spacing={[1, 5]} direction={['column', 'row']}>
-          <Checkbox value="food">식품</Checkbox>
-          <Checkbox value="lodging">숙소</Checkbox>
-          <Checkbox value="ticket">문화 티켓</Checkbox>
+          <Checkbox isChecked={checkedItems[0]} onChange={e => setCheckedItems([e.target.checked, checkedItems[1]])}>
+            Child Checkbox 1
+          </Checkbox>
+          <Checkbox isChecked={checkedItems[1]} onChange={e => setCheckedItems([checkedItems[0], e.target.checked])}>
+            Child Checkbox 2
+          </Checkbox>
         </Stack>
       </CheckboxGroup>
 
