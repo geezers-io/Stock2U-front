@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { Flex, Heading, Input, Checkbox, CheckboxGroup, Stack, Text, Button } from '@chakra-ui/react';
-import ProductImageStorage from '@/components/domains/products/ProductStorage';
+import ImageSelector from '@/components/domains/products/ImageSelector';
 import { colors } from '@/styles/theme/@colors';
 
 const ProductRegistrationPage: FC = () => {
@@ -10,7 +10,7 @@ const ProductRegistrationPage: FC = () => {
       <Heading as="h2" size="xl" textAlign="center">
         상품 등록
       </Heading>
-      <ProductImageStorage /> <br />
+      <ImageSelector /> <br />
       {/*게시 정책 설정*/}
       <Heading as="h4" size="md">
         게시 정책 설정
