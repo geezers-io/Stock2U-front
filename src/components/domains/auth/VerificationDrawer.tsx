@@ -13,6 +13,7 @@ import {
 import { getErrorMessage } from '@/api/helper';
 import { AuthService } from '@/api/services/Auth';
 import VerificationInput from '@/components/domains/auth/VerificationInput';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 interface Props {
   isOpen: boolean;
@@ -22,25 +23,32 @@ interface Props {
 }
 
 const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
+  const toast = useCustomToast();
+  const [error, setError] = useState<string>('에러입니다.');
   const [sending, setSending] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const [error, setError] = useState<string>('에러입니다.');
+  const sendingOrVerifying = sending || verifying;
 
   const clearError = () => {
     setError('');
   };
 
-  const sendCode = async () => {
+  const sendCode = async (successMsg: string = '인증 코드가 전송되었습니다.') => {
     try {
       clearError();
       setSending(true);
 
       await AuthService.sendCode({ phone });
+      toast.info(successMsg);
     } catch (e) {
       setError(getErrorMessage(e));
     } finally {
       setSending(false);
     }
+  };
+
+  const resendCode = async () => {
+    await sendCode('인증 코드가 다시 전송되었습니다.');
   };
 
   const onComplete = async (code: string) => {
@@ -70,7 +78,7 @@ const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
 
         <DrawerBody transitionDuration="400ms">
           <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
-            <Flex h="max-content" position="relative">
+            <Flex w="320px" maxW="100%" position="relative">
               <Box
                 position="absolute"
                 top={0}
@@ -80,9 +88,9 @@ const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
                 }}
               >
                 <Heading size="md" fontWeight="500" textAlign="center">
-                  인증코드를 입력해주세요.
+                  문자로 전송된 인증코드를 입력해주세요.
                 </Heading>
-                <Text fontSize="sm" textAlign="center" color="gray.400">
+                <Text fontSize="sm" textAlign="center" color="gray.400" mt="6px">
                   인증코드가 전송되지 않았다면 스팸함을 확인해보세요.
                 </Text>
               </Box>
@@ -111,14 +119,14 @@ const VerificationDrawer: FC<Props> = ({ isOpen, close, onSuccess, phone }) => {
                   tabIndex={0}
                   size="sm"
                   mt="10px"
-                  color={sending || verifying ? 'gray.400' : 'gray.800'}
-                  cursor={sending || verifying ? 'not-allowed' : 'pointer'}
+                  color={verifying ? 'gray.400' : 'gray.800'}
+                  cursor={verifying ? 'not-allowed' : 'pointer'}
                   textAlign="center"
                   textDecoration="underline"
                   textUnderlineOffset="2px"
-                  onClick={sending || verifying ? undefined : sendCode}
+                  onClick={sendingOrVerifying ? undefined : resendCode}
                 >
-                  {!sending && <>인증번호 다시 보내기</>}
+                  {!sending && '인증번호 다시 보내기'}
                 </Text>
               </Flex>
             </Flex>
