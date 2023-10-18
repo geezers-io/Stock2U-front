@@ -40,7 +40,15 @@ const ProductCards: FC<Props> = ({ uniqueKey, emptyComment, products, linkTo, mo
 
       {products?.map(product => (
         <Link key={uniqueKey + product.id} to={linkTo(product.id)}>
-          <ProductCard imageSRC={product.imageSRC} type={product.type} title={product.title} price={product.price} />
+          <ProductCard
+            imageSRC={product.imageSRC}
+            type={product.type}
+            title={product.title}
+            price={product.price}
+            expiredAt={product.expiredAt}
+            latitude={product.latitude}
+            longitude={product.longitude}
+          />
         </Link>
       ))}
     </Grid>
