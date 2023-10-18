@@ -7,6 +7,9 @@ export const AuthService: AuthClient = {
   signUpPurchaser: async request => {
     return await axiosInstance.post(`${ROUTE}/signup/purchaser`, request);
   },
+  signUpSeller: async request => {
+    return await axiosInstance.post(`${ROUTE}/signup/seller`, request);
+  },
   signIn: async request => {
     return await axiosInstance.post(`${ROUTE}/signin`, request);
   },
