@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Badge, Box, Heading, Image, Text } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { ProductType } from '@/api/@types/@enums';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 
@@ -20,6 +21,22 @@ const badgeColorschemeDict: Record<ProductType, string> = {
 };
 
 const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latitude, longitude }) => {
+  const [formattedExpiredAt, setFormattedExpiredAt] = useState(dayjs(expiredAt).format('mm:ss'));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTime = dayjs();
+      const remainingTime = dayjs(expiredAt).diff(currentTime, 'second');
+      if (remainingTime >= 0) {
+        setFormattedExpiredAt(dayjs().startOf('day').second(remainingTime).format('mm:ss'));
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [expiredAt]);
+
   return (
     <Box>
       <Image src={imageSRC} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
@@ -32,11 +49,11 @@ const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latit
       <Text size="sm" mt={1} textAlign="right" fontWeight="bold">
         {price.toLocaleString()}원
       </Text>
-      <Text size="sm" textAlign="right">
-        경도: {longitude} / 위도: {latitude}
+      <Text size="sm" textAlign="right" style={{ opacity: 0.4 }}>
+        남은 시간 {formattedExpiredAt}
       </Text>
-      <Text size="sm" textAlign="right">
-        만료일: {expiredAt.toISOString()}
+      <Text size="sm" textAlign="right" style={{ opacity: 0.4 }}>
+        내 주변 {longitude}.{latitude}
       </Text>
     </Box>
   );
