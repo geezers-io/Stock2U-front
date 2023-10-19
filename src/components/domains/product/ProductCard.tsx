@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Badge, Box, Heading, Image, Text } from '@chakra-ui/react';
-import dayjs from 'dayjs';
 import { ProductType } from '@/api/@types/@enums';
+import CountdownTimer from '@/components/domains/product/CountdownTimer';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 
 interface Props {
@@ -20,32 +20,6 @@ const badgeColorschemeDict: Record<ProductType, string> = {
   [ProductType.TICKET]: 'sub.500',
 };
 
-const CountdownTimer: FC<{ expiredAt: Date }> = ({ expiredAt }) => {
-  const [formattedExpiredAt, setFormattedExpiredAt] = useState(dayjs(expiredAt).format('mm:ss'));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const currentTime = dayjs();
-      const remainingTime = dayjs(expiredAt).diff(currentTime, 'second');
-      if (remainingTime >= 0) {
-        setFormattedExpiredAt(dayjs().startOf('day').second(remainingTime).format('mm:ss'));
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [expiredAt]);
-
-  return (
-    <div>
-      <Text size="sm" textAlign="right" opacity={0.4}>
-        남은 시간 {formattedExpiredAt}
-      </Text>
-    </div>
-  );
-};
-
 const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latitude, longitude }) => {
   return (
     <Box>
@@ -53,13 +27,13 @@ const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latit
       <Badge bgColor={badgeColorschemeDict[type]} color="white">
         {PRODUCT_TYPE_LABEL[type]}
       </Badge>
-      <Heading as="h2" size="sm" fontWeight={500} mt={1} noOfLines={1} wordBreak="break-all">
+      <Heading as="h2" fontSize="md" mt={1} noOfLines={1} wordBreak="break-all">
         {title}
       </Heading>
-      <Text size="sm" mt={1} textAlign="right" fontWeight="bold">
+      <Text fontSize="sm" fontWeight={500} textAlign="right">
         {price.toLocaleString()}원
       </Text>
-      <Text size="sm" textAlign="right" style={{ opacity: 0.4 }}>
+      <Text fontSize="xs" textAlign="right" letterSpacing={-0.2} color="gray.700">
         내 주변 {longitude}.{latitude}
       </Text>
       <CountdownTimer expiredAt={expiredAt} />
