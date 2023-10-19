@@ -1,5 +1,5 @@
-import { FC, useLayoutEffect, useState } from 'react';
-import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FC, useLayoutEffect } from 'react';
+import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, useDisclosure } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import { AuthVendor } from '@/api/@types/@enums';
 import { PurchaserSignUpRequest } from '@/api/@types/Auth';
@@ -14,28 +14,30 @@ import { generateValidators } from '@/utils/formik';
 const { validators, getFormikStates } = generateValidators<PurchaserSignUpRequest>({
   username: { required: true, range: { min: 3, max: 15 }, regex: 'nickname' },
   email: { required: true, regex: 'email' },
-  phone: { required: true, regex: /^[0-9]{11}/ },
+  phone: { required: true, regex: 'phone' },
+
   verification: { required: true },
   vendor: { required: true },
 });
 
+// TODO: 이메일 컴포넌트 별도로 만들어서 적용하기
 const PurchaserSignUpPage: FC = () => {
+  const setUser = useBoundedStore(state => state.setUser);
   const { redirect } = useRedirect();
   const toast = useCustomToast();
-  const [verificationDrawerOpen, setVerificationDrawerOpen] = useState(false);
   const [{ email, verification, vendor }] = useSearchParamsObject();
-  const setUser = useBoundedStore(state => state.setUser);
-
-  const openVerificationDrawer = () => {
-    setVerificationDrawerOpen(true);
-  };
-  const closeVerificationDrawer = () => {
-    setVerificationDrawerOpen(false);
-  };
+  const {
+    isOpen: verificationDrawerOpen,
+    onOpen: openVerificationDrawer,
+    onClose: closeVerificationDrawer,
+  } = useDisclosure();
 
   const signUp = async (values: PurchaserSignUpRequest) => {
     try {
-      const user = await AuthService.signUpPurchaser(values);
+      const user = await AuthService.signUpPurchaser({
+        ...values,
+        phone: values.phone.replace(/-/g, ''),
+      });
       setUser(user);
       redirect();
     } catch (e) {
@@ -55,11 +57,11 @@ const PurchaserSignUpPage: FC = () => {
   return (
     <Formik<PurchaserSignUpRequest>
       initialValues={{
+        username: '',
         email: email ?? '',
         phone: '',
-        username: '',
-        verification, // From searchParams
-        vendor: vendor as AuthVendor, // From searchParams
+        verification, // From searchParams, not control in form.
+        vendor: vendor as AuthVendor, // From searchParams, not control in form.
       }}
       onSubmit={openVerificationDrawer}
     >
@@ -67,7 +69,7 @@ const PurchaserSignUpPage: FC = () => {
         const { showErrorDict, canSubmit, errors, values } = getFormikStates(props);
 
         return (
-          <Form>
+          <Form style={{ paddingTop: 40, paddingBottom: 40 }}>
             <Flex flexDirection="column" gap="20px" maxW="500px" margin="0 auto">
               <Field name="username" validate={validators.username}>
                 {({ field }) => (
