@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Badge, Box, Heading, Image, Text } from '@chakra-ui/react';
 import { ProductType } from '@/api/@types/@enums';
+import CountdownTimer from '@/components/domains/product/CountdownTimer';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 
 interface Props {
@@ -26,18 +27,16 @@ const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latit
       <Badge bgColor={badgeColorschemeDict[type]} color="white">
         {PRODUCT_TYPE_LABEL[type]}
       </Badge>
-      <Heading as="h2" size="sm" fontWeight={500} mt={1} noOfLines={1} wordBreak="break-all">
+      <Heading as="h2" fontSize="md" mt={1} noOfLines={1} wordBreak="break-all">
         {title}
       </Heading>
-      <Text size="sm" mt={1} textAlign="right" fontWeight="bold">
+      <Text fontSize="sm" fontWeight={500} textAlign="right">
         {price.toLocaleString()}원
       </Text>
-      <Text size="sm" textAlign="right">
-        경도: {longitude} / 위도: {latitude}
+      <Text fontSize="xs" textAlign="right" letterSpacing={-0.2} color="gray.700">
+        내 주변 {longitude}.{latitude}
       </Text>
-      <Text size="sm" textAlign="right">
-        만료일: {expiredAt.toISOString()}
-      </Text>
+      <CountdownTimer expiredAt={expiredAt} />
     </Box>
   );
 };
