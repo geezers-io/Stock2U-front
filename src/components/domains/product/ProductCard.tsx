@@ -20,7 +20,7 @@ const badgeColorschemeDict: Record<ProductType, string> = {
   [ProductType.TICKET]: 'sub.500',
 };
 
-const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latitude, longitude }) => {
+const CountdownTimer: FC<{ expiredAt: Date }> = ({ expiredAt }) => {
   const [formattedExpiredAt, setFormattedExpiredAt] = useState(dayjs(expiredAt).format('mm:ss'));
 
   useEffect(() => {
@@ -38,6 +38,16 @@ const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latit
   }, [expiredAt]);
 
   return (
+    <div>
+      <Text size="sm" textAlign="right" opacity={0.4}>
+        남은 시간 {formattedExpiredAt}
+      </Text>
+    </div>
+  );
+};
+
+const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latitude, longitude }) => {
+  return (
     <Box>
       <Image src={imageSRC} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
       <Badge bgColor={badgeColorschemeDict[type]} color="white">
@@ -50,11 +60,9 @@ const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latit
         {price.toLocaleString()}원
       </Text>
       <Text size="sm" textAlign="right" style={{ opacity: 0.4 }}>
-        남은 시간 {formattedExpiredAt}
-      </Text>
-      <Text size="sm" textAlign="right" style={{ opacity: 0.4 }}>
         내 주변 {longitude}.{latitude}
       </Text>
+      <CountdownTimer expiredAt={expiredAt} />
     </Box>
   );
 };
