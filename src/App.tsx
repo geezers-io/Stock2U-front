@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import ProductRegistrationPage from './pages/products/seller/page';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import OAuthRedirectPage from '@/pages/auth/oauth-redirect/page';
@@ -9,6 +8,7 @@ import ChoiceRolePage from '@/pages/auth/sign-up/page';
 import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import IndexPage from '@/pages/page';
+import ProductRegistrationPage from '@/pages/products/seller/page';
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([

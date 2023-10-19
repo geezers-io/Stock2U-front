@@ -1,21 +1,28 @@
-import { FC, useState } from 'react';
-import { Flex, Heading, Input, Checkbox, CheckboxGroup, Stack, Text, Button } from '@chakra-ui/react';
+import { FC } from 'react';
+import {
+  Flex,
+  Heading,
+  Input,
+  Checkbox,
+  CheckboxGroup,
+  Stack,
+  Text,
+  Button,
+  Editable,
+  EditablePreview,
+  EditableTextarea,
+} from '@chakra-ui/react';
 import ImageSelector from '@/components/domains/products/ImageSelector';
-import { colors } from '@/styles/theme/@colors';
 
 const ProductRegistrationPage: FC = () => {
-  const [checkedItems, setCheckedItems] = useState([false, false, false]);
   return (
-    <Flex flexDirection="column" padding="1.2rem 0">
-      <Heading as="h2" size="xl" textAlign="center">
-        상품 등록
-      </Heading>
-      <ImageSelector /> <br />
+    <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
+      <ImageSelector />
       {/*게시 정책 설정*/}
       <Heading as="h4" size="md">
         게시 정책 설정
       </Heading>
-      <CheckboxGroup colorScheme="brand.700" defaultValue={[]}>
+      <CheckboxGroup colorScheme="brand" defaultValue={[]}>
         <Stack spacing={[1, 5]} direction={['column', 'row']}>
           <Checkbox value="onlyreservation">예약 한 건만 받기</Checkbox>
           <Checkbox value="deposit-information">예약자에게 입금 정보 보이기</Checkbox>
@@ -35,14 +42,11 @@ const ProductRegistrationPage: FC = () => {
       <Heading as="h4" size="md">
         상품 분류
       </Heading>
-      <CheckboxGroup colorScheme={colors.brand[700]} defaultValue={[0]}>
+      <CheckboxGroup colorScheme="brand">
         <Stack spacing={[1, 5]} direction={['column', 'row']}>
-          <Checkbox isChecked={checkedItems[0]} onChange={e => setCheckedItems([e.target.checked, checkedItems[1]])}>
-            Child Checkbox 1
-          </Checkbox>
-          <Checkbox isChecked={checkedItems[1]} onChange={e => setCheckedItems([checkedItems[0], e.target.checked])}>
-            Child Checkbox 2
-          </Checkbox>
+          <Checkbox value="food">식품</Checkbox>
+          <Checkbox value="lodging">숙소</Checkbox>
+          <Checkbox value="ticket">문화 티켓</Checkbox>
         </Stack>
       </CheckboxGroup>
       {/*게시마감기한*/}
@@ -54,8 +58,11 @@ const ProductRegistrationPage: FC = () => {
       <Heading as="h4" size="md">
         상품 상세 소개 <Text fontSize="sm">*최대 일주일 설정 가능합니다</Text>
       </Heading>
-      <Input placeholder="Basic usage" bgColor="gray.100" /> <br />
-      <Button color="white" bgColor={colors.brand[700]} variant="solid">
+      <Editable defaultValue="상세 설명을 적어주세요.">
+        <EditablePreview />
+        <EditableTextarea />
+      </Editable>
+      <Button color="white" colorScheme="brand" variant="solid">
         판매글 게시하기
       </Button>
     </Flex>
