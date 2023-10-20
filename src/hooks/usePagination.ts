@@ -14,40 +14,27 @@ export function usePagination(initialPageRequest: Required<PageRequest> = defaul
     currentPage: pageRequest.page,
   });
 
-  const totalPage = useMemo(() => {
+  const totalPages = useMemo(() => {
     return Math.ceil(pageResponse.totalCount / pageResponse.countPerPage);
   }, [pageResponse]);
-
-  const nextPage = useCallback(() => {
-    setPageRequest(prev => {
-      if (prev.page === totalPage) return prev;
-      return {
-        ...prev,
-        page: prev.page + 1,
-      };
-    });
-  }, [totalPage]);
-
-  const prevPage = useCallback(() => {
-    setPageRequest(prev => {
-      if (prev.page === 1) return prev;
-      return {
-        ...prev,
-        page: prev.page - 1,
-      };
-    });
-  }, []);
 
   const resetPageRequest = useCallback(() => {
     setPageRequest(initialPageRequest);
   }, [initialPageRequest]);
 
+  const setPage = useCallback((page: number) => {
+    setPageRequest(prev => ({
+      ...prev,
+      page,
+    }));
+  }, []);
+
   return {
-    totalPage,
+    totalPages,
+    totalCount: pageResponse.totalCount,
     pageRequest,
+    setPage,
     setPageResponse,
     resetPageRequest,
-    nextPage,
-    prevPage,
   };
 }

@@ -19,9 +19,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { isAxiosError } from 'axios';
-import { ApiError } from '@/api/@types/@shared';
+import { ApiError, PageRequest } from '@/api/@types/@shared';
 import { Address } from '@/api/@types/Auth';
 import { AuthService } from '@/api/services/Auth';
+import Pagination from '@/components/shared/Pagination';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useDebounce } from '@/hooks/useDebounce';
 import { usePagination } from '@/hooks/usePagination';
@@ -36,7 +37,7 @@ interface Props {
 const SEARCH_MIN = 2;
 
 const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
-  const { pageRequest, resetPageRequest, setPageResponse } = usePagination();
+  const { totalPages, totalCount, setPage, pageRequest, setPageResponse, resetPageRequest } = usePagination();
   const [search, setSearch] = useState('');
   const [searching, setSearching] = useState(false);
   const [helpText, setSearchHelpText] = useState('');
@@ -44,7 +45,7 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const toast = useCustomToast();
 
-  const fetchAddresses = useDebounce(async (search: string) => {
+  const fetchAddresses = useDebounce(async (search: string, pageRequest: PageRequest) => {
     try {
       setSearching(true);
 
@@ -87,8 +88,8 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
       setAddresses([]);
       return;
     }
-    fetchAddresses(search);
-  }, [search]);
+    fetchAddresses(search, pageRequest);
+  }, [search, pageRequest]);
 
   return (
     <Modal initialFocusRef={inputRef} isOpen={isOpen} onClose={close} isCentered size="lg">
@@ -120,32 +121,43 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
             </Flex>
           )}
           {!!addresses.length && (
-            <List maxH="300px" overflowY="auto">
-              {addresses.map(address => (
-                <ListItem key={address.fullRoadAddrName} _notFirst={{ mt: 2 }}>
-                  <LinkBox
-                    role="button"
-                    onClick={() => onSelect(address.fullRoadAddrName)}
-                    border="1px solid"
-                    borderRadius="8px"
-                    borderColor="gray.300"
-                    p={2}
-                    _hover={{ bg: 'gray.100' }}
-                  >
-                    {address.buildingName && (
-                      <Flex alignItems="center" gap={1} color="gray.500" fontSize="sm" fontWeight={500}>
-                        <Building />
-                        <Text>{address.buildingName}</Text>
-                      </Flex>
-                    )}
-                    <Text color="brand.600">{address.fullRoadAddrName}</Text>
-                    <Text color="gray.500" fontSize="sm">
-                      {address.zipCode}
-                    </Text>
-                  </LinkBox>
-                </ListItem>
-              ))}
-            </List>
+            <>
+              <List maxH="300px" overflowY="auto">
+                {addresses.map(address => (
+                  <ListItem key={address.fullRoadAddrName} _notFirst={{ mt: 2 }}>
+                    <LinkBox
+                      role="button"
+                      onClick={() => onSelect(address.fullRoadAddrName)}
+                      border="1px solid"
+                      borderRadius="8px"
+                      borderColor="gray.300"
+                      p={2}
+                      _hover={{ bg: 'gray.100' }}
+                    >
+                      {address.buildingName && (
+                        <Flex alignItems="center" gap={1} color="gray.500" fontSize="sm" fontWeight={500}>
+                          <Building />
+                          <Text>{address.buildingName}</Text>
+                        </Flex>
+                      )}
+                      <Text color="brand.600">{address.fullRoadAddrName}</Text>
+                      <Text color="gray.500" fontSize="sm">
+                        {address.zipCode}
+                      </Text>
+                    </LinkBox>
+                  </ListItem>
+                ))}
+              </List>
+
+              <Flex justifyContent="center" mt={4}>
+                <Pagination
+                  pageIndex={pageRequest.page - 1}
+                  setPageIndex={pageIndex => setPage(pageIndex + 1)}
+                  totalPages={totalPages}
+                  totalCount={totalCount}
+                />
+              </Flex>
+            </>
           )}
         </ModalBody>
       </ModalContent>
