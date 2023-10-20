@@ -24,11 +24,10 @@ export interface MockProductDetail {
 export const mockProductDetail: MockProductDetail = {
   id: 1,
   title: '아이유 티켓 공연 1장 판매',
-  representativeImageUrl:
-    'https://i.namu.wiki/i/vGerI7hhhYDt3RJaR2SeH9HbcZKOVVuWsqqs3-evqTtffWDUW2lmJVp_O2f6L5MREfkIRP9CVjTSijNW3D75exJuz5a_a5V-edVPpQ5e4sEIQcj7UI_EwWxABtJof2FY4M2s1zJlHrwiOK8W3A3yxg.webp',
+  representativeImageUrl: 'https://cdn.mindgil.com/news/photo/202005/69269_3261_1638.jpg',
   subImageUrls: [
-    'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gqkorea.co.kr%2F2023%2F07%2F22%2F%25EB%2589%25B4%25EC%25A7%2584%25EC%258A%25A4-%25EC%258B%25A0%25EB%25B3%25B4-%25EB%25B0%259C%25EB%25A7%25A4-%25EC%25B2%25AB%25EB%2582%25A0-%25EC%2596%25BC%25EB%25A7%2588%25EB%2582%2598-%25ED%258C%2594%25EB%25A0%25B8%25EC%259D%2584%25EA%25B9%258C%2F&psig=AOvVaw2eWJ6i9Pmgw28HwLIqbXfL&ust=1697380490242000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDQlZzh9YEDFQAAAAAdAAAAABAH',
-    'https://www.google.com/url?sa=i&url=https%3A%2F%2Fko.wikipedia.org%2Fwiki%2FNewJeans&psig=AOvVaw0WA25DlyXMhT_Ua14FSlUK&ust=1697534883691000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPiCy7Cg-oEDFQAAAAAdAAAAABAD',
+    'https://gongbuhae.com/storage/app/public/editor/3a/e5/20211123180357accf102caaa970ce65d217b9ae9a8e9a57caa67c.jpg',
+    'https://m.damggo.com/web/product/big/202208/c2f36c7d36943b4cad5ecf2c857efaac.jpg',
   ],
   stockName: '7월 아이유 송도축제 공연 티켓',
   productType: ProductType.TICKET,

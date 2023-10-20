@@ -26,13 +26,13 @@ const ProductDetailPage: FC = () => {
           {productDetail.title}
         </Heading>
         <ImageSelector />
-
         <Box>
           <Heading as="h4" size="md">
             잔여 재고 이름
           </Heading>
           <Text fontSize="xl">{productDetail.stockName} </Text>
         </Box>
+        `
         <Box>
           <Heading as="h4" size="md">
             종류
