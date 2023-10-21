@@ -1,33 +1,23 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Flex } from '@chakra-ui/react';
+import { MockProductDetail } from '@/api/__mock__/product';
 
 const ImageSelector: FC = () => {
-  /*const [images, setImages] = useState<MockProductDetail>();
-
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageData, setImageData] = useState<MockProductDetail>();
   const fetchImages = async () => {
     try {
-      setImages(images);
+      setImageData(imageData);
     } catch (e) {}
   };
-
   useEffect(() => {
     fetchImages();
   }, []);
 
-  if (!images) {
+  if (!imageData) {
     return null;
   }
-
-  
-*/
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const images = [
-    'https://cdn.mindgil.com/news/photo/202005/69269_3261_1638.jpg',
-    'https://gongbuhae.com/storage/app/public/editor/3a/e5/20211123180357accf102caaa970ce65d217b9ae9a8e9a57caa67c.jpg',
-    'https://m.damggo.com/web/product/big/202208/c2f36c7d36943b4cad5ecf2c857efaac.jpg',
-  ];
-  console.log(images);
 
   const handleImageClick = (focusImage: string) => {
     setIsZoomed(true);
@@ -42,7 +32,7 @@ const ImageSelector: FC = () => {
   return (
     <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%">
       <div style={{ display: 'flex' }}>
-        {images.map((focusImage, index) => (
+        {imageData.subImageUrls.map((focusImage, index) => (
           <img
             key={index}
             src={focusImage}
