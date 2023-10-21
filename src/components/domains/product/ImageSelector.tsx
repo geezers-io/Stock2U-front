@@ -27,10 +27,11 @@ const ImageSelector: FC = () => {
     'https://gongbuhae.com/storage/app/public/editor/3a/e5/20211123180357accf102caaa970ce65d217b9ae9a8e9a57caa67c.jpg',
     'https://m.damggo.com/web/product/big/202208/c2f36c7d36943b4cad5ecf2c857efaac.jpg',
   ];
+  console.log(images);
 
-  const handleImageClick = (imageUrl: string) => {
+  const handleImageClick = (focusImage: string) => {
     setIsZoomed(true);
-    setSelectedImage(imageUrl);
+    setSelectedImage(focusImage);
   };
 
   const handleCloseZoom = () => {
@@ -41,12 +42,11 @@ const ImageSelector: FC = () => {
   return (
     <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%">
       <div style={{ display: 'flex' }}>
-        {images.map((imageUrl, index) => (
+        {images.map((focusImage, index) => (
           <img
             key={index}
-            src={imageUrl}
-            alt={`이미지 ${index}`}
-            onClick={() => handleImageClick(imageUrl)}
+            src={focusImage}
+            onClick={() => handleImageClick(focusImage)} //새로운 함수 생성하여 전달
             style={{ cursor: 'pointer', maxWidth: '100px', margin: '10px' }}
           />
         ))}
@@ -58,14 +58,13 @@ const ImageSelector: FC = () => {
             position: 'relative',
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          onClick={handleCloseZoom}
+          onClick={handleCloseZoom} //직접 호출
         >
-          <img src={selectedImage} style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }} />
+          <img src={selectedImage} style={{ maxWidth: '80%', maxHeight: '80%' }} />
         </div>
       )}
     </Flex>
