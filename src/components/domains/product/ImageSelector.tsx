@@ -1,14 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { Flex } from '@chakra-ui/react';
-import { MockProductDetail } from '@/api/__mock__/product';
+import { mockProductDetail, MockProductDetail } from '@/api/__mock__/product';
 
 const ImageSelector: FC = () => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [imageData, setImageData] = useState<MockProductDetail>();
+  // TO HEEJUNG: 배열로 관리하는 상태라면 초기 값이 [](empty array) 인 것이 관리하기 편합니다. ( 번거로운 intialize 과정을 선언과 동시에 )
+  const [imageData, setImageData] = useState<MockProductDetail[]>([]);
+
   const fetchImages = async () => {
     try {
-      setImageData(imageData);
+      // TO HEEJUNG 상태가 배열이므로 현 상태에 새로운 상태를 concatnate 를 수행해서 반환하여 추가 데이터를 생성합니다.
+      setImageData(prev => prev.concat(mockProductDetail));
     } catch (e) {}
   };
   useEffect(() => {
