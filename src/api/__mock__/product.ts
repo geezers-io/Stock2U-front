@@ -28,6 +28,7 @@ export const mockProductDetail: MockProductDetail = {
   subImageUrls: [
     'https://gongbuhae.com/storage/app/public/editor/3a/e5/20211123180357accf102caaa970ce65d217b9ae9a8e9a57caa67c.jpg',
     'https://m.damggo.com/web/product/big/202208/c2f36c7d36943b4cad5ecf2c857efaac.jpg',
+    'https://cdn.mindgil.com/news/photo/202005/69269_3261_1638.jpg',
   ],
   stockName: '7월 아이유 송도축제 공연 티켓',
   productType: ProductType.TICKET,

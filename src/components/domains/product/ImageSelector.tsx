@@ -5,15 +5,13 @@ import { mockProductDetail, MockProductDetail } from '@/api/__mock__/product';
 const ImageSelector: FC = () => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  // TO HEEJUNG: 배열로 관리하는 상태라면 초기 값이 [](empty array) 인 것이 관리하기 편합니다. ( 번거로운 intialize 과정을 선언과 동시에 )
   const [imageData, setImageData] = useState<MockProductDetail>(mockProductDetail);
 
   const fetchImages = async () => {
     try {
-      // TO HEEJUNG 상태가 배열이므로 현 상태에 새로운 상태를 concatnate 를 수행해서 반환하여 추가 데이터를 생성합니다.
       setImageData(prev => ({
         ...prev,
-        subImageUrls: prev.subImageUrls.concat(mockProductDetail.subImageUrls[0]),
+        subImageUrls: prev.subImageUrls,
       }));
     } catch (e) {}
   };
@@ -36,7 +34,7 @@ const ImageSelector: FC = () => {
   };
 
   return (
-    <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%">
+    <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%" justify-content="center">
       <div style={{ display: 'flex' }}>
         {imageData.subImageUrls.map((focusImage, index) => (
           <img

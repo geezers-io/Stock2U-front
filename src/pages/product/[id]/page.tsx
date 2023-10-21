@@ -22,10 +22,12 @@ const ProductDetailPage: FC = () => {
   return (
     <div>
       <Flex flexDirection="column" padding="1.2rem 0">
-        <Heading as="h3" size="lg">
+        <Heading as="h3" size="lg" textAlign="center">
           {productDetail.title}
         </Heading>
-        <ImageSelector />
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <ImageSelector />
+        </Box>
         <Box>
           <Heading as="h4" size="md">
             잔여 재고 이름
@@ -68,12 +70,12 @@ const ProductDetailPage: FC = () => {
         </Box>
         <Box w="60%" p=" 1.2rem 0">
           <Text fontSize="xl">{mockProductDetail.seller.nickname} 님</Text>
-          <Text fontSize="xl">
+          <Text fontSize="xl" color="gray">
             판매 재고 {mockProductDetail.seller.stockCount} 후기 {mockProductDetail.seller.reviewCount}
           </Text>
         </Box>
         <Box w="auto" p="1.2rem 2rem">
-          <Button colorScheme="gray" float="right">
+          <Button colorScheme="brand" float="right">
             판매자 구독하기
           </Button>
         </Box>
@@ -81,7 +83,7 @@ const ProductDetailPage: FC = () => {
 
       {/*reservation*/}
       <Grid p="1.2rem 0">
-        <Button colorScheme="gray">구매 예약 요청하기</Button>
+        <Button colorScheme="brand">구매 예약 요청하기</Button>
       </Grid>
     </div>
   );
