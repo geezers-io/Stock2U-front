@@ -1,5 +1,5 @@
-import { FC, useLayoutEffect, useState } from 'react';
-import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FC, useLayoutEffect } from 'react';
+import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, useDisclosure } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import { AuthVendor } from '@/api/@types/@enums';
 import { PurchaserSignUpRequest } from '@/api/@types/Auth';
@@ -9,33 +9,35 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 import { useRedirect } from '@/hooks/useRedirect';
 import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 import { useBoundedStore } from '@/stores';
-import { generateValidators, getFormikStates } from '@/utils/formik';
+import { generateValidators } from '@/utils/formik';
 
-const { validators } = generateValidators<PurchaserSignUpRequest>({
+const { validators, getFormikStates } = generateValidators<PurchaserSignUpRequest>({
   username: { required: true, range: { min: 3, max: 15 }, regex: 'nickname' },
   email: { required: true, regex: 'email' },
-  phone: { required: true, regex: /^[0-9]{11}/ },
+  phone: { required: true, regex: 'phone' },
+
   verification: { required: true },
   vendor: { required: true },
 });
 
+// TODO: 이메일 컴포넌트 별도로 만들어서 적용하기
 const PurchaserSignUpPage: FC = () => {
+  const setUser = useBoundedStore(state => state.setUser);
   const { redirect } = useRedirect();
   const toast = useCustomToast();
-  const [verificationDrawerOpen, setVerificationDrawerOpen] = useState(false);
   const [{ email, verification, vendor }] = useSearchParamsObject();
-  const setUser = useBoundedStore(state => state.setUser);
-
-  const openVerificationDrawer = () => {
-    setVerificationDrawerOpen(true);
-  };
-  const closeVerificationDrawer = () => {
-    setVerificationDrawerOpen(false);
-  };
+  const {
+    isOpen: verificationDrawerOpen,
+    onOpen: openVerificationDrawer,
+    onClose: closeVerificationDrawer,
+  } = useDisclosure();
 
   const signUp = async (values: PurchaserSignUpRequest) => {
     try {
-      const user = await AuthService.signUpPurchaser(values);
+      const user = await AuthService.signUpPurchaser({
+        ...values,
+        phone: values.phone.replace(/-/g, ''),
+      });
       setUser(user);
       redirect();
     } catch (e) {
@@ -55,23 +57,23 @@ const PurchaserSignUpPage: FC = () => {
   return (
     <Formik<PurchaserSignUpRequest>
       initialValues={{
+        username: '',
         email: email ?? '',
         phone: '',
-        username: '',
-        verification, // From searchParams
-        vendor: vendor as AuthVendor, // From searchParams
+        verification, // From searchParams, not control in form.
+        vendor: vendor as AuthVendor, // From searchParams, not control in form.
       }}
       onSubmit={openVerificationDrawer}
     >
       {props => {
-        const { isInvalid, errors, canSubmit, values } = getFormikStates(props);
+        const { showErrorDict, canSubmit, errors, values } = getFormikStates(props);
 
         return (
-          <Form>
+          <Form style={{ paddingTop: 40, paddingBottom: 40 }}>
             <Flex flexDirection="column" gap="20px" maxW="500px" margin="0 auto">
               <Field name="username" validate={validators.username}>
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={isInvalid.username}>
+                  <FormControl isRequired isInvalid={showErrorDict.username}>
                     <FormLabel>닉네임</FormLabel>
                     <Input {...field} />
                     <FormErrorMessage>{errors.username}</FormErrorMessage>
@@ -81,7 +83,7 @@ const PurchaserSignUpPage: FC = () => {
 
               <Field name="email" validate={validators.email}>
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={isInvalid.email}>
+                  <FormControl isRequired isInvalid={showErrorDict.email}>
                     <FormLabel>이메일</FormLabel>
                     <Input {...field} type="email" />
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
@@ -91,7 +93,7 @@ const PurchaserSignUpPage: FC = () => {
 
               <Field name="phone" validate={validators.phone}>
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={isInvalid.phone}>
+                  <FormControl isRequired isInvalid={showErrorDict.phone}>
                     <FormLabel>휴대폰 번호</FormLabel>
                     <Input {...field} />
                     <FormErrorMessage>{errors.phone}</FormErrorMessage>

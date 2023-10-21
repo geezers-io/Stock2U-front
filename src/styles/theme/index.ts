@@ -2,6 +2,7 @@ import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 import { colors } from './@colors';
 import { buttonTheme } from './button';
 import { badgeTheme } from '@/styles/theme/badge';
+import { modalTheme } from '@/styles/theme/modal';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -47,7 +48,11 @@ const theme = extendTheme({
   config,
   colors,
   styles,
-  components: { Button: buttonTheme, Badge: badgeTheme },
+  components: {
+    Button: buttonTheme,
+    Badge: badgeTheme,
+    Modal: modalTheme,
+  },
   appStyles,
 });
 
