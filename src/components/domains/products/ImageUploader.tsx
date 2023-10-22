@@ -44,14 +44,16 @@ const ImageUploader: FC = () => {
         ))}
         {isZoomed && clickImage && (
           <Flex
-            display="relative"
             width="100%"
             height="20vh"
             justifyContent="center"
             alignContent="center"
             onClick={handleCloseZoom} //직접 호출
           >
-            <img src={URL.createObjectURL(clickImage)} style={{ maxWidth: '80%', maxHeight: '80%' }} />
+            <img
+              src={URL.createObjectURL(clickImage)}
+              style={{ maxWidth: '80%', maxHeight: '80%', justifyContent: 'center' }}
+            />
           </Flex>
         )}
       </Flex>
