@@ -5,6 +5,7 @@ export interface SimpleFile {
 
 export interface UploadFileRequest {
   files: File[];
+  header: string;
 }
 
 export interface RemoveFileRequest {

@@ -1,50 +1,46 @@
-import { FC, useState } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { FC, useState, useRef, MouseEventHandler, ChangeEventHandler } from 'react';
+import { Flex, Button } from '@chakra-ui/react';
 
 const ImageUploader: FC = () => {
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const images = [
-    'https://cdn.mindgil.com/news/photo/202005/69269_3261_1638.jpg',
-    'https://gongbuhae.com/storage/app/public/editor/3a/e5/20211123180357accf102caaa970ce65d217b9ae9a8e9a57caa67c.jpg',
-    'https://m.damggo.com/web/product/big/202208/c2f36c7d36943b4cad5ecf2c857efaac.jpg',
-  ];
-  const handleImageClick = (focusImage: string) => {
-    setIsZoomed(true);
-    setSelectedImage(focusImage);
+  const inputRef = useRef<HTMLInputElement>(null);
+  //const [image, setImage] = useState<File>();
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
+  const handleUploadButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
+    inputRef.current?.click();
   };
 
-  const handleCloseZoom = () => {
-    setIsZoomed(false);
-    setSelectedImage(null);
+  const handleImageChange: ChangeEventHandler<HTMLInputElement> = event => {
+    if (!event.target.files) return;
+
+    const files = event.target.files;
+    console.log(files);
+    setSelectedImages([...selectedImages, ...files]);
   };
   // src={URL.createObjectURL(file)}
 
   return (
-    <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%">
-      <div style={{ display: 'flex' }}>
-        {images.map((focusImage, index) => (
+    <Flex flexDirection="row" flexWrap="wrap">
+      <Flex flexDirection="row" width="100%" justifyContent="center" flexWrap="wrap">
+        {selectedImages.map((files, index) => (
           <img
             key={index}
-            src={focusImage}
-            onClick={() => handleImageClick(focusImage)} //새로운 함수 생성하여 전달
-            style={{ cursor: 'pointer', maxWidth: '100px', margin: '10px' }}
+            src={URL.createObjectURL(files)}
+            alt={`Selected ${index}`}
+            style={{ maxWidth: '100px', maxHeight: 'auto', margin: '10px', justifyContent: 'center' }}
           />
         ))}
-      </div>
-      {isZoomed && selectedImage && (
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onClick={handleCloseZoom} //직접 호출
-        >
-          <img src={selectedImage} style={{ maxWidth: '80%', maxHeight: '80%' }} />
-        </div>
-      )}
+      </Flex>
+      <Flex gap="10px" justifyContent="center" alignContent="center">
+        <Button color="white" variant="solid" colorScheme="brand" onClick={handleUploadButtonClick}>
+          파일 업로드하기
+          <input type="file" ref={inputRef} onChange={handleImageChange} hidden multiple accept="image/*" />
+        </Button>
+        <Button color="white" variant="solid" colorScheme="red" onClick={handleUploadButtonClick}>
+          파일 삭제하기
+          <input type="file" ref={inputRef} onChange={handleImageChange} hidden multiple accept="image/*" />
+        </Button>
+      </Flex>
     </Flex>
   );
 };
