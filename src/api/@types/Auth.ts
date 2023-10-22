@@ -41,6 +41,8 @@ export interface SellerSignUpRequest {
   phone: string;
   verification: string;
   vendor: AuthVendor;
+  latitude: number;
+  longitude: number;
 }
 
 export interface SignInRequest {

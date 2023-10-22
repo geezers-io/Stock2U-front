@@ -12,7 +12,7 @@ import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 import { useBoundedStore } from '@/stores';
 import { generateValidators } from '@/utils/formik';
 
-type FormValues = Omit<SellerSignUpRequest, 'verification' | 'vendor' | 'latitude' | 'longtitude'>;
+type FormValues = Omit<SellerSignUpRequest, 'verification' | 'vendor' | 'latitude' | 'longitude'>;
 
 const { validators, getFormikStates } = generateValidators<FormValues>({
   username: { required: true, range: { min: 3, max: 15 }, regex: 'nickname' },
@@ -45,12 +45,29 @@ const SellerSignUpPage: FC = () => {
     onClose: closeAddressFinderModal,
   } = useDisclosure();
 
+  const getCoordinates = (loadAddress: string): Promise<{ latitude: number; longitude: number }> => {
+    return new Promise((resolve, reject) => {
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(loadAddress, (result, status) => {
+        if (status !== kakao.maps.services.Status.OK) {
+          reject('입력하신 도로명 주소로 위도 및 경도를 찾을 수 없습니다.');
+        }
+
+        const latitude = Number(result[0].y);
+        const longitude = Number(result[0].x);
+        resolve({ latitude, longitude });
+      });
+    });
+  };
+
   const signUp = async (values: FormValues) => {
     if (!verification || !vendor) {
       return;
     }
 
     try {
+      const { latitude, longitude } = await getCoordinates(values.location);
+
       const user = await AuthService.signUpSeller({
         ...values,
         phone: values.phone.replace(/-/g, ''),
@@ -58,6 +75,8 @@ const SellerSignUpPage: FC = () => {
         account: values.account.replace(/-/g, ''),
         verification,
         vendor: vendor as AuthVendor,
+        latitude,
+        longitude,
       });
       setUser(user);
       redirect();
