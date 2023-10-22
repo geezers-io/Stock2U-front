@@ -39,12 +39,4 @@ export const AuthService: AuthClient = {
       params: request,
     });
   },
-  file: async request => {
-    return await axiosInstance.get(`${ROUTE}/file`, {
-      params: {
-        data: request,
-        header: request,
-      },
-    });
-  },
 };

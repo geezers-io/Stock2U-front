@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -12,12 +12,29 @@ import {
   EditablePreview,
   EditableTextarea,
 } from '@chakra-ui/react';
-import ImageSelector from '@/components/domains/products/ImageSelector';
+
+import { MockProduct } from '@/api/__mock__/mockProduct';
+import ImageUploader from '@/components/domains/products/ImageUploader';
 
 const ProductRegistrationPage: FC = () => {
+  const [MockData, setMockData] = useState<MockProduct>();
+
+  const FetchSellerServer = async () => {
+    try {
+      setMockData(MockData);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    FetchSellerServer();
+  });
+
   return (
     <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
-      <ImageSelector />
+      <Flex justifyContent="center">
+        <ImageUploader />
+      </Flex>
+
       {/*게시 정책 설정*/}
       <Heading as="h4" size="md">
         게시 정책 설정

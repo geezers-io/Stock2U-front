@@ -95,11 +95,6 @@ export interface FindAddressResponse {
   results: Address[];
 }
 
-export interface file {
-  id: number;
-  uploadPath: string;
-}
-
 export interface AuthClient {
   signUpPurchaser(request: PurchaserSignUpRequest): Promise<User>;
   signIn(request: SignInRequest): Promise<SignInResponse>;
@@ -110,5 +105,4 @@ export interface AuthClient {
   sendCode(request: SendCodeRequest): Promise<void>;
   getBankList(): Promise<Bank[]>;
   findAddress(request: FindAddressRequest): Promise<FindAddressResponse>;
-  file(request: FindAddressRequest): Promise<FindAddressResponse>;
 }
