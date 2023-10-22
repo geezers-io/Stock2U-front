@@ -12,7 +12,9 @@ import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 import { useBoundedStore } from '@/stores';
 import { generateValidators } from '@/utils/formik';
 
-const { validators, getFormikStates } = generateValidators<SellerSignUpRequest>({
+type FormValues = Omit<SellerSignUpRequest, 'verification' | 'vendor' | 'latitude' | 'longtitude'>;
+
+const { validators, getFormikStates } = generateValidators<FormValues>({
   username: { required: true, range: { min: 3, max: 15 }, regex: 'nickname' },
   email: { required: true, regex: 'email' },
   phone: { required: true, regex: 'phone' },
@@ -22,9 +24,6 @@ const { validators, getFormikStates } = generateValidators<SellerSignUpRequest>(
   location: { required: true },
   bankName: { required: true },
   account: { required: true, regex: 'account' },
-
-  verification: { required: true },
-  vendor: { required: true },
 });
 
 // TODO: Step 방식으로 변경하기
@@ -46,13 +45,19 @@ const SellerSignUpPage: FC = () => {
     onClose: closeAddressFinderModal,
   } = useDisclosure();
 
-  const signUp = async (values: SellerSignUpRequest) => {
+  const signUp = async (values: FormValues) => {
+    if (!verification || !vendor) {
+      return;
+    }
+
     try {
       const user = await AuthService.signUpSeller({
         ...values,
         phone: values.phone.replace(/-/g, ''),
         licenseNumber: values.licenseNumber.replace(/-/g, ''),
         account: values.account.replace(/-/g, ''),
+        verification,
+        vendor: vendor as AuthVendor,
       });
       setUser(user);
       redirect();
@@ -89,7 +94,7 @@ const SellerSignUpPage: FC = () => {
     return null;
   }
   return (
-    <Formik<SellerSignUpRequest>
+    <Formik<FormValues>
       initialValues={{
         username: '',
         email: email ?? '',
@@ -100,8 +105,6 @@ const SellerSignUpPage: FC = () => {
         location: '',
         bankName: '',
         account: '',
-        verification, // From searchParams, not control in form.
-        vendor: vendor as AuthVendor, // From searchParams, not control in form.
       }}
       onSubmit={openVerificationDrawer}
     >
