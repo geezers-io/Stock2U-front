@@ -3,7 +3,6 @@ import { Flex, Button } from '@chakra-ui/react';
 
 const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  //const [image, setImage] = useState<File>();
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [isZoomed, setIsZoomed] = useState(false);
   const [clickImage, setClickImage] = useState<string | null>(null);
@@ -17,7 +16,7 @@ const ImageUploader: FC = () => {
 
     const files = event.target.files;
     const newImages = Array.from(files).slice(0, 5);
-    console.log(files);
+
     if (selectedImages.length + files.length <= 5) {
       setSelectedImages([...selectedImages, ...files]);
     } else {
@@ -25,6 +24,7 @@ const ImageUploader: FC = () => {
       setSelectedImages([...selectedImages, ...newImages]);
     }
   };
+
   const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage: string) => {
     setIsZoomed(true);
     setClickImage(focusImage);
@@ -35,7 +35,7 @@ const ImageUploader: FC = () => {
     setClickImage(null);
   };
 
-  const handleImageDelete = index => {
+  const handleImageDelete: MouseEventHandler<HTMLButtonElement> = index => {
     const updatedImages = [...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
     setSelectedImages(updatedImages);
   };
@@ -72,7 +72,7 @@ const ImageUploader: FC = () => {
           </Flex>
         )}
       </Flex>
-      <Flex justifyContent="center" alignContent="center" flexDirection="row" gap="10px">
+      <Flex display="fix" justifyContent="center" alignContent="center" flexDirection="row" gap="10px">
         <Button color="white" variant="solid" colorScheme="brand" onClick={handleUploadButtonClick}>
           파일 업로드하기
           <input type="file" ref={inputRef} onChange={handleImageChange} hidden multiple accept="image/*" />

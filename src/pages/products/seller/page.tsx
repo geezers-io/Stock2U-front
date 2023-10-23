@@ -31,7 +31,7 @@ const ProductRegistrationPage: FC = () => {
 
   return (
     <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
-      <Flex justifyContent="center">
+      <Flex>
         <ImageUploader />
       </Flex>
 
