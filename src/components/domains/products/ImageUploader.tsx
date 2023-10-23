@@ -22,7 +22,8 @@ const ImageUploader: FC = () => {
       console.log(selectedImages);
     } else {
       alert(`최대 이미지 파일 5개까지만 선택할 수 있습니다. 선택한 파일 중 5개만 지정하여 업로드하겠습니다.`);
-      setSelectedImages([...selectedImages, ...newImages]);
+      const limitImage = Array.from(files).slice(0, 5 - selectedImages.length);
+      setSelectedImages([...selectedImages, ...limitImage]);
     }
   };
 
@@ -53,7 +54,7 @@ const ImageUploader: FC = () => {
         {selectedImages.map((image, index) => (
           <Flex flexDirection="column" h="100px" margin="5px">
             <img
-              key={image.id}
+              key={index.toString()}
               src={URL.createObjectURL(image)}
               alt={`Selected ${index}`}
               style={{ maxWidth: '100px', height: '50px', margin: '10px', justifyContent: 'center' }}
