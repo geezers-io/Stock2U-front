@@ -16,8 +16,14 @@ const ImageUploader: FC = () => {
     if (!event.target.files) return;
 
     const files = event.target.files;
+    const newImages = Array.from(files).slice(0, 5);
     console.log(files);
-    setSelectedImages([...selectedImages, ...files]);
+    if (selectedImages.length + files.length <= 5) {
+      setSelectedImages([...selectedImages, ...files]);
+    } else {
+      alert(`최대 이미지 파일 5개까지만 선택할 수 있습니다. 처음 선택하신 파일 5개만 업로드하겠습니다.`);
+      setSelectedImages([...selectedImages, ...newImages]);
+    }
   };
   const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage: string) => {
     setIsZoomed(true);
@@ -28,19 +34,28 @@ const ImageUploader: FC = () => {
     setIsZoomed(false);
     setClickImage(null);
   };
-  // src={URL.createObjectURL(file)}
+
+  const handleImageDelete = index => {
+    const updatedImages = [...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
+    setSelectedImages(updatedImages);
+  };
 
   return (
     <Flex flexDirection="row" flexWrap="wrap">
       <Flex flexDirection="row" width="100%" justifyContent="center" flexWrap="wrap">
         {selectedImages.map((image, index) => (
-          <img
-            key={index}
-            src={URL.createObjectURL(image)}
-            alt={`Selected ${index}`}
-            style={{ maxWidth: '100px', maxHeight: 'auto', margin: '10px', justifyContent: 'center' }}
-            onClick={() => handleImageClick(image)}
-          />
+          <Flex flexDirection="column" h="100px" margin="5px">
+            <img
+              key={index}
+              src={URL.createObjectURL(image)}
+              alt={`Selected ${index}`}
+              style={{ maxWidth: '100px', height: '50px', margin: '10px', justifyContent: 'center' }}
+              onClick={() => handleImageClick(image)}
+            />
+            <Button color="white" variant="solid" colorScheme="red" onClick={() => handleImageDelete(index)}>
+              삭제
+            </Button>
+          </Flex>
         ))}
         {isZoomed && clickImage && (
           <Flex
@@ -57,11 +72,12 @@ const ImageUploader: FC = () => {
           </Flex>
         )}
       </Flex>
-      <Flex gap="10px" justifyContent="center" alignContent="center">
+      <Flex justifyContent="center" alignContent="center" flexDirection="row" gap="10px">
         <Button color="white" variant="solid" colorScheme="brand" onClick={handleUploadButtonClick}>
           파일 업로드하기
           <input type="file" ref={inputRef} onChange={handleImageChange} hidden multiple accept="image/*" />
         </Button>
+        <p>첨부할 이미지 5장 이하로 골라주세요!</p>
       </Flex>
     </Flex>
   );
