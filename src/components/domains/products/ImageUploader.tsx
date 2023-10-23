@@ -25,32 +25,38 @@ const ImageUploader: FC = () => {
     }
   };
 
-  const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage: string) => {
+  const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage: string, index: number) => {
     setIsZoomed(true);
     setClickImage(focusImage);
+
+    const selectedImage = selectedImages[index];
+    const updatedImages = [selectedImage, ...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
+    alert('대표사진으로 지정되었습니다');
+    setSelectedImages(updatedImages);
   };
 
-  const handleCloseZoom: MouseEventHandler<HTMLDivElement> = () => {
+  const handleCloseZoom: MouseEventHandler<HTMLButtonElement> = () => {
     setIsZoomed(false);
     setClickImage(null);
   };
 
-  const handleImageDelete: MouseEventHandler<HTMLButtonElement> = index => {
+  const handleImageDelete: MouseEventHandler<HTMLButtonElement> = (index: number) => {
     const updatedImages = [...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
     setSelectedImages(updatedImages);
+    setIsZoomed(false);
   };
 
   return (
     <Flex flexDirection="row" flexWrap="wrap">
       <Flex flexDirection="row" width="100%" justifyContent="center" flexWrap="wrap">
-        {selectedImages.map((image, index) => (
+        {selectedImages.map((image: string, index: number) => (
           <Flex flexDirection="column" h="100px" margin="5px">
             <img
               key={index}
               src={URL.createObjectURL(image)}
               alt={`Selected ${index}`}
               style={{ maxWidth: '100px', height: '50px', margin: '10px', justifyContent: 'center' }}
-              onClick={() => handleImageClick(image)}
+              onClick={() => handleImageClick(image, index)}
             />
             <Button color="white" variant="solid" colorScheme="red" onClick={() => handleImageDelete(index)}>
               삭제
@@ -77,7 +83,7 @@ const ImageUploader: FC = () => {
           파일 업로드하기
           <input type="file" ref={inputRef} onChange={handleImageChange} hidden multiple accept="image/*" />
         </Button>
-        <p>첨부할 이미지 5장 이하로 골라주세요!</p>
+        <p>첨부할 이미지를 5장 이하로 골라주세요! 또, 첨부된 사진을 누르면 대표사진으로 지정됩니다!</p>
       </Flex>
     </Flex>
   );
