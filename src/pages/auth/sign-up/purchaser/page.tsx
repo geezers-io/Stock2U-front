@@ -11,13 +11,12 @@ import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 import { useBoundedStore } from '@/stores';
 import { generateValidators } from '@/utils/formik';
 
-const { validators, getFormikStates } = generateValidators<PurchaserSignUpRequest>({
+type FormValues = Omit<PurchaserSignUpRequest, 'verification' | 'vendor'>;
+
+const { validators, getFormikStates } = generateValidators<FormValues>({
   username: { required: true, range: { min: 3, max: 15 }, regex: 'nickname' },
   email: { required: true, regex: 'email' },
   phone: { required: true, regex: 'phone' },
-
-  verification: { required: true },
-  vendor: { required: true },
 });
 
 // TODO: 이메일 컴포넌트 별도로 만들어서 적용하기
@@ -32,11 +31,17 @@ const PurchaserSignUpPage: FC = () => {
     onClose: closeVerificationDrawer,
   } = useDisclosure();
 
-  const signUp = async (values: PurchaserSignUpRequest) => {
+  const signUp = async (values: FormValues) => {
+    if (!verification || !vendor) {
+      return;
+    }
+
     try {
       const user = await AuthService.signUpPurchaser({
         ...values,
         phone: values.phone.replace(/-/g, ''),
+        verification,
+        vendor: vendor as AuthVendor,
       });
       setUser(user);
       redirect();
@@ -55,13 +60,11 @@ const PurchaserSignUpPage: FC = () => {
     return null;
   }
   return (
-    <Formik<PurchaserSignUpRequest>
+    <Formik<FormValues>
       initialValues={{
         username: '',
         email: email ?? '',
         phone: '',
-        verification, // From searchParams, not control in form.
-        vendor: vendor as AuthVendor, // From searchParams, not control in form.
       }}
       onSubmit={openVerificationDrawer}
     >
