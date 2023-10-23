@@ -1,9 +1,9 @@
 import { FC, useState, useRef, MouseEventHandler, ChangeEventHandler } from 'react';
-import { Flex, Button } from '@chakra-ui/react';
+import { Flex, Button, Heading, Highlight } from '@chakra-ui/react';
 
 const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isZoomed, setIsZoomed] = useState(false);
   const [clickImage, setClickImage] = useState<string | null>(null);
 
@@ -12,20 +12,21 @@ const ImageUploader: FC = () => {
   };
 
   const handleImageChange: ChangeEventHandler<HTMLInputElement> = event => {
-    if (!event.target.files) return;
-
-    const files = event.target.files;
+    const files = [...(event.target.files ?? [])];
+    if (!files.length) return;
+    console.log(files);
     const newImages = Array.from(files).slice(0, 5);
 
     if (selectedImages.length + files.length <= 5) {
-      setSelectedImages([...selectedImages, ...files]);
+      setSelectedImages([...selectedImages, ...newImages]);
+      console.log(selectedImages);
     } else {
-      alert(`최대 이미지 파일 5개까지만 선택할 수 있습니다. 처음 선택하신 파일 5개만 업로드하겠습니다.`);
+      alert(`최대 이미지 파일 5개까지만 선택할 수 있습니다. 선택한 파일 중 5개만 지정하여 업로드하겠습니다.`);
       setSelectedImages([...selectedImages, ...newImages]);
     }
   };
 
-  const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage: string, index: number) => {
+  const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage, index) => {
     setIsZoomed(true);
     setClickImage(focusImage);
 
@@ -35,7 +36,7 @@ const ImageUploader: FC = () => {
     setSelectedImages(updatedImages);
   };
 
-  const handleCloseZoom: MouseEventHandler<HTMLButtonElement> = () => {
+  const handleCloseZoom: MouseEventHandler<HTMLImageElement> = () => {
     setIsZoomed(false);
     setClickImage(null);
   };
@@ -49,10 +50,10 @@ const ImageUploader: FC = () => {
   return (
     <Flex flexDirection="row" flexWrap="wrap">
       <Flex flexDirection="row" width="100%" justifyContent="center" flexWrap="wrap">
-        {selectedImages.map((image: string, index: number) => (
+        {selectedImages.map((image, index) => (
           <Flex flexDirection="column" h="100px" margin="5px">
             <img
-              key={index}
+              key={image.id}
               src={URL.createObjectURL(image)}
               alt={`Selected ${index}`}
               style={{ maxWidth: '100px', height: '50px', margin: '10px', justifyContent: 'center' }}
@@ -63,17 +64,18 @@ const ImageUploader: FC = () => {
             </Button>
           </Flex>
         ))}
+
         {isZoomed && clickImage && (
-          <Flex
-            width="100%"
-            height="20vh"
-            justifyContent="center"
-            alignContent="center"
-            onClick={handleCloseZoom} //직접 호출
-          >
+          <Flex width="100%" height="20vh" justifyContent="center" alignContent="center" margin="10px">
+            <Heading lineHeight="tall" size="md">
+              <Highlight query="대표사진" styles={{ px: '2', py: '1', rounded: 'full', bg: 'brand.100' }}>
+                대표사진
+              </Highlight>
+            </Heading>
             <img
               src={URL.createObjectURL(clickImage)}
               style={{ maxWidth: '80%', maxHeight: '80%', justifyContent: 'center' }}
+              onClick={handleCloseZoom} //직접 호출
             />
           </Flex>
         )}
@@ -83,7 +85,7 @@ const ImageUploader: FC = () => {
           파일 업로드하기
           <input type="file" ref={inputRef} onChange={handleImageChange} hidden multiple accept="image/*" />
         </Button>
-        <p>첨부할 이미지를 5장 이하로 골라주세요! 또, 첨부된 사진을 누르면 대표사진으로 지정됩니다!</p>
+        <p>첨부할 이미지를 5장 이하로 골라주세요! 또, 첨부된 이미지 중 하나만 선택해 대표사진으로 지정해주세요!</p>
       </Flex>
     </Flex>
   );
