@@ -67,6 +67,7 @@ const ImageUploader: FC = () => {
         <Grid flex="3" gridTemplateColumns="repeat(3, 1fr)" gridTemplateRows="1fr 1fr" gap={2}>
           {Array.from({ length: MAX }).map((_, index) => {
             const image: File | undefined = selectedImages[index];
+            const clicked = !!image && !!clickedImage && image.name === clickedImage.name;
 
             return (
               <Flex
@@ -74,6 +75,9 @@ const ImageUploader: FC = () => {
                 justifyContent="center"
                 bg={image ? undefined : 'gray.100'}
                 borderRadius="4px"
+                outline={clicked ? '4px solid' : undefined}
+                outlineColor="brand.500"
+                outlineOffset="2px"
               >
                 {image && (
                   <>
