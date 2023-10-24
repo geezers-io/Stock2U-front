@@ -78,12 +78,14 @@ const ImageUploader: FC = () => {
                 {image && (
                   <>
                     <Image
+                      role="button"
                       key={image.name}
                       src={URL.createObjectURL(image)}
                       alt={`Selected ${image.name}`}
                       onClick={() => handleImageClick(image)}
                       w="100%"
                       h="auto"
+                      aspectRatio="1/1"
                       objectFit="contain"
                     />
                     <Button size="sm" mt={1} colorScheme="red" onClick={() => handleImageDelete(image.name)}>
