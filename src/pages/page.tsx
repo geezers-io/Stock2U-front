@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { Box, Button, Flex, Heading, Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { MockProduct, mockProducts } from '@/api/__mock__/mockProduct';
 import ProductCards from '@/components/domains/product/ProductCards';
@@ -16,13 +16,13 @@ const IndexPage: FC = () => {
   const fetchRecommendedProducts = async () => {
     try {
       await delay();
-      setRecommendedProducts(mockProducts.slice(0, 8));
+      setRecommendedProducts(mockProducts.slice(0, 4));
     } catch (e) {}
   };
   const fetchNearExpirationProducts = async () => {
     try {
       await delay();
-      setNearExpirationProducts(mockProducts.slice(0, 12));
+      setNearExpirationProducts(mockProducts.slice(0, 8));
     } catch (e) {}
   };
   const fetchNearProducts = async () => {
@@ -44,9 +44,20 @@ const IndexPage: FC = () => {
         Banner
       </Flex>
 
-      <Heading size="md" mt="60px" mb="20px">
-        AI가 추천하는 재고 매물!
+      <Heading size="lg" mt="60px" mb="20px">
+        <Text
+          as="span"
+          style={{
+            background: `linear-gradient(145deg, ${theme.colors.brand[500]}, ${theme.colors.accent[200]})`,
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
+          AI
+        </Text>
+        가 추천하는 재고 매물!
       </Heading>
+
       <ProductCards
         uniqueKey="recommended"
         products={recommendedProducts}
@@ -54,7 +65,7 @@ const IndexPage: FC = () => {
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
       />
 
-      <Heading size="md" mt="60px" mb="20px">
+      <Heading size="lg" mt="60px" mb="20px">
         마감 임박 <Fire style={{ display: 'inline', verticalAlign: 'text-top', color: theme.colors['red']['500'] }} />
       </Heading>
       <ProductCards
@@ -86,7 +97,7 @@ const IndexPage: FC = () => {
         </>
       )}
 
-      <Heading size="md" display="flex" alignItems="center" gap={1} mt="60px" mb="20px">
+      <Heading size="lg" display="flex" alignItems="center" gap={1} mt="60px" mb="20px">
         근처에 있어요
       </Heading>
       <ProductCards
