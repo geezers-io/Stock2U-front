@@ -4,8 +4,7 @@ import { Flex, Button, Heading, Highlight } from '@chakra-ui/react';
 const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [clickImage, setClickImage] = useState<File | null>(null);
+  const [clickedImage, setClickedImage] = useState<File | null>(null);
 
   const handleUploadButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
     inputRef.current?.click();
@@ -27,46 +26,39 @@ const ImageUploader: FC = () => {
     }
   };
 
-  const handleImageClick = (focusImage: File, index: number) => {
-    setIsZoomed(true);
-    setClickImage(focusImage);
-
-    const selectedImage = selectedImages[index];
-    const updatedImages = [selectedImage, ...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
+  const handleImageClick = (focusImage: File) => {
+    setClickedImage(focusImage);
     alert('대표사진으로 지정되었습니다');
-    setSelectedImages(updatedImages);
   };
 
-  const handleCloseZoom: MouseEventHandler<HTMLImageElement> = () => {
-    setIsZoomed(false);
-    setClickImage(null);
-  };
-
-  const handleImageDelete = (index: number) => {
-    const updatedImages = [...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
+  const handleImageDelete = (targetImageName: string) => {
+    const updatedImages = selectedImages.filter(image => image.name !== targetImageName);
     setSelectedImages(updatedImages);
-    setIsZoomed(false);
+
+    if (clickedImage?.name === targetImageName) {
+      setClickedImage(null);
+    }
   };
 
   return (
     <Flex flexDirection="row" flexWrap="wrap">
       <Flex flexDirection="row" width="100%" justifyContent="center" flexWrap="wrap">
-        {selectedImages.map((image, index) => (
+        {selectedImages.map(image => (
           <Flex flexDirection="column" h="100px" margin="5px">
             <img
-              key={index.toString()}
+              key={image.name}
               src={URL.createObjectURL(image)}
-              alt={`Selected ${index}`}
+              alt={`Selected ${image.name}`}
               style={{ maxWidth: '100px', height: '50px', margin: '10px', justifyContent: 'center' }}
-              onClick={() => handleImageClick(image, index)}
+              onClick={() => handleImageClick(image)}
             />
-            <Button color="white" variant="solid" colorScheme="red" onClick={() => handleImageDelete(index)}>
+            <Button color="white" variant="solid" colorScheme="red" onClick={() => handleImageDelete(image.name)}>
               삭제
             </Button>
           </Flex>
         ))}
 
-        {isZoomed && clickImage && (
+        {clickedImage && (
           <Flex width="100%" height="20vh" justifyContent="center" alignContent="center" margin="10px">
             <Heading lineHeight="tall" size="md">
               <Highlight query="대표사진" styles={{ px: '2', py: '1', rounded: 'full', bg: 'brand.100' }}>
@@ -74,9 +66,8 @@ const ImageUploader: FC = () => {
               </Highlight>
             </Heading>
             <img
-              src={URL.createObjectURL(clickImage)}
+              src={URL.createObjectURL(clickedImage)}
               style={{ maxWidth: '80%', maxHeight: '80%', justifyContent: 'center' }}
-              onClick={handleCloseZoom} //직접 호출
             />
           </Flex>
         )}
