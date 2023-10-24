@@ -5,7 +5,7 @@ const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [clickImage, setClickImage] = useState<string | null>(null);
+  const [clickImage, setClickImage] = useState<File | null>(null);
 
   const handleUploadButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
     inputRef.current?.click();
@@ -27,7 +27,7 @@ const ImageUploader: FC = () => {
     }
   };
 
-  const handleImageClick: MouseEventHandler<HTMLImageElement> = (focusImage, index) => {
+  const handleImageClick = (focusImage: File, index: number) => {
     setIsZoomed(true);
     setClickImage(focusImage);
 
@@ -42,7 +42,7 @@ const ImageUploader: FC = () => {
     setClickImage(null);
   };
 
-  const handleImageDelete: MouseEventHandler<HTMLButtonElement> = (index: number) => {
+  const handleImageDelete = (index: number) => {
     const updatedImages = [...selectedImages.slice(0, index), ...selectedImages.slice(index + 1)];
     setSelectedImages(updatedImages);
     setIsZoomed(false);
