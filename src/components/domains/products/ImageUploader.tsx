@@ -5,8 +5,8 @@ const MAX = 5;
 
 const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [clickedImage, setClickedImage] = useState<File | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [thumbImage, setThumbImage] = useState<File | null>(null);
 
   const handleUploadButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
     inputRef.current?.click();
@@ -16,37 +16,37 @@ const ImageUploader: FC = () => {
     const newImages = [...(event.target.files ?? [])];
     if (!newImages.length) return;
 
-    const prevImageLength = selectedImages.length;
+    const prevImageLength = images.length;
 
     const nextImages = (() => {
       if (prevImageLength + newImages.length <= MAX) {
-        return [...selectedImages, ...newImages];
+        return [...images, ...newImages];
       }
       alert(`최대 이미지 파일 ${MAX}개까지만 선택할 수 있습니다. 선택한 파일 중 ${MAX}개만 지정하여 업로드하겠습니다.`);
       const limitImage = Array.from(newImages).slice(0, MAX - prevImageLength);
-      return [...selectedImages, ...limitImage];
+      return [...images, ...limitImage];
     })();
 
-    setSelectedImages(nextImages);
+    setImages(nextImages);
     if (prevImageLength === 0) {
-      setClickedImage(nextImages[0]);
+      setThumbImage(nextImages[0]);
     }
   };
 
   const handleImageClick = (focusImage: File) => {
-    setClickedImage(focusImage);
+    setThumbImage(focusImage);
     // alert('대표사진으로 지정되었습니다');
   };
 
   const handleImageDelete = (targetImageName: string) => {
-    const nextImages = selectedImages.filter(image => image.name !== targetImageName);
-    setSelectedImages(nextImages);
+    const nextImages = images.filter(image => image.name !== targetImageName);
+    setImages(nextImages);
 
-    if (clickedImage?.name === targetImageName) {
+    if (thumbImage?.name === targetImageName) {
       if (nextImages.length === 0) {
-        setClickedImage(null);
+        setThumbImage(null);
       } else {
-        setClickedImage(nextImages[0]);
+        setThumbImage(nextImages[0]);
       }
     }
   };
@@ -60,23 +60,23 @@ const ImageUploader: FC = () => {
           position="relative"
           justifyContent="center"
           alignItems="center"
-          bg={clickedImage ? undefined : 'gray.100'}
+          bg={thumbImage ? undefined : 'gray.100'}
           borderRadius="4px"
         >
-          {clickedImage && (
+          {thumbImage && (
             <>
               <Badge fontSize="md" colorScheme="brand" position="absolute" left="1em" top="1em">
                 대표사진
               </Badge>
-              <Image src={URL.createObjectURL(clickedImage)} />
+              <Image src={URL.createObjectURL(thumbImage)} />
             </>
           )}
         </Flex>
 
         <Grid flex="3" gridTemplateColumns="repeat(3, 1fr)" gridTemplateRows="1fr 1fr" gap={2}>
           {Array.from({ length: MAX }).map((_, index) => {
-            const image: File | undefined = selectedImages[index];
-            const clicked = !!image && !!clickedImage && image.name === clickedImage.name;
+            const image: File | undefined = images[index];
+            const clicked = !!image && !!thumbImage && image.name === thumbImage.name;
 
             return (
               <Flex
