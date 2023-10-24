@@ -13,18 +13,23 @@ const ImageUploader: FC = () => {
   };
 
   const handleImageChange: ChangeEventHandler<HTMLInputElement> = event => {
-    const files = [...(event.target.files ?? [])];
-    if (!files.length) return;
-    console.log(files);
-    const newImages = Array.from(files).slice(0, MAX);
+    const newImages = [...(event.target.files ?? [])];
+    if (!newImages.length) return;
 
-    if (selectedImages.length + files.length <= MAX) {
-      setSelectedImages([...selectedImages, ...newImages]);
-      console.log(selectedImages);
-    } else {
+    const prevImageLength = selectedImages.length;
+
+    const nextImages = (() => {
+      if (prevImageLength + newImages.length <= MAX) {
+        return [...selectedImages, ...newImages];
+      }
       alert(`최대 이미지 파일 ${MAX}개까지만 선택할 수 있습니다. 선택한 파일 중 ${MAX}개만 지정하여 업로드하겠습니다.`);
-      const limitImage = Array.from(files).slice(0, MAX - selectedImages.length);
-      setSelectedImages([...selectedImages, ...limitImage]);
+      const limitImage = Array.from(newImages).slice(0, MAX - prevImageLength);
+      return [...selectedImages, ...limitImage];
+    })();
+
+    setSelectedImages(nextImages);
+    if (prevImageLength === 0) {
+      setClickedImage(nextImages[0]);
     }
   };
 
@@ -34,11 +39,15 @@ const ImageUploader: FC = () => {
   };
 
   const handleImageDelete = (targetImageName: string) => {
-    const updatedImages = selectedImages.filter(image => image.name !== targetImageName);
-    setSelectedImages(updatedImages);
+    const nextImages = selectedImages.filter(image => image.name !== targetImageName);
+    setSelectedImages(nextImages);
 
     if (clickedImage?.name === targetImageName) {
-      setClickedImage(null);
+      if (nextImages.length === 0) {
+        setClickedImage(null);
+      } else {
+        setClickedImage(nextImages[0]);
+      }
     }
   };
 
