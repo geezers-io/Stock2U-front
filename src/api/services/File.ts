@@ -5,13 +5,15 @@ const ROUTE = 'file';
 
 export const FileService: FileClient = {
   uploadFile: async request => {
-    return await axiosInstance.post(
-      `${ROUTE}`,
-      {
-        FormData: request,
-      },
-      { headers: { 'Content-Type': 'multipart/form-data' } },
-    ); // FIXME: formdata 로 보내야 함
+    const formData = new FormData();
+
+    for (const file of request.files) {
+      formData.append('images', file);
+    }
+
+    return await axiosInstance.post(`${ROUTE}/images`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   },
   removeFile: async request => {
     return await axiosInstance.delete(`${ROUTE}`, {
