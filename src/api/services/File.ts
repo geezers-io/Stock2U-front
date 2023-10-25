@@ -1,7 +1,7 @@
 import { FileClient } from '@/api/@types/File';
 import { axiosInstance } from '@/api/client';
 
-const ROUTE = 'file';
+const ROUTE = 'images';
 
 export const FileService: FileClient = {
   uploadFile: async request => {
@@ -11,7 +11,7 @@ export const FileService: FileClient = {
       formData.append('images', file);
     }
 
-    return await axiosInstance.post(`${ROUTE}/images`, formData, {
+    return await axiosInstance.post(`${ROUTE}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },

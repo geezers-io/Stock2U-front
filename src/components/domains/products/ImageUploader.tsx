@@ -31,8 +31,8 @@ const ImageUploader: FC = () => {
     if (willAppendImages.length === 0) return;
 
     try {
-      const response = await FileService.uploadFile({ files: willAppendImages });
-      const nextImages = [...images, ...response];
+      const { files } = await FileService.uploadFile({ files: willAppendImages });
+      const nextImages = [...images, ...files];
       setImages(nextImages);
       if (prevImageLength === 0) {
         setThumbImage(nextImages[0]);
