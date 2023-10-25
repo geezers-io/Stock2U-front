@@ -56,7 +56,7 @@ const IndexPage: FC = () => {
 
   return (
     <Box pt="40px">
-      <Box maxHeight="280px">
+      <Box>
         <ImageSlider images={bannerImages} />
       </Box>
 
