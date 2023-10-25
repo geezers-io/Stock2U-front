@@ -62,7 +62,8 @@
     "lint-staged": "^14.0.1",
     "prettier": "3.0.3",
     "typescript": "^5.2.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-mkcert": "^1.16.0"
   },
   "engines": {
     "node": ">=18.18.0",
