@@ -1,9 +1,8 @@
 import { FC, useEffect, useState } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Image } from '@chakra-ui/react';
 import { mockProductDetail, MockProductDetail } from '@/api/__mock__/product';
 
 const ImageSelector: FC = () => {
-  const [isZoomed, setIsZoomed] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [imageData, setImageData] = useState<MockProductDetail>(mockProductDetail);
 
@@ -24,43 +23,31 @@ const ImageSelector: FC = () => {
   }
 
   const handleImageClick = (focusImage: string) => {
-    setIsZoomed(true);
     setSelectedImage(focusImage);
   };
 
   const handleCloseZoom = () => {
-    setIsZoomed(false);
     setSelectedImage(null);
   };
 
   return (
     <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%" justify-content="center">
-      <div style={{ display: 'flex' }}>
+      <Flex>
         {imageData.subImageUrls.map((focusImage, index) => (
-          <img
+          <Image
             key={index}
             src={focusImage}
             onClick={() => handleImageClick(focusImage)} //새로운 함수 생성하여 전달
-            style={{ cursor: 'pointer', maxWidth: '100px', margin: '10px' }}
+            cursor="pointer"
+            maxWidth="100px"
+            margin="10px"
+            aspectRatio="1/1"
+            objectFit="contain"
           />
         ))}
-      </div>
+      </Flex>
 
-      {isZoomed && selectedImage && (
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onClick={handleCloseZoom} //직접 호출
-        >
-          <img src={selectedImage} style={{ maxWidth: '80%', maxHeight: '80%' }} />
-        </div>
-      )}
+      {selectedImage && <Image role="button" src={selectedImage} w="100%" h="auto" onClick={handleCloseZoom} />}
     </Flex>
   );
 };

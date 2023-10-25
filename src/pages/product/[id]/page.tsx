@@ -65,11 +65,11 @@ const ProductDetailPage: FC = () => {
             </Text>
           </Text>
         </Box>
-        <Box>
+        <Flex align-items="center">
           <Button colorScheme="brand" float="right">
             판매자 구독하기
           </Button>
-        </Box>
+        </Flex>
       </Flex>
 
       {/*reservation*/}
