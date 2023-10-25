@@ -51,7 +51,7 @@ const ServiceLayout: FC = () => {
         <Outlet />
       </main>
 
-      <PageAside>layout:Service pageAside</PageAside>
+      <PageAside />
     </>
   );
 };
