@@ -7,6 +7,7 @@ export function useCustomToast() {
     position: 'top',
     duration: 4000,
     isClosable: true,
+    containerStyle: { minWidth: 'unset' },
   });
 
   return useMemo(
@@ -35,12 +36,13 @@ export function useCustomToast() {
           ...options,
         });
       },
-      error: (e: unknown) => {
-        toast({
+      error: (e: unknown, options?: Omit<UseToastOptions, 'status' | 'colorScheme' | 'title' | 'description'>) => {
+        return toast({
           status: 'error',
           colorScheme: 'error',
           title: 'Error',
           description: getErrorMessage(e),
+          ...options,
         });
       },
     }),
