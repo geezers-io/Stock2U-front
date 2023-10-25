@@ -55,10 +55,10 @@ const IndexPage: FC = () => {
   }, []);
 
   return (
-    <Box pt="80px">
-      <Flex justifyContent="center" alignItems="center" bgColor="gray.100" maxHeight="280px">
+    <Box pt="40px">
+      <Box maxHeight="280px">
         <ImageSlider images={bannerImages} />
-      </Flex>
+      </Box>
 
       <Heading size="lg" mt="60px" mb="20px" pt="20px">
         <Text

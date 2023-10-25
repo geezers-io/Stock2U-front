@@ -1,5 +1,4 @@
 import { useState, useCallback, FC, useEffect } from 'react';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { Box, Button, Flex, Image } from '@chakra-ui/react';
 
 interface Props {
@@ -16,6 +15,10 @@ const ImageCarousel: FC<Props> = ({ images }) => {
 
   const prevImage = () => {
     setCurrentImageIndex(prev => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleClickBullet = (index: number) => {
+    setCurrentImageIndex(index);
   };
 
   const handleTouch = (e: React.TouchEvent) => {
@@ -37,7 +40,7 @@ const ImageCarousel: FC<Props> = ({ images }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       nextImage();
-    }, 5000);
+    }, 2000);
 
     return () => {
       clearInterval(intervalId);
@@ -46,6 +49,8 @@ const ImageCarousel: FC<Props> = ({ images }) => {
 
   return (
     <Flex
+      flexDirection="column"
+      gap={2}
       position="relative"
       width="100%"
       overflow="hidden"
@@ -63,28 +68,22 @@ const ImageCarousel: FC<Props> = ({ images }) => {
           <Image key={index} src={image} alt={`Slider Image ${index}`} width="100%" height="auto" />
         ))}
       </Box>
-
-      <Button
-        onClick={prevImage}
-        position="absolute"
-        top="45%"
-        transform="translateY(0)"
-        left="10px"
-        display={{ base: 'none', md: 'block' }}
-      >
-        <BsChevronLeft size={24} />
-      </Button>
-
-      <Button
-        onClick={nextImage}
-        position="absolute"
-        top="45%"
-        transform="translateY(0)"
-        right="10px"
-        display={{ base: 'none', md: 'block' }}
-      >
-        <BsChevronRight size={24} />
-      </Button>
+      <Flex display={{ base: 'none', md: 'flex' }} justifyContent="center" gap={1}>
+        {Array.from({ length: images.length }).map((_, index) => {
+          const isCurrImage = index === currentImageIndex;
+          return (
+            <Button
+              variant="unstyled"
+              onClick={() => handleClickBullet(index)}
+              w={isCurrImage ? '1.33rem' : '0.66rem'}
+              h="0.66rem"
+              minW="unset"
+              borderRadius={isCurrImage ? '2rem' : '50%'}
+              backgroundColor={isCurrImage ? 'gray.400' : 'gray.200'}
+            />
+          );
+        })}
+      </Flex>
     </Flex>
   );
 };
