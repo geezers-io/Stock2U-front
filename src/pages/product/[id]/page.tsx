@@ -55,11 +55,11 @@ const ProductDetailPage: FC = () => {
       <Flex>
         <Avatar size="xl" src="https://bit.ly/sage-adebayo" />
         <Box ml="3" w="100%">
+          <Badge fontSize="xl" colorScheme="green">
+            판매자
+          </Badge>
           <Text fontSize="xl" fontWeight="bold">
             {mockProductDetail.seller.nickname} 님
-            <Badge fontSize="xl" colorScheme="green">
-              판매자
-            </Badge>
             <Text fontSize="xl" color="gray">
               판매 재고 {mockProductDetail.seller.stockCount} 후기 {mockProductDetail.seller.reviewCount}
             </Text>
