@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useToast } from '@chakra-ui/react';
+import { ReactNode, useMemo } from 'react';
+import { useToast, UseToastOptions } from '@chakra-ui/react';
 import { getErrorMessage } from '@/api/helper';
 
 export function useCustomToast() {
@@ -25,6 +25,14 @@ export function useCustomToast() {
           status: 'success',
           colorScheme: 'success',
           description,
+        });
+      },
+      warning: (description: ReactNode, options?: Omit<UseToastOptions, 'status' | 'colorScheme' | 'description'>) => {
+        return toast({
+          status: 'warning',
+          colorScheme: 'accent',
+          description: description,
+          ...options,
         });
       },
       error: (e: unknown) => {
