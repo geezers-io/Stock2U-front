@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Text, Heading, Box, Button, Stack, Avatar, Flex, Grid } from '@chakra-ui/react';
+import { Text, Heading, Box, Button, Avatar, Flex, Grid, Badge, Stack } from '@chakra-ui/react';
 import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
 import ImageSelector from '@/components/domains/product/ImageSelector';
 
@@ -21,60 +21,51 @@ const ProductDetailPage: FC = () => {
   }
   return (
     <div>
-      <Flex flexDirection="column" padding="1.2rem 0">
+      <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
         <Heading as="h3" size="lg" textAlign="center">
           {productDetail.title}
         </Heading>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <ImageSelector />
-        </Box>
-        <Box>
-          <Heading as="h4" size="md">
-            잔여 재고 이름
-          </Heading>
-          <Text fontSize="xl">{productDetail.stockName} </Text>
-        </Box>
-        `
-        <Box>
-          <Heading as="h4" size="md">
-            종류
-          </Heading>
-          <Text fontSize="xl">{productDetail.productType} </Text>
-        </Box>
-        <Box>
-          <Heading as="h4" size="md">
-            금액
-          </Heading>
-          <Text fontSize="xl">{productDetail.price} </Text>
-        </Box>
-        <Box>
-          <Heading as="h4" size="md">
-            판매 마감 기한
-          </Heading>
+        <Flex justifyContent="right" alignContent="center">
+          <Badge fontSize="md" variant="solid" colorScheme="brand">
+            Deadline
+          </Badge>
           <Text fontSize="xl">{productDetail.date} </Text>
-        </Box>
+        </Flex>
+        <Flex justifyContent="center" alignItems="center" direction="column">
+          <Text>사진을 눌러 크게 보세요!</Text>
+          <ImageSelector />
+        </Flex>
         <Box>
-          <Heading as="h4" size="md">
-            상세 내용
-          </Heading>
+          <Flex gap="2px" mb="5px" mt="5px">
+            <Badge fontSize="xl" colorScheme="purple">
+              Ticket
+            </Badge>
+            <Text fontSize="xl" as="b">
+              {productDetail.stockName}{' '}
+            </Text>
+          </Flex>
+        </Box>
+
+        <Box>
           <Text fontSize="xl">{productDetail.detail} </Text>
         </Box>
       </Flex>
 
       {/*seller*/}
-      <Flex position="relative" p="1.2rem 0">
-        <Box w="auto" p=" 1.2rem 2rem" verticalAlign="bottom">
-          <Stack direction="row">
-            <Avatar size="lg" name={mockProductDetail.seller.nickname} src="https://bit.ly/broken-link" />
-          </Stack>
-        </Box>
-        <Box w="60%" p=" 1.2rem 0">
-          <Text fontSize="xl">{mockProductDetail.seller.nickname} 님</Text>
-          <Text fontSize="xl" color="gray">
-            판매 재고 {mockProductDetail.seller.stockCount} 후기 {mockProductDetail.seller.reviewCount}
+      <Flex>
+        <Avatar size="xl" src="https://bit.ly/sage-adebayo" />
+        <Box ml="3" w="60%">
+          <Text fontSize="xl" fontWeight="bold">
+            {mockProductDetail.seller.nickname} 님
+            <Badge fontSize="md" colorScheme="green">
+              판매자
+            </Badge>
+            <Text fontSize="xl" color="gray">
+              판매 재고 {mockProductDetail.seller.stockCount} 후기 {mockProductDetail.seller.reviewCount}
+            </Text>
           </Text>
         </Box>
-        <Box w="auto" p="1.2rem 2rem">
+        <Box>
           <Button colorScheme="brand" float="right">
             판매자 구독하기
           </Button>
@@ -82,9 +73,17 @@ const ProductDetailPage: FC = () => {
       </Flex>
 
       {/*reservation*/}
-      <Grid p="1.2rem 0">
-        <Button colorScheme="brand">구매 예약 요청하기</Button>
-      </Grid>
+      <Box>
+        <Stack direction="row" justifyContent="right" gap="2px">
+          <Badge fontSize="md" variant="outline" colorScheme="brand" justifyContent="center">
+            금액
+          </Badge>
+          <Text fontSize="xl">{productDetail.price}원 </Text>
+        </Stack>
+        <Grid p="1.2rem 0">
+          <Button colorScheme="brand">구매 예약 요청하기</Button>
+        </Grid>
+      </Box>
     </div>
   );
 };
