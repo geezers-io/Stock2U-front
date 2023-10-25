@@ -25,9 +25,9 @@ const ProductDetailPage: FC = () => {
         <Heading as="h3" size="lg" textAlign="center">
           {productDetail.title}
         </Heading>
-        <Flex justifyContent="right" alignContent="center">
-          <Badge fontSize="md" variant="solid" colorScheme="brand">
-            Deadline
+        <Flex justifyContent="right" alignContent="center" gap="10px">
+          <Badge fontSize="xl" variant="outline" colorScheme="brand" justifyContent="center">
+            DEADLINE
           </Badge>
           <Text fontSize="xl">{productDetail.date} </Text>
         </Flex>
@@ -36,12 +36,12 @@ const ProductDetailPage: FC = () => {
           <ImageSelector />
         </Flex>
         <Box>
-          <Flex gap="2px" mb="5px" mt="5px">
+          <Flex gap="10px" mb="5px" mt="5px">
             <Badge fontSize="xl" colorScheme="purple">
               Ticket
             </Badge>
             <Text fontSize="xl" as="b">
-              {productDetail.stockName}{' '}
+              {productDetail.stockName}
             </Text>
           </Flex>
         </Box>
@@ -54,10 +54,10 @@ const ProductDetailPage: FC = () => {
       {/*seller*/}
       <Flex>
         <Avatar size="xl" src="https://bit.ly/sage-adebayo" />
-        <Box ml="3" w="60%">
+        <Box ml="3" w="100%">
           <Text fontSize="xl" fontWeight="bold">
             {mockProductDetail.seller.nickname} 님
-            <Badge fontSize="md" colorScheme="green">
+            <Badge fontSize="xl" colorScheme="green">
               판매자
             </Badge>
             <Text fontSize="xl" color="gray">
@@ -74,11 +74,13 @@ const ProductDetailPage: FC = () => {
 
       {/*reservation*/}
       <Box>
-        <Stack direction="row" justifyContent="right" gap="2px">
-          <Badge fontSize="md" variant="outline" colorScheme="brand" justifyContent="center">
+        <Stack direction="row" justifyContent="right" gap="10px">
+          <Badge fontSize="xl" variant="outline" colorScheme="brand" justifyContent="center">
             금액
           </Badge>
-          <Text fontSize="xl">{productDetail.price}원 </Text>
+          <Text fontSize="xl" as="b">
+            {productDetail.price}원
+          </Text>
         </Stack>
         <Grid p="1.2rem 0">
           <Button colorScheme="brand">구매 예약 요청하기</Button>
