@@ -5,7 +5,7 @@ import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { MockProduct, mockProducts } from '@/api/__mock__/mockProduct';
 import ProductCards from '@/components/domains/product/ProductCards';
-import ImageSlider from '@/components/shared/ImageSlider';
+import ImageSlider from '@/components/shared/ImageCarousel';
 import { delay } from '@/utils/delay';
 
 const IndexPage: FC = () => {
@@ -40,6 +40,8 @@ const IndexPage: FC = () => {
         'https://www.monthlypeople.com/news/photo/202306/560635_559345_3540.jpg',
         'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201701/18/htm_20170118142849573637.jpg',
         'https://i.namu.wiki/i/ETpJyld-Ok-H46FcqqlgUECJdmDctvaXpnrnM2MO-Dkn_S6H3vqFI8qYNBRmnSLM975rwaT5A6s5bDn4tC3aRA.webp',
+        'https://c.wallhere.com/photos/c0/1b/anime_city_clouds_skyscraper_5_Centimeters_Per_Second_Makoto_Shinkai-241157.jpg!d',
+        'https://dthezntil550i.cloudfront.net/25/latest/252001022015123200005691112/1280_960/68ee10fa-84b8-44b6-bcc2-94df2f5fac05.png',
       ];
       setBannerImages(images);
     } catch (e) {}
