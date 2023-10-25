@@ -1,5 +1,7 @@
 import { useState, useCallback, FC, useEffect, useRef } from 'react';
-import { Button, Flex, Image } from '@chakra-ui/react';
+import { ChevronLeft, ChevronRight } from 'react-bootstrap-icons';
+import { Box, Button, Flex, Image } from '@chakra-ui/react';
+import { css, useTheme } from '@emotion/react';
 
 interface Props {
   images: string[];
@@ -9,6 +11,7 @@ const ImageCarousel: FC<Props> = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const autoSlideIntervalRef = useRef<number>();
+  const theme = useTheme();
 
   const nextImage = useCallback(() => {
     setCurrentImageIndex(prev => (prev + 1) % images.length);
@@ -36,6 +39,12 @@ const ImageCarousel: FC<Props> = ({ images }) => {
   const handleClickBullet = (index: number) => {
     resetAutoSlide();
     setCurrentImageIndex(index);
+  };
+
+  const handleClickChevron = (to: 'prev' | 'next') => {
+    resetAutoSlide();
+    if (to === 'prev') prevImage();
+    if (to === 'next') nextImage();
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -67,24 +76,33 @@ const ImageCarousel: FC<Props> = ({ images }) => {
   return (
     <Flex
       flexDirection="column"
-      gap={2}
       position="relative"
       width="100%"
       overflow="hidden"
       textAlign="center"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      css={css`
+        @media (min-width: ${theme.breakpoints.md}) {
+          &:hover > .slider-float-buttons {
+            display: block;
+          }
+        }
+      `}
     >
       <Flex flex="1" transition="transform 0.3s ease-in-out" transform={`translateX(-${currentImageIndex * 100}%)`}>
         {images.map((image, index) => (
           <Image key={index} src={image} alt={`Slider Image ${index}`} width="100%" height="auto" />
         ))}
       </Flex>
-      <Flex display={{ base: 'none', md: 'flex' }} justifyContent="center" gap={1}>
+
+      {/* 하단 불릿 버튼 */}
+      <Flex display={{ base: 'none', md: 'flex' }} justifyContent="center" gap={1} mt={2}>
         {Array.from({ length: images.length }).map((_, index) => {
           const isCurrImage = index === currentImageIndex;
           return (
             <Button
+              key={images[index]}
               variant="unstyled"
               onClick={() => handleClickBullet(index)}
               w={isCurrImage ? '1.33rem' : '0.66rem'}
@@ -96,6 +114,28 @@ const ImageCarousel: FC<Props> = ({ images }) => {
           );
         })}
       </Flex>
+
+      {/* float 버튼 (within hover) */}
+      <Box className="slider-float-buttons" display="none">
+        <Button
+          onClick={() => handleClickChevron('prev')}
+          position="absolute"
+          top="45%"
+          transform="translateY(0)"
+          left="10px"
+        >
+          <ChevronLeft size={24} />
+        </Button>
+        <Button
+          onClick={() => handleClickChevron('next')}
+          position="absolute"
+          top="45%"
+          transform="translateY(0)"
+          right="10px"
+        >
+          <ChevronRight size={24} />
+        </Button>
+      </Box>
     </Flex>
   );
 };
