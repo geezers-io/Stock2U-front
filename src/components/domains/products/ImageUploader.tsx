@@ -2,6 +2,7 @@ import { FC, useState, useRef, MouseEventHandler, ChangeEventHandler } from 'rea
 import { Flex, Button, Image, Badge, Grid, Box, Text } from '@chakra-ui/react';
 import { SimpleFile } from '@/api/@types/File';
 import { FileService } from '@/api/services/File';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const MAX = 5;
 
@@ -9,6 +10,7 @@ const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<SimpleFile[]>([]);
   const [thumbImage, setThumbImage] = useState<SimpleFile | null>(null);
+  const toast = useCustomToast();
 
   const handleUploadButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
     inputRef.current?.click();
@@ -23,7 +25,10 @@ const ImageUploader: FC = () => {
       if (prevImageLength + files.length <= MAX) {
         return files;
       }
-      alert(`최대 이미지 파일 ${MAX}개까지만 선택할 수 있습니다. 선택한 파일 중 ${MAX}개만 지정하여 업로드하겠습니다.`);
+
+      toast.info(
+        `최대 이미지 파일 ${MAX}개까지만 선택할 수 있습니다. 선택한 파일 중 ${MAX}개만 지정하여 업로드하겠습니다.`,
+      );
       const limited = files.slice(0, MAX - prevImageLength);
       return limited;
     })();
@@ -38,13 +43,12 @@ const ImageUploader: FC = () => {
         setThumbImage(nextImages[0]);
       }
     } catch (e) {
-      alert(e);
+      toast.error(e);
     }
   };
 
   const handleImageClick = (focusImage: SimpleFile) => {
     setThumbImage(focusImage);
-    // alert('대표사진으로 지정되었습니다');
   };
 
   const handleImageDelete = (targetImageId: number) => {
