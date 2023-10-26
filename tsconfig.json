@@ -14,7 +14,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "types": ["vite/client", "@emotion/react/types/css-prop", "./@types/emotion.d.ts"],
+    "types": ["vite/client", "@emotion/react/types/css-prop", "./@types/emotion.d.ts", "kakao.maps.d.ts"],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,

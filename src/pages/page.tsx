@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { MockProduct, mockProducts } from '@/api/__mock__/mockProduct';
-import ProductCards from '@/components/domains/product/ProductCards';
+import ProductCards from '@/components/domains/products/ProductCards';
 import ImageSlider from '@/components/shared/ImageCarousel';
 import { delay } from '@/utils/delay';
 
