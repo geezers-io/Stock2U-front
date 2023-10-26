@@ -23,10 +23,10 @@ const ProductDetailPage: FC = () => {
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
       <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
-        <Heading as="h3" size="lg" textAlign="center">
+        <Heading as="h3" size="lg">
           {productDetail.title}
         </Heading>
-        <Flex justifyContent="right" alignItems="center" gap="10px">
+        <Flex alignItems="center" gap="10px">
           <Badge fontSize="sm" variant="outline" colorScheme="brand">
             DEADLINE
           </Badge>
