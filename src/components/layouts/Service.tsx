@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Button, Flex, Heading, Text } from '@chakra-ui/react';
-import { useTheme } from '@emotion/react';
 import { AuthService } from '@/api/services/Auth';
 import PageAside from '@/components/layouts/parts/PageAside';
 import PageHeader from '@/components/layouts/parts/PageHeader';
@@ -10,7 +9,6 @@ import { useRedirect } from '@/hooks/useRedirect';
 import { useBoundedStore } from '@/stores';
 
 const ServiceLayout: FC = () => {
-  const theme = useTheme();
   const toast = useCustomToast();
   const [user, setUser] = useBoundedStore(state => [state.user, state.setUser]);
   const { navigateWithRedirectPath } = useRedirect();
@@ -54,7 +52,7 @@ const ServiceLayout: FC = () => {
         </Flex>
       </PageHeader>
 
-      <main style={{ paddingBottom: theme.appStyles.asideHeight }}>
+      <main className="with-aside">
         <Outlet />
       </main>
 
