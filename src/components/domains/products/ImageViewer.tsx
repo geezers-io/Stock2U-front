@@ -1,54 +1,80 @@
-import { FC, useEffect, useState } from 'react';
-import { Flex, Image } from '@chakra-ui/react';
+import { FC, useState } from 'react';
+import { Flex, Image, Grid, Box } from '@chakra-ui/react';
+import { SimpleFile } from '@/api/@types/File';
 
-const ImageViewer: FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [imageData, setImageData] = useState<any /* FIXME */>();
+interface Props {
+  images: SimpleFile[];
+}
 
-  const fetchImages = async () => {
-    try {
-      setImageData(prev => ({
-        ...prev,
-        subImageUrls: prev.subImageUrls,
-      }));
-    } catch (e) {}
-  };
-  useEffect(() => {
-    fetchImages();
-  }, []);
+const HORIZONTAL_POINT = 'md';
 
-  if (!imageData) {
-    return null;
-  }
+const ImageViewer: FC<Props> = ({ images }) => {
+  const [thumbImage, setThumbImage] = useState<SimpleFile>(images[0]);
 
-  const handleImageClick = (focusImage: string) => {
-    setSelectedImage(focusImage);
-  };
-
-  const handleCloseZoom = () => {
-    setSelectedImage(null);
+  const handleImageClick = (focusImage: SimpleFile) => {
+    setThumbImage(focusImage);
   };
 
   return (
-    <Flex flexDirection="row" display="inline-flex" flexWrap="wrap" w="50%" justify-content="center">
-      <Flex>
-        {imageData.subImageUrls.map((focusImage, index) => (
-          <Image
-            key={index}
-            src={focusImage}
-            onClick={() => handleImageClick(focusImage)} //새로운 함수 생성하여 전달
-            cursor="pointer"
-            maxWidth="100px"
-            margin="10px"
-            aspectRatio="1/1"
-            objectFit="contain"
-          />
-        ))}
-      </Flex>
+    <Box w="100%">
+      <Flex
+        flexDirection={{ base: 'column-reverse', [HORIZONTAL_POINT]: 'row' }}
+        w="100%"
+        justifyContent="center"
+        alignItems="center"
+        gap={2}
+      >
+        <Flex
+          flex={{ base: 'auto', [HORIZONTAL_POINT]: '4' }}
+          w="100%"
+          h={{ base: 'auto', [HORIZONTAL_POINT]: '265px' }}
+          justifyContent="center"
+          alignItems="center"
+          bg={thumbImage ? undefined : 'gray.100'}
+          borderRadius="4px"
+        >
+          {thumbImage && <Image w="100%" src={thumbImage.uploadPath} />}
+        </Flex>
 
-      {selectedImage && <Image role="button" src={selectedImage} w="100%" h="auto" onClick={handleCloseZoom} />}
-    </Flex>
+        <Grid
+          flex={{ base: 'auto', [HORIZONTAL_POINT]: '3' }}
+          gridTemplateColumns={{ base: 'repeat(6, 1fr)', [HORIZONTAL_POINT]: 'repeat(3, 1fr)' }}
+          gridTemplateRows={{ base: '1fr', [HORIZONTAL_POINT]: '1fr 1fr' }}
+          alignItems="center"
+          gap={2}
+        >
+          {images.map(image => {
+            const clicked = !!image && !!thumbImage && image.id === thumbImage.id;
+
+            return (
+              <Flex
+                key={`product-${image?.id}`}
+                flexDirection="column"
+                justifyContent="center"
+                bg={image ? undefined : 'gray.100'}
+                borderRadius="4px"
+                outline={clicked ? '4px solid' : undefined}
+                outlineColor="brand.500"
+                outlineOffset="2px"
+              >
+                {image && (
+                  <Image
+                    role="button"
+                    src={image.uploadPath}
+                    alt="Product Image"
+                    onClick={() => handleImageClick(image)}
+                    w="100%"
+                    h="auto"
+                    aspectRatio="1/1"
+                    objectFit="contain"
+                  />
+                )}
+              </Flex>
+            );
+          })}
+        </Grid>
+      </Flex>
+    </Box>
   );
 };
 
