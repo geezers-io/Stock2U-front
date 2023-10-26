@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSearchParamsObject } from '@/hooks/useSearchParamsObject';
 
-const PARAM_KEY = 'redirect';
+export const PARAM_KEY = 'redirect';
 
 export function useRedirect() {
   const navigate = useNavigate();

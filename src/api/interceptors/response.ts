@@ -1,5 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { getErrorMessage } from '@/api/helper';
+import { PARAM_KEY as REDIRECT_PARAM_KEY } from '@/hooks/useRedirect';
 import { printErrorLog, printResponseLog } from '@/utils/log';
 
 export function logResponse(response: AxiosResponse) {
@@ -18,7 +19,7 @@ export function unwrapResponse(response: AxiosResponse) {
   return response.data?.data ?? response.data;
 }
 
-export function logError(e: AxiosError) {
+export function logAndProcessError(e: AxiosError) {
   const url = e.config?.url;
   const method = e.config?.method;
 
@@ -31,13 +32,13 @@ export function logError(e: AxiosError) {
     errorObj: e,
   });
 
-  return Promise.reject(e);
-}
-
-export function processError(e: AxiosError) {
+  // FIXME: 비로그인 상태에서 판매자 파일 업로드 시 에러 토스트가 보이는 문제 있음
   if (e.status === 401 || e.response?.status === 401) {
-    // TODO: 에러 없이 로그인 페이지로 리디렉션
-    // return;
+    if (!location.pathname.includes('auth')) {
+      location.href = `/auth/sign-in?${REDIRECT_PARAM_KEY}=${location.pathname}`;
+      return;
+    }
   }
+
   return Promise.reject(e);
 }

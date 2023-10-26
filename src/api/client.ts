@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { logRequest } from '@/api/interceptors/request';
-import { logError, logResponse, processError, unwrapResponse } from '@/api/interceptors/response';
+import { logAndProcessError, logResponse, unwrapResponse } from '@/api/interceptors/response';
 import { flow } from '@/utils/flow';
 
 export const axiosInstance = axios.create({
@@ -11,4 +11,4 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(logRequest);
-axiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), flow([logError, processError]));
+axiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logAndProcessError);
