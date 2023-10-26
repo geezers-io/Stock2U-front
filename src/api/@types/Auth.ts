@@ -1,5 +1,5 @@
 import { AuthVendor, UserRole } from './@enums';
-import { Pageable } from '@/api/@types/@shared';
+import { PageResponse, PageRequest } from '@/api/@types/@shared';
 
 export interface SellerDetails {
   id: number;
@@ -27,6 +27,22 @@ export interface PurchaserSignUpRequest {
   phone: string;
   verification: string;
   vendor: AuthVendor;
+}
+
+export interface SellerSignUpRequest {
+  username: string;
+  email: string;
+  licenseNumber: string;
+  industry: string;
+  industryName: string;
+  location: string;
+  bankName: string;
+  account: string;
+  phone: string;
+  verification: string;
+  vendor: AuthVendor;
+  latitude: number;
+  longitude: number;
 }
 
 export interface SignInRequest {
@@ -71,17 +87,8 @@ export interface Bank {
   name: string;
 }
 
-export interface FindAddressRequest {
+export interface FindAddressRequest extends PageRequest {
   keyword: string;
-  /**
-   * @min 0
-   */
-  page?: number;
-  /**
-   * @default 10
-   * @max 100
-   */
-  size?: number;
 }
 export interface Address {
   fullRoadAddrName: string;
@@ -91,12 +98,13 @@ export interface Address {
   buildingName: string;
 }
 export interface FindAddressResponse {
-  page: Pageable;
+  page: PageResponse;
   results: Address[];
 }
 
 export interface AuthClient {
   signUpPurchaser(request: PurchaserSignUpRequest): Promise<User>;
+  signUpSeller(request: SellerSignUpRequest): Promise<User>;
   signIn(request: SignInRequest): Promise<SignInResponse>;
   verifyCode(request: VerifyCodeRequest): Promise<void>;
   withdraw(request: WithDrawRequest): Promise<void>;

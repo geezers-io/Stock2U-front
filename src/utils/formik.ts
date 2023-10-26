@@ -1,3 +1,4 @@
+import { FormikProps } from 'formik';
 import { isNumber, isPureObject, isString } from '@/utils/assert';
 
 type Message<T> = string | ((value: T) => string);
@@ -13,33 +14,34 @@ type ValidateConfig<T, K extends keyof T = keyof T> = {
   range?: Range;
   validator?: Validator<T, K>;
 };
-type ValidatorOrValidateConfigs<T> = {
-  [K in keyof T]?: Validator<T, K> | ValidateConfig<T, K>;
-};
-type Validators<T> = {
-  [K in keyof T]?: Validator<T, K>;
+type ValidateConfigs<T> = { [K in keyof T]?: ValidateConfig<T, K> };
+type Validators<T> = { [K in keyof T]?: Validator<T, K> };
+
+type GetFormikStates<T> = (props: FormikProps<T>) => FormikProps<T> & {
+  showErrorDict: Record<keyof T, boolean>;
+  canSubmit: boolean;
 };
 
 const predefinedRegex = {
   nickname: /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{3,15}$/,
+  phone: /([0-9]{3})-?([0-9]{4})-?([0-9]{4})/,
   email: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+  licenseNumber: /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/,
+  account: /^[0-9-]+$/,
 };
 
 /**
  * @returns
  * * validators - formik Field 컴포넌트의 validate prop 에 들어갈 함수들의 dict
  * * validate - 모든 필드 한번에 validation 하고 싶을 때 사용. Formik 컴포넌트의 validate prop 에 넣어 한번에 검증도 가능
+ * * getFormikStates - formik props 를 넣으면 필드의 에러 표시 여부를 판단하는 showErrorDict 와 submit 버튼 disabled 여부를 결정하는 canSubmit 플래그를 반환
  */
-export function generateValidators<T>(validatorOrConfigs: ValidatorOrValidateConfigs<T>) {
+export function generateValidators<T>(validateConfigs: ValidateConfigs<T>) {
   const validators: Validators<T> = {};
 
-  for (const key in validatorOrConfigs) {
-    const validatorOrConfig = validatorOrConfigs[key];
-    if (typeof validatorOrConfig === 'function') {
-      validators[key] = validatorOrConfig as Validator<T>;
-    } else {
-      validators[key] = createValidator(validatorOrConfig as ValidateConfig<T>);
-    }
+  for (const key in validateConfigs) {
+    const config = validateConfigs[key];
+    validators[key] = createValidator(config as ValidateConfig<T>);
   }
 
   const validate = (values: T) => {
@@ -50,9 +52,45 @@ export function generateValidators<T>(validatorOrConfigs: ValidatorOrValidateCon
     ) as Record<keyof T, ReturnType<Validator<T>>>;
   };
 
+  const getFormikStates: GetFormikStates<T> = props => {
+    const { values, submitCount, touched, errors, dirty } = props;
+
+    const { showErrorDict, canSubmit } = (() => {
+      if (!isPureObject(values)) {
+        throw new Error('values must be pure object');
+      }
+
+      const submittedAtLeastOne = submitCount > 0;
+
+      return Object.entries(values).reduce(
+        (acc, [_key, value]) => {
+          const key = _key as keyof T;
+          const hasError = !!errors[key];
+          acc.showErrorDict[key] = hasError && submittedAtLeastOne && !!touched[key]; // 최초 1회 제출 이후 해당 필드가 한 번 이상 focus 됐을 때만 에러 표시
+
+          const isRequired = getRuleValue(validateConfigs[key]?.required, false);
+          acc.canSubmit &&= !isRequired || (isRequired && !!value); // required 일 때 값이 있는지만 판단
+
+          return acc;
+        },
+        {
+          showErrorDict: {} as Record<keyof T, boolean>,
+          canSubmit: dirty, // dirty 가 아니라면 submit 불가
+        },
+      );
+    })();
+
+    return {
+      ...props,
+      showErrorDict,
+      canSubmit,
+    };
+  };
+
   return {
     validators,
     validate,
+    getFormikStates,
   };
 }
 
@@ -108,6 +146,10 @@ function getRuleMessage(rule: Rule<unknown>, defaultPhrase?: string) {
     return typeof rule.message === 'function' ? rule.message(rule.value) : rule.message;
   }
   return defaultPhrase;
+}
+
+function getRuleValue<T extends Exclude<unknown, object>>(rule: Rule<T> | undefined, defaultValue: T): T {
+  return isPureObject(rule) ? rule.value : rule ?? defaultValue;
 }
 
 function getRegexValue(rule: RegexRule): RegExp {

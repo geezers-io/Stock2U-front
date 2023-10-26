@@ -7,6 +7,7 @@ import SignInPage from '@/pages/auth/sign-in/page';
 import ChoiceRolePage from '@/pages/auth/sign-up/page';
 import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
+import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
 import theme from '@/styles/theme';
 
@@ -18,6 +19,22 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <IndexPage />,
+      },
+      {
+        path: 'products',
+        element: <div>products page</div>,
+      },
+      {
+        path: 'chat',
+        element: <div>chat page</div>,
+      },
+      {
+        path: 'wishlist',
+        element: <div>wishlist page</div>,
+      },
+      {
+        path: 'my',
+        element: <div>my page</div>,
       },
     ],
   },
@@ -51,6 +68,11 @@ const router = createBrowserRouter([
         element: <OAuthRedirectPage />,
       },
     ],
+  },
+  {
+    path: 'map',
+    index: true,
+    element: <ProductMapPage />,
   },
 ]);
 
