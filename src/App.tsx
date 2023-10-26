@@ -10,6 +10,7 @@ import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
 import ProductDetailPage from '@/pages/product/[id]/page';
+import ProductRegistrationPage from '@/pages/products/seller/page';
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <div>products page</div>,
+          },
+          {
+            path: 'register',
+            element: <ProductRegistrationPage />,
           },
           {
             path: ':id',

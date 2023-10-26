@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Text, Heading, Box, Button, Avatar, Flex, Grid, Badge, Stack } from '@chakra-ui/react';
 import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
-import ImageSelector from '@/components/domains/product/ImageSelector';
+import ImageViewer from '@/components/domains/products/ImageViewer';
 
 const ProductDetailPage: FC = () => {
   const [productDetail, setProductDetail] = useState<MockProductDetail>();
@@ -33,7 +33,7 @@ const ProductDetailPage: FC = () => {
         </Flex>
         <Flex justifyContent="center" alignItems="center" direction="column">
           <Text>사진을 눌러 크게 보세요!</Text>
-          <ImageSelector />
+          <ImageViewer />
         </Flex>
         <Box>
           <Flex gap="10px" mb="5px" mt="5px">

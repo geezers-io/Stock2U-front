@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
 import { AuthService } from '@/api/services/Auth';
 import PageAside from '@/components/layouts/parts/PageAside';
 import PageHeader from '@/components/layouts/parts/PageHeader';
@@ -9,13 +10,14 @@ import { useRedirect } from '@/hooks/useRedirect';
 import { useBoundedStore } from '@/stores';
 
 const ServiceLayout: FC = () => {
+  const theme = useTheme();
   const toast = useCustomToast();
   const [user, setUser] = useBoundedStore(state => [state.user, state.setUser]);
   const { navigateWithRedirectPath } = useRedirect();
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   const handleClickLogin = async () => {
-    navigateWithRedirectPath('/auth/sign-in', location.pathname);
+    navigateWithRedirectPath('/auth/sign-in', pathname);
   };
 
   const handleClickWithDraw = async () => {
@@ -30,24 +32,29 @@ const ServiceLayout: FC = () => {
   return (
     <>
       <PageHeader>
-        {!user && (
-          <Flex w="100%" justifyContent="flex-end" alignItems="center">
-            <Button size="sm" colorScheme="brand" onClick={handleClickLogin}>
-              로그인
-            </Button>
-          </Flex>
-        )}
-        {user && (
-          <Flex w="100%" justifyContent="space-between" alignItems="center">
-            <Text>{user.name}님 환영합니다!</Text>
-            <Button size="sm" colorScheme="red" onClick={handleClickWithDraw}>
+        <Flex w="100%" justifyContent="space-between" alignItems="center">
+          {user && <Text>{user.name}님 환영합니다!</Text>}
+          {!user && <div />}
+
+          {/* TODO: 현재 align 안맞음 - 김준재가 추후 수정 */}
+          <Heading fontSize="xl" fontWeight={500}>
+            {pathname.includes('products/seller') && '상품 등록'}
+          </Heading>
+
+          {user && (
+            <Button size="md" colorScheme="red" onClick={handleClickWithDraw}>
               탈퇴하기(임시)
             </Button>
-          </Flex>
-        )}
+          )}
+          {!user && (
+            <Button size="md" colorScheme="brand" onClick={handleClickLogin}>
+              로그인
+            </Button>
+          )}
+        </Flex>
       </PageHeader>
 
-      <main>
+      <main style={{ paddingBottom: theme.appStyles.asideHeight }}>
         <Outlet />
       </main>
 

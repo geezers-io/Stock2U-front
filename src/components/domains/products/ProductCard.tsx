@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Badge, Box, Heading, Image, Text } from '@chakra-ui/react';
 import { ProductType } from '@/api/@types/@enums';
-import CountdownTimer from '@/components/domains/product/CountdownTimer';
+import CountdownTimer from '@/components/domains/products/CountdownTimer';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 
 interface Props {

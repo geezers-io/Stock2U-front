@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { Flex, Image } from '@chakra-ui/react';
-import { mockProductDetail, MockProductDetail } from '@/api/__mock__/product';
 
-const ImageSelector: FC = () => {
+const ImageViewer: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [imageData, setImageData] = useState<MockProductDetail>(mockProductDetail);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [imageData, setImageData] = useState<any /* FIXME */>();
 
   const fetchImages = async () => {
     try {
@@ -52,4 +52,4 @@ const ImageSelector: FC = () => {
   );
 };
 
-export default ImageSelector;
+export default ImageViewer;
