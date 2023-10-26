@@ -9,6 +9,7 @@ import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
+import ProductRegistrationPage from '@/pages/products/seller/page';
 import theme from '@/styles/theme';
 
 const router = createBrowserRouter([
@@ -66,6 +67,16 @@ const router = createBrowserRouter([
       {
         path: 'oauth-redirect',
         element: <OAuthRedirectPage />,
+      },
+    ],
+  },
+  {
+    path: 'products',
+    element: <ServiceLayout />,
+    children: [
+      {
+        path: 'sellers',
+        element: <ProductRegistrationPage />,
       },
     ],
   },

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Flex, Grid, Heading, Skeleton } from '@chakra-ui/react';
 import { MockProduct } from '@/api/__mock__/mockProduct';
-import ProductCard from '@/components/domains/product/ProductCard';
+import ProductCard from '@/components/domains/products/ProductCard';
 
 interface Props {
   uniqueKey: string;
