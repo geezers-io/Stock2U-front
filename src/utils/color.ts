@@ -25,3 +25,18 @@ export function lightenDarkenColor(color: string, amt: number) {
 
   return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16);
 }
+
+export function generateSameColorScale(color: string) {
+  return {
+    50: color,
+    100: color,
+    200: color,
+    300: color,
+    400: color,
+    500: color,
+    600: color,
+    700: color,
+    800: color,
+    900: color,
+  };
+}

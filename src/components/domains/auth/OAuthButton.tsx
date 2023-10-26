@@ -20,7 +20,7 @@ const OAuthButton: FC<PropsWithChildren<Props>> = ({ vendor, label, onClick }) =
       rightIcon={<Box w="24px" h="24px" />}
       onClick={onClick}
     >
-      {label}로 로그인
+      {label}로 시작하기
     </Button>
   );
 };

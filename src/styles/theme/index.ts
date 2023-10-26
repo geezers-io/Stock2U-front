@@ -1,17 +1,19 @@
 import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 import { colors } from './@colors';
 import { buttonTheme } from './button';
+import { badgeTheme } from '@/styles/theme/badge';
+import { modalTheme } from '@/styles/theme/modal';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
   useSystemColorMode: false,
 };
 
-export const APP_STYLES = {
-  MAX_WIDTH: '768px',
-  PADDING_X: '12px',
-  HEADER_HEIGHT: { base: '48px', md: '56px' },
-  ASIDE_HEIGHT: '56px',
+const appStyles = {
+  maxWidth: '768px',
+  paddingX: '12px',
+  headerHeight: { base: '48px', md: '56px' },
+  asideHeight: '56px',
 } as const;
 
 const styles = {
@@ -31,14 +33,13 @@ const styles = {
     main: {
       width: '100%',
       minHeight: {
-        base: `calc(100vh - ${APP_STYLES.HEADER_HEIGHT.base})`,
-        md: `calc(100vh - ${APP_STYLES.HEADER_HEIGHT.md})`,
+        base: `calc(100vh - ${appStyles.headerHeight.base})`,
+        md: `calc(100vh - ${appStyles.headerHeight.md})`,
       },
-      maxWidth: APP_STYLES.MAX_WIDTH,
+      maxWidth: appStyles.maxWidth,
       margin: '0 auto',
       background: 'white',
-      paddingBottom: '13.6rem',
-      padding: `0 ${APP_STYLES.PADDING_X}`,
+      padding: `0 ${appStyles.paddingX}`,
     },
   },
 };
@@ -47,7 +48,15 @@ const theme = extendTheme({
   config,
   colors,
   styles,
-  components: { Button: buttonTheme },
+  components: {
+    Button: buttonTheme,
+    Badge: badgeTheme,
+    Modal: modalTheme,
+  },
+  appStyles,
 });
 
 export default theme;
+
+export type TColors = typeof colors;
+export type TAppStyles = typeof appStyles;

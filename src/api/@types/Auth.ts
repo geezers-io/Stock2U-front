@@ -1,23 +1,77 @@
-import { AuthVendor } from './@enums';
-import { Pageable } from '@/api/@types/@shared';
+import { AuthVendor, UserRole } from './@enums';
+import { PageResponse, PageRequest } from '@/api/@types/@shared';
 
-export interface LoginRequest {
-  token: string;
+export interface SellerDetails {
+  id: number;
+  licenseNumber: string;
+  industry: string;
+  industryName: string;
+  location: string;
+  bankName: string;
+  account: string;
 }
-export interface LoginResponse {
-  exists: boolean;
-  email?: string;
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  vendor: AuthVendor;
+  sellerDetails?: SellerDetails;
 }
+
+export interface PurchaserSignUpRequest {
+  username: string;
+  email: string;
+  phone: string;
+  verification: string;
+  vendor: AuthVendor;
+}
+
+export interface SellerSignUpRequest {
+  username: string;
+  email: string;
+  licenseNumber: string;
+  industry: string;
+  industryName: string;
+  location: string;
+  bankName: string;
+  account: string;
+  phone: string;
+  verification: string;
+  vendor: AuthVendor;
+  latitude: number;
+  longitude: number;
+}
+
+export interface SignInRequest {
+  authCode: string;
+}
+export type SignInResponse =
+  | {
+      exists: true;
+      user: User;
+    }
+  | {
+      exists: false;
+      email?: string;
+      verification: string;
+    };
 
 export interface VerifyCodeRequest {
   authCode: string;
   phone: string;
 }
 
-export interface LoginURLRequest {
+export interface WithDrawRequest {
+  reason?: string;
+}
+
+export interface SignInURLRequest {
   vendor: AuthVendor;
 }
-export interface LoginURLResponse {
+export interface SignInURLResponse {
   url: string;
 }
 
@@ -28,17 +82,13 @@ export interface SendCodeRequest {
   phone: string;
 }
 
-export interface FindAddressRequest {
+export interface Bank {
+  code: string;
+  name: string;
+}
+
+export interface FindAddressRequest extends PageRequest {
   keyword: string;
-  /**
-   * @min 0
-   */
-  page?: number;
-  /**
-   * @default 10
-   * @max 100
-   */
-  size?: number;
 }
 export interface Address {
   fullRoadAddrName: string;
@@ -48,14 +98,19 @@ export interface Address {
   buildingName: string;
 }
 export interface FindAddressResponse {
-  page: Pageable;
+  page: PageResponse;
   results: Address[];
 }
 
 export interface AuthClient {
-  login(request: LoginRequest): Promise<LoginResponse>;
+  signUpPurchaser(request: PurchaserSignUpRequest): Promise<User>;
+  signUpSeller(request: SellerSignUpRequest): Promise<User>;
+  signIn(request: SignInRequest): Promise<SignInResponse>;
   verifyCode(request: VerifyCodeRequest): Promise<void>;
-  loginURL(request: LoginURLRequest): Promise<LoginURLResponse>;
+  withdraw(request: WithDrawRequest): Promise<void>;
+  signInURL(request: SignInURLRequest): Promise<SignInURLResponse>;
+  logout(): Promise<void>;
   sendCode(request: SendCodeRequest): Promise<void>;
+  getBankList(): Promise<Bank[]>;
   findAddress(request: FindAddressRequest): Promise<FindAddressResponse>;
 }
