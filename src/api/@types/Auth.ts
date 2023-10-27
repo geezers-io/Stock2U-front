@@ -1,5 +1,5 @@
 import { AuthVendor, UserRole } from './@enums';
-import { PageResponse, PageRequest } from '@/api/@types/@shared';
+import { PageResponseDoro, PageRequest } from '@/api/@types/@shared';
 
 export interface SellerDetails {
   id: number;
@@ -98,7 +98,7 @@ export interface Address {
   buildingName: string;
 }
 export interface FindAddressResponse {
-  page: PageResponse;
+  page: PageResponseDoro;
   results: Address[];
 }
 
