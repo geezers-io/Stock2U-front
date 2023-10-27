@@ -5,6 +5,7 @@ import { FileService } from '@/api/services/File';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const MAX = 5;
+const HORIZONTAL_POINT = 'md';
 
 const ImageUploader: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -66,10 +67,16 @@ const ImageUploader: FC = () => {
 
   return (
     <Box w="100%">
-      <Flex w="100%" justifyContent="center" flexWrap="wrap" gap={2}>
+      <Flex
+        w="100%"
+        flexDirection={{ base: 'column', [HORIZONTAL_POINT]: 'row' }}
+        justifyContent="center"
+        flexWrap="wrap"
+        gap={2}
+      >
         <Flex
           flex="4"
-          h="265px"
+          minH="265px"
           position="relative"
           justifyContent="center"
           alignItems="center"
@@ -86,7 +93,7 @@ const ImageUploader: FC = () => {
           )}
         </Flex>
 
-        <Grid flex="3" gridTemplateColumns="repeat(3, 1fr)" gridTemplateRows="1fr 1fr" gap={2}>
+        <Grid minH="200px" flex="3" gridTemplateColumns="repeat(3, 1fr)" gridTemplateRows="1fr 1fr" gap={2}>
           {Array.from({ length: MAX }).map((_, index) => {
             const image: SimpleFile | undefined = images[index];
             const clicked = !!image && !!thumbImage && image.id === thumbImage.id;

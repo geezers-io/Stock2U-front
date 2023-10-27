@@ -41,6 +41,13 @@ const styles = {
       background: 'white',
       padding: `0 ${appStyles.paddingX}`,
     },
+    'main.with-aside': {
+      paddingBottom: appStyles.asideHeight,
+      minHeight: {
+        base: `calc(100vh - ${appStyles.headerHeight.base} - ${appStyles.asideHeight})`,
+        md: `calc(100vh - ${appStyles.headerHeight.md} - ${appStyles.asideHeight})`,
+      },
+    },
   },
 };
 

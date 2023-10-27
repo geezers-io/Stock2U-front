@@ -10,6 +10,7 @@ import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
+import ProductDetailPage from '@/pages/products/[id]/page';
 import ProductRegistrationPage from '@/pages/products/seller/page';
 import theme from '@/styles/theme';
 
@@ -24,7 +25,20 @@ const router = createBrowserRouter([
       },
       {
         path: 'products',
-        element: <div>products page</div>,
+        children: [
+          {
+            index: true,
+            element: <div>products page</div>,
+          },
+          {
+            path: 'register',
+            element: <ProductRegistrationPage />,
+          },
+          {
+            path: ':id',
+            element: <ProductDetailPage />,
+          },
+        ],
       },
       {
         path: 'chat',
@@ -68,16 +82,6 @@ const router = createBrowserRouter([
       {
         path: 'oauth-redirect',
         element: <OAuthRedirectPage />,
-      },
-    ],
-  },
-  {
-    path: 'products',
-    element: <ServiceLayout />,
-    children: [
-      {
-        path: 'sellers',
-        element: <ProductRegistrationPage />,
       },
     ],
   },
