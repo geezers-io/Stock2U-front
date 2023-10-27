@@ -6,7 +6,7 @@ export interface MockProduct {
   name: string; // [note: '잔여 재고 이름']
   type: ProductType; // [note: '잔여 재고 분류']
   userId: number; // [note: '사용자 FK']
-  description: string; // [note: '상품 설명']
+  description: string; // [note: '재고 설명']
   checkOnlyOneReserve: boolean; // [note: '예약 한 건만 받기']
   showAccountDetails: boolean; // [note: '예약자에게 입금 정보 보이기']
   expiredAt: Date; // [note: '게시 마감 기한']
