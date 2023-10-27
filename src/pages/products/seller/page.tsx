@@ -50,14 +50,14 @@ const ProductRegistrationPage: FC = () => {
         게시글 제목
       </Heading>
       <Input placeholder="Basic usage" bgColor="gray.100" />
-      {/*상품이름*/}
+      {/*재고가름*/}
       <Heading as="h4" size="md">
-        상품 이름
+        재고 이름
       </Heading>
       <Input placeholder="Basic usage" bgColor="gray.100" />
-      {/*상품분류*/}
+      {/*재고분류*/}
       <Heading as="h4" size="md">
-        상품 분류
+        재고 분류
       </Heading>
       <CheckboxGroup colorScheme="brand">
         <Stack spacing={[1, 5]} direction={['column', 'row']}>
@@ -71,9 +71,9 @@ const ProductRegistrationPage: FC = () => {
         게시 마감 기한
       </Heading>
       <Input placeholder="Select Date and Time" size="md" type="datetime-local" bgColor="gray.100" />
-      {/*상품 상세 소개*/}
+      {/*재고 상세 소개*/}
       <Heading as="h4" size="md">
-        상품 상세 소개 <Text fontSize="sm">*최대 일주일 설정 가능합니다</Text>
+        재고 상세 소개 <Text fontSize="sm">*최대 일주일 설정 가능합니다</Text>
       </Heading>
       <Editable defaultValue="상세 설명을 적어주세요.">
         <EditablePreview />

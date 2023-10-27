@@ -77,7 +77,7 @@ const IndexPage: FC = () => {
       <ProductCards
         uniqueKey="recommended"
         products={recommendedProducts}
-        emptyComment="아직 추천된 상품이 없어요 :("
+        emptyComment="아직 추천된 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
       />
 
@@ -87,7 +87,7 @@ const IndexPage: FC = () => {
       <ProductCards
         uniqueKey="nearExpiration"
         products={nearExpirationProducts}
-        emptyComment="아직 마감 임박된 상품이 없어요 :("
+        emptyComment="아직 마감 임박된 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
       />
       {nearExpirationProducts && (
@@ -103,10 +103,10 @@ const IndexPage: FC = () => {
               borderRadius="6px"
             >
               <Heading size="md" mb="16px">
-                마감 임박 상품을 좀 더 찾아볼래요
+                마감 임박 재고를 좀 더 찾아볼래요
               </Heading>
               <Button colorScheme="accent" tabIndex={-1}>
-                상품 더 보기
+                재고 더 보기
               </Button>
             </Flex>
           </Link>
@@ -119,7 +119,7 @@ const IndexPage: FC = () => {
       <ProductCards
         uniqueKey="near"
         products={nearProducts}
-        emptyComment="근처에 있는 상품이 없어요 :("
+        emptyComment="근처에 있는 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail */}
       />
       {nearProducts && (
@@ -135,10 +135,10 @@ const IndexPage: FC = () => {
               borderRadius="6px"
             >
               <Heading size="md" mb="16px">
-                근처 상품을 좀 더 찾아볼래요
+                근처 재고를 좀 더 찾아볼래요
               </Heading>
               <Button colorScheme="brand" tabIndex={-1}>
-                상품 더 보기
+                재고 더 보기
               </Button>
             </Flex>
           </Link>
@@ -147,7 +147,7 @@ const IndexPage: FC = () => {
 
       <Spacer h={24} />
       <Flex flexDirection="column" alignItems="center" py="30px">
-        <Heading size="lg">찾으시는 잔여상품이 없나요?</Heading>
+        <Heading size="lg">찾으시는 잔여재고가 없나요?</Heading>
         <Heading as="h2" color="gray.500" size="md" mt={4}>
           더 많은 정보를 확인하세요!
         </Heading>

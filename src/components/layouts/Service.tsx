@@ -36,7 +36,7 @@ const ServiceLayout: FC = () => {
 
           {/* TODO: 현재 align 안맞음 - 김준재가 추후 수정 */}
           <Heading fontSize="xl" fontWeight={500}>
-            {pathname.includes('products/seller') && '상품 등록'}
+            {pathname.includes('products/seller') && '재고 등록'}
           </Heading>
 
           {user && (
