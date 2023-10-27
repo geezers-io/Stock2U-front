@@ -6,8 +6,8 @@ export interface ProductSeller {
   id: number;
   username: string;
   phone: string;
-  salesCount?: number; // 여기 물음표가 맞을까
-  reviewCount?: number;
+  salesCount: number;
+  reviewCount: number;
 }
 
 export interface ProductDetail {
