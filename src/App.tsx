@@ -11,6 +11,7 @@ import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
 import ProductDetailPage from '@/pages/products/[id]/page';
+import ProductsSearchPage from '@/pages/products/page';
 import ProductRegistrationPage from '@/pages/products/seller/page';
 import theme from '@/styles/theme';
 
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>products page</div>,
+            element: <ProductsSearchPage />,
           },
           {
             path: 'register',
