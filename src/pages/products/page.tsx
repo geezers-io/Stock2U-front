@@ -10,6 +10,7 @@ const ProductsSearchPage: FC = () => {
   const geoLocation = useBoundedStore(state => state.geoLocation);
   const { data, loading, nextPage, pagination } = usePagination(ProductsService.search, {
     ...DEFAULT_PAGE_REQUEST,
+    size: 30,
     latitude: geoLocation.latitude,
     longitude: geoLocation.longitude,
   });
