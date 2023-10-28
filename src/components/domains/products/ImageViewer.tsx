@@ -11,7 +11,7 @@ const HORIZONTAL_POINT = 'md';
 const ImageViewer: FC<Props> = ({ images }) => {
   const [thumbImage, setThumbImage] = useState<SimpleFile>(images[0]);
 
-  const handleImageHover = (focusImage: SimpleFile) => {
+  const handleImageClick = (focusImage: SimpleFile) => {
     setThumbImage(focusImage);
   };
 
@@ -62,7 +62,7 @@ const ImageViewer: FC<Props> = ({ images }) => {
                     role="button"
                     src={image.uploadPath}
                     alt="Product Image"
-                    onMouseEnter={() => handleImageHover(image)}
+                    onClick={() => handleImageClick(image)}
                     w="100%"
                     h="auto"
                     aspectRatio="1/1"
