@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import qs from 'qs';
 import { PageRequest, PageResponse } from '@/api/@types/@shared';
 import { useCustomToast } from '@/hooks/useCustomToast';
+import { isPureObject } from '@/utils/assert';
 import { decoder } from '@/utils/qs';
 
 export const DEFAULT_PAGE_REQUEST: PageRequest = {
@@ -18,6 +19,7 @@ export function usePagination<Req extends PageRequest, Data>(
   const toast = useCustomToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const request = { ...initialRequest, ...parseSearchParams<Req>(searchParams) };
+  const prevRequestRef = useRef<Req>(request);
   const [response, setResponse] = useState<PageResponse<Data>>();
   const [loading, setLoading] = useState(false);
 
@@ -32,6 +34,7 @@ export function usePagination<Req extends PageRequest, Data>(
 
   const fetchData = async (req: Req) => {
     if (loading) return;
+    if (JSON.stringify(prevRequestRef.current) === JSON.stringify(req)) return;
 
     try {
       setLoading(true);
@@ -44,11 +47,15 @@ export function usePagination<Req extends PageRequest, Data>(
       toast.error(e);
     } finally {
       setLoading(false);
+      prevRequestRef.current = req;
     }
   };
 
-  const setRequest = (next: Req | ((prev: Req) => void)) => {
-    const nextRequest = typeof next === 'function' ? next(request) : request;
+  const setRequest = (next: Req | ((prev: Req) => Req)) => {
+    const _request = typeof next === 'function' ? next(request) : request;
+    const nextRequest = hasDifference(_request, prevRequestRef.current, new Set(['page']))
+      ? { ..._request, page: 0 }
+      : _request;
     setSearchParams(qs.stringify(nextRequest));
   };
 
@@ -86,4 +93,16 @@ export function usePagination<Req extends PageRequest, Data>(
 
 function parseSearchParams<T>(searchParams: URLSearchParams) {
   return qs.parse(searchParams.toString(), { decoder }) as T;
+}
+
+function hasDifference<T>(obj1: T, obj2: T, exceptionKeys?: Set<string>) {
+  if (!isPureObject(obj1) || !isPureObject(obj2)) throw new Error('obj1, obj2 must be pure object');
+
+  const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
+
+  for (const key of keys) {
+    if (exceptionKeys?.has(key)) continue;
+    if (obj1[key] !== obj2[key]) return true;
+  }
+  return false;
 }
