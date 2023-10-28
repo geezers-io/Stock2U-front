@@ -1,5 +1,5 @@
 import { AuthVendor, UserRole } from './@enums';
-import { PageResponseDoro, PageRequest } from '@/api/@types/@shared';
+import { PageRequest } from '@/api/@types/@shared';
 
 export interface SellerDetails {
   id: number;
@@ -97,8 +97,14 @@ export interface Address {
   zipCode: number;
   buildingName: string;
 }
+export interface AddressPageResponse {
+  // NOTE: 이 API 페이지네이션 응답만 공용 페이지네이션 응답과 형상이 다름
+  countPerPage: number;
+  totalCount: number;
+  currentPage: number;
+}
 export interface FindAddressResponse {
-  page: PageResponseDoro;
+  page: AddressPageResponse;
   results: Address[];
 }
 

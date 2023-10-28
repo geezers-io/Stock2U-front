@@ -20,12 +20,11 @@ import {
 } from '@chakra-ui/react';
 import { isAxiosError } from 'axios';
 import { ApiError, PageRequest } from '@/api/@types/@shared';
-import { Address } from '@/api/@types/Auth';
+import { Address, AddressPageResponse } from '@/api/@types/Auth';
 import { AuthService } from '@/api/services/Auth';
 import Pagination from '@/components/shared/Pagination';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useDebounce } from '@/hooks/useDebounce';
-import { usePagination } from '@/hooks/usePagination';
 
 interface Props {
   title: string;
@@ -35,15 +34,25 @@ interface Props {
 }
 
 const SEARCH_MIN = 2;
+const INITIAL_PAGE_REQUEST: PageRequest = {
+  page: 0,
+  size: 10,
+};
 
 const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
-  const { totalPages, totalCount, setPage, pageRequest, setPageResponse, resetPageRequest } = usePagination();
+  const toast = useCustomToast();
   const [search, setSearch] = useState('');
   const [searching, setSearching] = useState(false);
   const [helpText, setSearchHelpText] = useState('');
   const [addresses, setAddresses] = useState<Address[]>([]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageRequest, setPageRequest] = useState<PageRequest>(INITIAL_PAGE_REQUEST);
+  const [pageResponse, setPageResponse] = useState<AddressPageResponse>({
+    countPerPage: 0,
+    totalCount: 0,
+    currentPage: 1,
+  });
   const inputRef = useRef<HTMLInputElement>(null);
-  const toast = useCustomToast();
 
   const fetchAddresses = useDebounce(async (search: string, pageRequest: PageRequest) => {
     try {
@@ -76,7 +85,7 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
 
   useEffect(() => {
     if (!isOpen) {
-      resetPageRequest();
+      setPageRequest(INITIAL_PAGE_REQUEST);
       setSearch('');
       setAddresses([]);
       return;
@@ -151,10 +160,10 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
 
               <Flex justifyContent="center" mt={4}>
                 <Pagination
-                  pageIndex={pageRequest.page - 1}
-                  setPageIndex={pageIndex => setPage(pageIndex + 1)}
-                  totalPages={totalPages}
-                  totalCount={totalCount}
+                  pageIndex={pageIndex}
+                  setPageIndex={setPageIndex}
+                  totalPages={Math.ceil(pageResponse.totalCount / pageResponse.countPerPage)}
+                  totalCount={pageResponse.totalCount}
                 />
               </Flex>
             </>
