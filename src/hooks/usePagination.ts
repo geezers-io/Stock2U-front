@@ -20,6 +20,7 @@ export function usePagination<Req extends PageRequest, Data>(
   const [searchParams, setSearchParams] = useSearchParams();
   const request = { ...initialRequest, ...parseSearchParams<Req>(searchParams) };
   const prevRequestRef = useRef<Req>(request);
+  const [initialFetched, setInitialFetched] = useState(false);
   const [response, setResponse] = useState<PageResponse<Data>>();
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +35,7 @@ export function usePagination<Req extends PageRequest, Data>(
 
   const fetchData = async (req: Req) => {
     if (loading) return;
-    if (JSON.stringify(prevRequestRef.current) === JSON.stringify(req)) return;
+    if (initialFetched && JSON.stringify(prevRequestRef.current) === JSON.stringify(req)) return;
 
     try {
       setLoading(true);
@@ -47,6 +48,7 @@ export function usePagination<Req extends PageRequest, Data>(
       toast.error(e);
     } finally {
       setLoading(false);
+      setInitialFetched(true);
       prevRequestRef.current = req;
     }
   };
@@ -76,6 +78,7 @@ export function usePagination<Req extends PageRequest, Data>(
   };
 
   useEffect(() => {
+    console.log('effect');
     fetchData({ ...initialRequest, ...parseSearchParams<Req>(searchParams) });
   }, [searchParams]);
 
