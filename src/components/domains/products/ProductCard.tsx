@@ -6,8 +6,10 @@ import CountdownTimer from '@/components/domains/products/CountdownTimer';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 import { processer } from '@/utils/process';
 
-interface Props {
+export interface ProductCardProps {
   product: ProductSummary;
+  showDistance?: boolean;
+  showExpiredAt?: boolean;
 }
 
 const badgeColorschemeDict: Record<ProductType, string> = {
@@ -16,7 +18,11 @@ const badgeColorschemeDict: Record<ProductType, string> = {
   [ProductType.TICKET]: 'sub.500',
 };
 
-const ProductCard: FC<Props> = ({ product: { thumbnailUrl, productType, title, price, expiredAt, distance } }) => {
+const ProductCard: FC<ProductCardProps> = ({
+  product: { thumbnailUrl, productType, title, price, expiredAt, distance },
+  showDistance = true,
+  showExpiredAt = true,
+}) => {
   return (
     <Box>
       <Image src={thumbnailUrl} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
@@ -29,10 +35,12 @@ const ProductCard: FC<Props> = ({ product: { thumbnailUrl, productType, title, p
       <Text fontSize="sm" fontWeight={500} textAlign="right">
         {processer.price(price)}
       </Text>
-      <Text fontSize="xs" textAlign="right" letterSpacing={-0.2} color="gray.700">
-        내 주변 {processer.distance(distance)}
-      </Text>
-      <CountdownTimer expiredAt={new Date(expiredAt)} />
+      {showDistance && (
+        <Text fontSize="xs" textAlign="right" letterSpacing={-0.2} color="gray.700">
+          내 주변 {processer.distance(distance)}
+        </Text>
+      )}
+      {showExpiredAt && <CountdownTimer expiredAt={new Date(expiredAt)} />}
     </Box>
   );
 };

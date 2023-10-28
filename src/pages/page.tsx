@@ -90,6 +90,7 @@ const IndexPage: FC = () => {
         products={nearExpirationProducts}
         emptyComment="아직 마감 임박된 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
+        showDistance={false}
       />
       {nearExpirationProducts && (
         <>
@@ -122,6 +123,7 @@ const IndexPage: FC = () => {
         products={nearProducts}
         emptyComment="근처에 있는 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail */}
+        showExpiredAt={false}
       />
       {nearProducts && (
         <>
