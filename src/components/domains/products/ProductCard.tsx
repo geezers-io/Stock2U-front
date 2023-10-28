@@ -4,6 +4,7 @@ import { ProductType } from '@/api/@types/@enums';
 import { ProductSummary } from '@/api/@types/Products';
 import CountdownTimer from '@/components/domains/products/CountdownTimer';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
+import { processer } from '@/utils/process';
 
 interface Props {
   product: ProductSummary;
@@ -15,9 +16,7 @@ const badgeColorschemeDict: Record<ProductType, string> = {
   [ProductType.TICKET]: 'sub.500',
 };
 
-const ProductCard: FC<Props> = ({
-  product: { thumbnailUrl, productType, title, price, expiredAt, latitude, longitude },
-}) => {
+const ProductCard: FC<Props> = ({ product: { thumbnailUrl, productType, title, price, expiredAt, distance } }) => {
   return (
     <Box>
       <Image src={thumbnailUrl} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
@@ -28,10 +27,10 @@ const ProductCard: FC<Props> = ({
         {title}
       </Heading>
       <Text fontSize="sm" fontWeight={500} textAlign="right">
-        {price.toLocaleString()}원
+        {processer.price(price)}
       </Text>
       <Text fontSize="xs" textAlign="right" letterSpacing={-0.2} color="gray.700">
-        내 주변 {longitude}.{latitude}
+        내 주변 {processer.distance(distance)}
       </Text>
       <CountdownTimer expiredAt={new Date(expiredAt)} />
     </Box>
