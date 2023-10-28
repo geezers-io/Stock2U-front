@@ -1,14 +1,20 @@
-import { useCallback, useState } from 'react';
-import { PageResponse } from '@/api/@types/@shared';
+import { useEffect, useState } from 'react';
+import { PageRequest, PageResponse } from '@/api/@types/@shared';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
-const DEFAULT_PAGE_REQUEST = {
+export const DEFAULT_PAGE_REQUEST: PageRequest = {
   page: 0,
   size: 10,
 };
 
-export function usePagination<T>(initialPageRequest = DEFAULT_PAGE_REQUEST) {
-  const [pageRequest, setPageRequest] = useState(initialPageRequest);
-  const [pageResponse, setPageResponse] = useState<PageResponse<T>>();
+export function usePagination<Req extends PageRequest, Data>(
+  fetchFunc: (request: Req) => Promise<PageResponse<Data>>,
+  initialRequest: Req,
+) {
+  const [pageRequest, setPageRequest] = useState(initialRequest);
+  const [pageResponse, setPageResponse] = useState<PageResponse<Data>>();
+  const [loading, setLoading] = useState(false);
+  const toast = useCustomToast();
 
   const pagination = {
     totalPages: pageResponse?.totalPages ?? 0,
@@ -16,24 +22,46 @@ export function usePagination<T>(initialPageRequest = DEFAULT_PAGE_REQUEST) {
     isFirstPage: pageResponse?.first ?? true,
     isLastPage: pageResponse?.last ?? true,
     currentPage: pageRequest.page,
+    empty: pageResponse ? pageResponse.empty : false,
   } as const;
 
-  const resetPageRequest = useCallback(() => {
-    setPageRequest(initialPageRequest);
-  }, [initialPageRequest]);
+  const fetchData = async () => {
+    if (loading) return;
 
-  const setPage = (page: number) => {
-    setPageRequest(prev => ({ ...prev, page }));
+    try {
+      setLoading(true);
+      const res = await fetchFunc(pageRequest);
+      setPageResponse(res);
+    } catch (e) {
+      toast.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const setPaginationResponse = (res: PageResponse<T>) => {
-    setPageResponse(res);
+  const resetPageRequest = () => {
+    setPageRequest(initialRequest);
   };
+
+  const prevPage = () => {
+    if (loading || !pagination.isFirstPage) return;
+    setPageRequest(prev => ({ ...prev, page: prev.page - 1 }));
+  };
+
+  const nextPage = () => {
+    if (loading || !pagination.isLastPage) return;
+    setPageRequest(prev => ({ ...prev, page: prev.page + 1 }));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [pageRequest]);
 
   return {
-    data: pageResponse?.content ?? [],
-    setPage,
-    setPaginationResponse,
+    data: pageResponse?.content,
+    loading,
+    prevPage,
+    nextPage,
     resetPageRequest,
     pagination,
   };
