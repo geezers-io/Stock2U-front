@@ -78,7 +78,7 @@ export function usePagination<Req extends PageRequest, Data>(
   };
 
   useEffect(() => {
-    console.log('effect');
+    // TODO: products/ 진입 > 여러번 API 호출 후 뒤로가기 잘 되는지 확인 필요
     fetchData({ ...initialRequest, ...parseSearchParams<Req>(searchParams) });
   }, [searchParams]);
 
