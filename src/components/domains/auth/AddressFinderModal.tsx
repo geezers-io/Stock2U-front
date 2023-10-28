@@ -46,8 +46,8 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
   const [helpText, setSearchHelpText] = useState('');
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [pageIndex, setPageIndex] = useState(0);
-  const [pageRequest, setPageRequest] = useState<PageRequest>(INITIAL_PAGE_REQUEST);
-  const [pageResponse, setPageResponse] = useState<AddressPageResponse>({
+  const [request, setRequest] = useState<PageRequest>(INITIAL_PAGE_REQUEST);
+  const [response, setResponse] = useState<AddressPageResponse>({
     countPerPage: 0,
     totalCount: 0,
     currentPage: 1,
@@ -62,7 +62,7 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
         ...pageRequest,
         keyword: search,
       });
-      setPageResponse(page);
+      setResponse(page);
       setAddresses(results);
       setSearchHelpText('');
     } catch (e) {
@@ -85,7 +85,7 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
 
   useEffect(() => {
     if (!isOpen) {
-      setPageRequest(INITIAL_PAGE_REQUEST);
+      setRequest(INITIAL_PAGE_REQUEST);
       setSearch('');
       setAddresses([]);
       return;
@@ -97,8 +97,8 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
       setAddresses([]);
       return;
     }
-    fetchAddresses(search, pageRequest);
-  }, [search, pageRequest]);
+    fetchAddresses(search, request);
+  }, [search, request]);
 
   return (
     <Modal initialFocusRef={inputRef} isOpen={isOpen} onClose={close} isCentered size="lg">
@@ -162,8 +162,8 @@ const AddressFinderModal: FC<Props> = ({ title, isOpen, close, onSelect }) => {
                 <Pagination
                   pageIndex={pageIndex}
                   setPageIndex={setPageIndex}
-                  totalPages={Math.ceil(pageResponse.totalCount / pageResponse.countPerPage)}
-                  totalCount={pageResponse.totalCount}
+                  totalPages={Math.ceil(response.totalCount / response.countPerPage)}
+                  totalCount={response.totalCount}
                 />
               </Flex>
             </>
