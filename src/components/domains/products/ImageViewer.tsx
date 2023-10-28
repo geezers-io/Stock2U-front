@@ -62,7 +62,7 @@ const ImageViewer: FC<Props> = ({ images }) => {
                     role="button"
                     src={image.uploadPath}
                     alt="Product Image"
-                    onClick={() => handleImageClick(image)}
+                    onMouseEnter={() => handleImageClick(image)}
                     w="100%"
                     h="auto"
                     aspectRatio="1/1"
