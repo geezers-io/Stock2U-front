@@ -10,16 +10,16 @@ export const DEFAULT_PAGE_REQUEST: PageRequest = {
   size: 10,
 };
 
-// TODO: searchParams 에 표시하지 않을 필드 지정하는 기능 추가
+// TODO: searchParams 에 표시하지 않을 필드 지정하는 기능 추가 - ex) 위도 경도
 export function usePagination<Req extends PageRequest, Data>(
   fetchFunc: (request: Req) => Promise<PageResponse<Data>>,
   initialRequest: Req,
 ) {
+  const toast = useCustomToast();
   const [searchParams, setSearchParams] = useSearchParams();
+  const request = { ...initialRequest, ...parseSearchParams<Req>(searchParams) };
   const [response, setResponse] = useState<PageResponse<Data>>();
   const [loading, setLoading] = useState(false);
-  const toast = useCustomToast();
-  const request = parseSearchParams<Req>(searchParams);
 
   const pageable = {
     totalPages: response?.totalPages ?? 0,
