@@ -4,7 +4,7 @@ import { logAndProcessError, logResponse, unwrapResponse } from '@/api/intercept
 import { flow } from '@/utils/flow';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api', // NOTE: vite proxy
+  baseURL: 'https://localhost:3000/api', // NOTE: vite proxy
   timeout: 4000,
   validateStatus: status => status >= 200 && status < 400,
   withCredentials: true,
