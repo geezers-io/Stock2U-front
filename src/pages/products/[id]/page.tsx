@@ -35,7 +35,7 @@ const ProductDetailPage: FC = () => {
 
         <ImageViewer images={mockSimpleFiles /* TODO: API 에서 내려온 값 넣어주기 */} />
 
-        <Flex gap="10px" mb="5px" mt="5px">
+        <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
           <Badge fontSize="xl" colorScheme="purple">
             Ticket
           </Badge>

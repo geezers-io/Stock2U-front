@@ -35,16 +35,6 @@ const ProductRegistrationPage: FC = () => {
         <ImageUploader />
       </Flex>
 
-      {/*게시 정책 설정*/}
-      <Heading as="h4" size="md">
-        게시 정책 설정
-      </Heading>
-      <CheckboxGroup colorScheme="brand" defaultValue={[]}>
-        <Stack spacing={[1, 5]} direction={['column', 'row']}>
-          <Checkbox value="onlyreservation">예약 한 건만 받기</Checkbox>
-          <Checkbox value="deposit-information">예약자에게 입금 정보 보이기</Checkbox>
-        </Stack>
-      </CheckboxGroup>
       {/*게시글 제목*/}
       <Heading as="h4" size="md">
         게시글 제목
