@@ -1,167 +1,37 @@
-import { ProductType, ReservationStatus } from '@/api/@types/@enums';
+import { ProductType } from '@/api/@types/@enums';
+import { ProductSummary } from '@/api/@types/Products';
+import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 
-export interface MockProduct {
-  id: number; // [PK, increment]
-  title: string; // [note: '게시글 제목']
-  name: string; // [note: '잔여 재고 이름']
-  type: ProductType; // [note: '잔여 재고 분류']
-  userId: number; // [note: '사용자 FK']
-  description: string; // [note: '재고 설명']
-  checkOnlyOneReserve: boolean; // [note: '예약 한 건만 받기']
-  showAccountDetails: boolean; // [note: '예약자에게 입금 정보 보이기']
-  expiredAt: Date; // [note: '게시 마감 기한']
-  status?: ReservationStatus; // [note: '판매 상태']
-  latitude: number; // [note: '위도']
-  longitude: number; // [note: '경도']
-  price: number;
-  imageSRC: string;
-}
+const MOCK_COUNT = 100;
 
 const MOCK_IMAGE_SRC =
   'https://mblogthumb-phinf.pstatic.net/MjAyMTA0MDZfMjIz/MDAxNjE3NzE0OTI5OTcx.-gRiK0jZuwfAphcsniSbvtSLBgTCs2dhI1ZDdtOgg2wg.z1slJcyP7xnKlVhyBLTHBwuEYH0HFynr3cNIcH6acKgg.JPEG.disneasy/01.jpg?type=w800';
-export const mockProducts: MockProduct[] = [
-  {
-    id: 1,
-    title: '청포도',
-    name: 'name 1',
-    type: ProductType.FOOD,
-    userId: 1,
-    description: 'description 2',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-12-25'),
-    status: ReservationStatus.PROGRESS,
-    latitude: 10,
-    longitude: 2,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 2,
-    title: '청포도',
-    name: 'name 2',
-    type: ProductType.TICKET,
-    userId: 2,
-    description: 'description 2',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-12-25'),
-    status: ReservationStatus.COMPLETION,
-    latitude: 1,
-    longitude: 2,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 3,
-    title: '청포도',
-    name: 'name 3',
-    type: ProductType.TICKET,
-    userId: 3,
-    description: 'description 3',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-12-25'),
-    status: ReservationStatus.COMPLETION,
-    latitude: 3,
-    longitude: 4,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 4,
-    title: '청포도',
-    name: 'name 1',
-    type: ProductType.ACCOMMODATION,
-    userId: 4,
-    description: 'description 2',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-10-20'),
-    status: ReservationStatus.PROGRESS,
-    latitude: 7,
-    longitude: 5,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 5,
-    title: '청포도',
-    name: 'name 2',
-    type: ProductType.TICKET,
-    userId: 5,
-    description: 'description 2',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-10-16'),
-    status: ReservationStatus.COMPLETION,
-    latitude: 0,
-    longitude: 0,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 6,
-    title: '청포도',
-    name: 'name 3',
-    type: ProductType.ACCOMMODATION,
-    userId: 3,
-    description: 'description 3',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-10-15T12:00'),
-    status: ReservationStatus.COMPLETION,
-    latitude: 0,
-    longitude: 0,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 7,
-    title: '청포도',
-    name: 'name 1',
-    type: ProductType.FOOD,
-    userId: 1,
-    description: 'description 2',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-10-20'),
-    status: ReservationStatus.PROGRESS,
-    latitude: 0,
-    longitude: 0,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 8,
-    title: '청포도',
-    name: 'name 2',
-    type: ProductType.TICKET,
-    userId: 2,
-    description: 'description 2',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-10-16'),
-    status: ReservationStatus.COMPLETION,
-    latitude: 0,
-    longitude: 0,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-  {
-    id: 9,
-    title: '청포도',
-    name: 'name 3',
-    type: ProductType.ACCOMMODATION,
-    userId: 3,
-    description: 'description 3',
-    checkOnlyOneReserve: false,
-    showAccountDetails: false,
-    expiredAt: new Date('2023-10-15T12:00'),
-    status: ReservationStatus.COMPLETION,
-    latitude: 0,
-    longitude: 0,
-    price: 10000,
-    imageSRC: MOCK_IMAGE_SRC,
-  },
-];
+const MOCK_COORDINATES = Array.from({ length: MOCK_COUNT }).map((_, i) => ({
+  latitude: 37 + i / 1000,
+  longitude: 126 + i / 1000,
+}));
+
+export const mockProducts: ProductSummary[] = Array.from({ length: MOCK_COUNT }).map((_, i) => ({
+  id: i + 1,
+  productCount: i + 2,
+  distance: i / 10,
+  latitude: MOCK_COORDINATES[i].latitude,
+  longitude: MOCK_COORDINATES[i].longitude,
+  price: 10000 + i * 2000,
+  title: '상품',
+  expiredAt: getTime(i),
+  createdAt: new Date().toISOString(),
+  productType: getProductType(i),
+  thumbnailUrl: MOCK_IMAGE_SRC,
+}));
+
+function getTime(add: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + add);
+  return date.toISOString();
+}
+
+function getProductType(index: number) {
+  const enumValues = Object.keys(PRODUCT_TYPE_LABEL);
+  return enumValues[index % enumValues.length] as ProductType;
+}

@@ -1,17 +1,12 @@
 import { FC } from 'react';
 import { Badge, Box, Heading, Image, Text } from '@chakra-ui/react';
 import { ProductType } from '@/api/@types/@enums';
+import { ProductSummary } from '@/api/@types/Products';
 import CountdownTimer from '@/components/domains/products/CountdownTimer';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 
 interface Props {
-  imageSRC: string;
-  type: ProductType;
-  title: string;
-  price: number;
-  expiredAt: Date;
-  latitude: number;
-  longitude: number;
+  product: ProductSummary;
 }
 
 const badgeColorschemeDict: Record<ProductType, string> = {
@@ -20,12 +15,14 @@ const badgeColorschemeDict: Record<ProductType, string> = {
   [ProductType.TICKET]: 'sub.500',
 };
 
-const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latitude, longitude }) => {
+const ProductCard: FC<Props> = ({
+  product: { thumbnailUrl, productType, title, price, expiredAt, latitude, longitude },
+}) => {
   return (
     <Box>
-      <Image src={imageSRC} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
-      <Badge bgColor={badgeColorschemeDict[type]} color="white">
-        {PRODUCT_TYPE_LABEL[type]}
+      <Image src={thumbnailUrl} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
+      <Badge bgColor={badgeColorschemeDict[productType]} color="white">
+        {PRODUCT_TYPE_LABEL[productType]}
       </Badge>
       <Heading as="h2" fontSize="md" mt={1} noOfLines={1} wordBreak="break-all">
         {title}
@@ -36,7 +33,7 @@ const ProductCard: FC<Props> = ({ imageSRC, type, title, price, expiredAt, latit
       <Text fontSize="xs" textAlign="right" letterSpacing={-0.2} color="gray.700">
         내 주변 {longitude}.{latitude}
       </Text>
-      <CountdownTimer expiredAt={expiredAt} />
+      <CountdownTimer expiredAt={new Date(expiredAt)} />
     </Box>
   );
 };

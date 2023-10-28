@@ -3,16 +3,17 @@ import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { MockProduct, mockProducts } from '@/api/__mock__/mockProduct';
+import { ProductSummary } from '@/api/@types/Products';
+import { mockProducts } from '@/api/__mock__/mockProduct';
 import ProductCards from '@/components/domains/products/ProductCards';
 import ImageSlider from '@/components/shared/ImageCarousel';
 import { delay } from '@/utils/delay';
 
 const IndexPage: FC = () => {
   const theme = useTheme();
-  const [recommendedProducts, setRecommendedProducts] = useState<MockProduct[]>();
-  const [nearExpirationProducts, setNearExpirationProducts] = useState<MockProduct[]>();
-  const [nearProducts, setNearProducts] = useState<MockProduct[]>();
+  const [recommendedProducts, setRecommendedProducts] = useState<ProductSummary[]>();
+  const [nearExpirationProducts, setNearExpirationProducts] = useState<ProductSummary[]>();
+  const [nearProducts, setNearProducts] = useState<ProductSummary[]>();
   const [bannerImages, setBannerImages] = useState<string[]>([]);
 
   const fetchRecommendedProducts = async () => {
