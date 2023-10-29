@@ -21,6 +21,7 @@ export function usePagination<Req extends PageRequest, Data>(
   const request = { ...initialRequest, ...parseSearchParams<Req>(searchParams) };
   const prevRequestRef = useRef<Req>(request);
   const [initialFetched, setInitialFetched] = useState(false);
+  const [initialTryFetch, setInitialTryFetch] = useState(false);
   const [response, setResponse] = useState<PageResponse<Data>>();
   const [loading, setLoading] = useState(false);
 
@@ -55,9 +56,13 @@ export function usePagination<Req extends PageRequest, Data>(
 
   const setRequest = (next: Req | ((prev: Req) => Req)) => {
     const _request = typeof next === 'function' ? next(request) : request;
-    const nextRequest = hasDifference(_request, prevRequestRef.current, new Set(['page']))
-      ? { ..._request, page: 0 }
-      : _request;
+    const hasChangedExceptPage = hasDifference(_request, prevRequestRef.current, new Set(['page']));
+
+    if (hasChangedExceptPage) {
+      setResponse(undefined);
+    }
+
+    const nextRequest = hasChangedExceptPage ? { ..._request, page: 0 } : _request;
     setSearchParams(qs.stringify(nextRequest));
   };
 
@@ -79,8 +84,15 @@ export function usePagination<Req extends PageRequest, Data>(
 
   useEffect(() => {
     // TODO: products/ 진입 > 여러번 API 호출 후 뒤로가기 잘 되는지 확인 필요
+    if (!initialTryFetch) {
+      // NOTE: 새로고침 시 page 0 으로 초기화.
+      const nextRequest = { ...initialRequest, ...parseSearchParams<Req>(searchParams), page: 0 };
+      setSearchParams(qs.stringify(nextRequest));
+      setInitialTryFetch(true);
+      return;
+    }
     fetchData({ ...initialRequest, ...parseSearchParams<Req>(searchParams) });
-  }, [searchParams]);
+  }, [searchParams, initialTryFetch]);
 
   return {
     data: response?.content,
