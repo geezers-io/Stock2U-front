@@ -37,7 +37,7 @@ const ImageUploader: FC = () => {
     if (willAppendImages.length === 0) return;
 
     try {
-      const { files } = await FileService.uploadFile({ files: willAppendImages });
+      const { files } = await FileService.upload({ files: willAppendImages });
       const nextImages = [...images, ...files];
       setImages(nextImages);
       if (prevImageLength === 0) {

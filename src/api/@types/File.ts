@@ -16,6 +16,6 @@ export interface RemoveFileRequest {
 }
 
 export interface FileClient {
-  uploadFile(request: UploadFileRequest): Promise<UploadFileResponse>;
-  removeFile(request: RemoveFileRequest): Promise<void>;
+  upload(request: UploadFileRequest): Promise<UploadFileResponse>;
+  remove(request: RemoveFileRequest): Promise<void>;
 }
