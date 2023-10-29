@@ -38,11 +38,13 @@ const ProductDetailPage: FC = () => {
         <Heading as="h3" size="lg">
           {productDetail.title}
         </Heading>
-        <Flex alignItems="center" gap="10px">
+        <Flex alignItems="center" gap="10px" justifyContent="right">
           <Badge fontSize="xl" variant="outline" colorScheme="brand">
             DEADLINE
           </Badge>
-          <Text fontSize="xl">{productDetail.date} </Text>
+          <Text fontSize="xl" as="b" color="brand.500">
+            {productDetail.date}{' '}
+          </Text>
         </Flex>
 
         <ImageViewer images={mockSimpleFiles /* TODO: API 에서 내려온 값 넣어주기 */} />
