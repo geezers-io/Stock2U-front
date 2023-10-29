@@ -14,6 +14,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ProductType } from '@/api/@types/@enums';
 import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
