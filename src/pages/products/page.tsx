@@ -73,6 +73,7 @@ const ProductsSearchPage: FC = () => {
         </Flex>
       </Flex>
 
+      {/* FIXME: 개발 완료되면 제거 */}
       <pre>{JSON.stringify(request, null, 2)}</pre>
 
       <InfiniteScroll
