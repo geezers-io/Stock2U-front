@@ -7,7 +7,6 @@ import ImageViewer from '@/components/domains/products/ImageViewer';
 const ProductDetailPage: FC = () => {
   const [productDetail, setProductDetail] = useState<MockProductDetail>();
   const [subscribe, setSubscribe] = useState<boolean>(false);
-  const toast = useCustomToast();
 
   const fetchProductDetail = async () => {
     try {
@@ -24,7 +23,6 @@ const ProductDetailPage: FC = () => {
   }
   const onSubscribe = () => {
     setSubscribe(prevState => !prevState);
-    toast.success('구독되었습니다');
   };
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
