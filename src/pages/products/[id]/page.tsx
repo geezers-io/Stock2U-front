@@ -7,6 +7,7 @@ import ImageViewer from '@/components/domains/products/ImageViewer';
 const ProductDetailPage: FC = () => {
   const [productDetail, setProductDetail] = useState<MockProductDetail>();
   const [subscribe, setSubscribe] = useState<boolean>(false);
+  const toast = useCustomToast();
 
   const fetchProductDetail = async () => {
     try {
