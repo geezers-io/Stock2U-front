@@ -1,9 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Text, Heading, Box, Button, Avatar, Flex, Grid, Badge, Stack } from '@chakra-ui/react';
+import { ProductType } from '@/api/@types/@enums';
 import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
 import { mockSimpleFiles } from '@/api/__mock__/simpleFile';
 import ImageViewer from '@/components/domains/products/ImageViewer';
+
+const badgeColorschemeDict: Record<ProductType, string> = {
+  [ProductType.FOOD]: 'blue',
+  [ProductType.ACCOMMODATION]: 'yellow',
+  [ProductType.TICKET]: 'purple',
+};
 
 const ProductDetailPage: FC = () => {
   const [productDetail, setProductDetail] = useState<MockProductDetail>();
@@ -32,7 +39,7 @@ const ProductDetailPage: FC = () => {
           {productDetail.title}
         </Heading>
         <Flex alignItems="center" gap="10px">
-          <Badge fontSize="sm" variant="outline" colorScheme="brand">
+          <Badge fontSize="xl" variant="outline" colorScheme="brand">
             DEADLINE
           </Badge>
           <Text fontSize="xl">{productDetail.date} </Text>
@@ -41,8 +48,8 @@ const ProductDetailPage: FC = () => {
         <ImageViewer images={mockSimpleFiles /* TODO: API 에서 내려온 값 넣어주기 */} />
 
         <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
-          <Badge fontSize="xl" colorScheme="purple">
-            Ticket
+          <Badge fontSize="xl" colorScheme={badgeColorschemeDict[productDetail.productType]}>
+            {productDetail.productType}
           </Badge>
           <Text fontSize="xl" as="b">
             {productDetail.stockName}
@@ -85,7 +92,7 @@ const ProductDetailPage: FC = () => {
               금액
             </Badge>
             <Text fontSize="xl" as="b">
-              {productDetail.price}원
+              {productDetail.price.toLocaleString()}원
             </Text>
           </Stack>
           <Link to="/.../...">
