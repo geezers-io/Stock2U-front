@@ -14,7 +14,7 @@ const badgeColorschemeDict: Record<ProductType, string> = {
 
 const ProductDetailPage: FC = () => {
   const [productDetail, setProductDetail] = useState<MockProductDetail>();
-  const [subscribe, setSubscribe] = useState<boolean>(false);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
 
   const fetchProductDetail = async () => {
     try {
@@ -29,8 +29,11 @@ const ProductDetailPage: FC = () => {
   if (!productDetail) {
     return null;
   }
-  const onSubscribe = () => {
-    setSubscribe(prevState => !prevState);
+  const cancelSubscribe = () => {
+    setIsSubscribed(false);
+  };
+  const subscribe = () => {
+    setIsSubscribed(true);
   };
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
@@ -81,9 +84,16 @@ const ProductDetailPage: FC = () => {
             </Text>
           </Box>
           <Flex align-items="center">
-            <Button colorScheme={subscribe ? 'brand' : 'gray'} float="right" onClick={onSubscribe}>
-              판매자{subscribe ? ' 구독하기 ' : ' 구독 취소하기'}
-            </Button>
+            {isSubscribed && (
+              <Button colorScheme={'gray'} float="right" onClick={cancelSubscribe}>
+                판매자 구독 취소하기
+              </Button>
+            )}
+            {!isSubscribed && (
+              <Button colorScheme={'brand'} float="right" onClick={subscribe}>
+                판매자 구독하기
+              </Button>
+            )}
           </Flex>
         </Flex>
 
