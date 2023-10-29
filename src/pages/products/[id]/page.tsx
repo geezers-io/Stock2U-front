@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Text, Heading, Box, Button, Avatar, Flex, Grid, Badge, Stack } from '@chakra-ui/react';
 import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
 import { mockSimpleFiles } from '@/api/__mock__/simpleFile';
@@ -54,7 +55,11 @@ const ProductDetailPage: FC = () => {
       <Box>
         {/*seller*/}
         <Flex>
-          <Avatar size="xl" src="https://bit.ly/sage-adebayo" />
+          <Avatar
+            size="xl"
+            name={mockProductDetail.seller.nickname}
+            src={mockProductDetail.seller.profile ? mockProductDetail.seller.profile : 'https://bit.ly/broken-link'}
+          />
           <Box ml="3" w="100%">
             <Badge fontSize="xl" colorScheme="green">
               판매자
@@ -83,9 +88,11 @@ const ProductDetailPage: FC = () => {
               {productDetail.price}원
             </Text>
           </Stack>
-          <Grid p="1.2rem 0">
-            <Button colorScheme="brand">구매 예약 요청하기</Button>
-          </Grid>
+          <Link to="/.../...">
+            <Grid p="1.2rem 0">
+              <Button colorScheme="brand">구매 예약 요청하기</Button>
+            </Grid>
+          </Link>
         </Box>
       </Box>
     </Flex>
