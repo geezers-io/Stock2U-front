@@ -6,6 +6,7 @@ import ImageViewer from '@/components/domains/products/ImageViewer';
 
 const ProductDetailPage: FC = () => {
   const [productDetail, setProductDetail] = useState<MockProductDetail>();
+  const [subscribe, setSubscribe] = useState<boolean>(false);
 
   const fetchProductDetail = async () => {
     try {
@@ -20,6 +21,10 @@ const ProductDetailPage: FC = () => {
   if (!productDetail) {
     return null;
   }
+  const onSubscribe = () => {
+    setSubscribe(prevState => !prevState);
+    toast.success('구독되었습니다');
+  };
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
       <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
@@ -63,8 +68,8 @@ const ProductDetailPage: FC = () => {
             </Text>
           </Box>
           <Flex align-items="center">
-            <Button colorScheme="brand" float="right">
-              판매자 구독하기
+            <Button colorScheme={subscribe ? 'brand' : 'gray'} float="right" onClick={onSubscribe}>
+              판매자{subscribe ? ' 구독하기 ' : ' 구독 취소하기'}
             </Button>
           </Flex>
         </Flex>
