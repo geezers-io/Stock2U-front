@@ -1,16 +1,18 @@
 import { FC, useEffect, useState } from 'react';
 import {
   Flex,
-  Heading,
   Input,
-  Checkbox,
-  CheckboxGroup,
-  Stack,
-  Text,
   Button,
-  Editable,
-  EditablePreview,
-  EditableTextarea,
+  FormControl,
+  FormLabel,
+  Select,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Textarea,
+  Divider,
 } from '@chakra-ui/react';
 
 import { MockProduct } from '@/api/__mock__/mockProduct';
@@ -35,50 +37,50 @@ const ProductRegistrationPage: FC = () => {
         <ImageUploader />
       </Flex>
 
-      {/*게시 정책 설정*/}
-      <Heading as="h4" size="md">
-        게시 정책 설정
-      </Heading>
-      <CheckboxGroup colorScheme="brand" defaultValue={[]}>
-        <Stack spacing={[1, 5]} direction={['column', 'row']}>
-          <Checkbox value="onlyreservation">예약 한 건만 받기</Checkbox>
-          <Checkbox value="deposit-information">예약자에게 입금 정보 보이기</Checkbox>
-        </Stack>
-      </CheckboxGroup>
       {/*게시글 제목*/}
-      <Heading as="h4" size="md">
-        게시글 제목
-      </Heading>
-      <Input placeholder="Basic usage" bgColor="gray.100" />
-      {/*재고가름*/}
-      <Heading as="h4" size="md">
-        재고 이름
-      </Heading>
-      <Input placeholder="Basic usage" bgColor="gray.100" />
+      <FormControl isRequired>
+        <FormLabel as="h4" size="md">
+          게시글 제목
+        </FormLabel>
+        <Input placeholder="title" />
+      </FormControl>
+      {/*재고 이름*/}
+      <FormControl isRequired>
+        <FormLabel>재고 이름</FormLabel>
+        <Input placeholder="name" />
+      </FormControl>
       {/*재고분류*/}
-      <Heading as="h4" size="md">
-        재고 분류
-      </Heading>
-      <CheckboxGroup colorScheme="brand">
-        <Stack spacing={[1, 5]} direction={['column', 'row']}>
-          <Checkbox value="food">식품</Checkbox>
-          <Checkbox value="lodging">숙소</Checkbox>
-          <Checkbox value="ticket">문화 티켓</Checkbox>
-        </Stack>
-      </CheckboxGroup>
+      <FormControl isRequired>
+        <FormLabel>재고 분류</FormLabel>
+        <Select placeholder="식품">
+          <option>숙소</option>
+          <option>티켓</option>
+        </Select>
+      </FormControl>
+
+      <FormControl isRequired>
+        <FormLabel>판매 금액</FormLabel>
+
+        <NumberInput step={5000} defaultValue={10000} min={100} max={1000000}>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
+
       {/*게시마감기한*/}
-      <Heading as="h4" size="md">
-        게시 마감 기한
-      </Heading>
-      <Input placeholder="Select Date and Time" size="md" type="datetime-local" bgColor="gray.100" />
+      <FormControl isRequired>
+        <FormLabel>게시 마감 기한</FormLabel>
+        <Input placeholder="Select Date" size="md" type="datetime-local" bgColor="gray.100" />
+      </FormControl>
       {/*재고 상세 소개*/}
-      <Heading as="h4" size="md">
-        재고 상세 소개 <Text fontSize="sm">*최대 일주일 설정 가능합니다</Text>
-      </Heading>
-      <Editable defaultValue="상세 설명을 적어주세요.">
-        <EditablePreview />
-        <EditableTextarea />
-      </Editable>
+      <Divider />
+      <FormControl>
+        <FormLabel>재고 상품 상세 소개</FormLabel>
+        <Textarea placeholder="상품을 소개해주세요 :)" />
+      </FormControl>
       <Button color="white" colorScheme="brand" variant="solid">
         판매글 게시하기
       </Button>
