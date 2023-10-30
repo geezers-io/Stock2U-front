@@ -3,6 +3,9 @@ import { colors } from './@colors';
 import { buttonTheme } from './button';
 import { badgeTheme } from '@/styles/theme/badge';
 import { modalTheme } from '@/styles/theme/modal';
+import { rangeSliderTheme } from '@/styles/theme/rangeSlider';
+import { sliderTheme } from '@/styles/theme/slider';
+import { switchTheme } from '@/styles/theme/switch';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -59,6 +62,9 @@ const theme = extendTheme({
     Button: buttonTheme,
     Badge: badgeTheme,
     Modal: modalTheme,
+    Slider: sliderTheme,
+    RangeSlider: rangeSliderTheme,
+    Switch: switchTheme,
   },
   appStyles,
 });

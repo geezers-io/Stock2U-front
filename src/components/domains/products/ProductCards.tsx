@@ -1,18 +1,26 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Flex, Grid, Heading, Skeleton } from '@chakra-ui/react';
-import { MockProduct } from '@/api/__mock__/mockProduct';
-import ProductCard from '@/components/domains/products/ProductCard';
+import { ProductSummary } from '@/api/@types/Products';
+import ProductCard, { ProductCardProps } from '@/components/domains/products/ProductCard';
 
-interface Props {
+interface Props extends Pick<ProductCardProps, 'showDistance' | 'showExpiredAt'> {
   uniqueKey: string;
-  products?: MockProduct[];
+  products?: ProductSummary[];
   emptyComment: string;
   linkTo: (id: number) => string;
   mockCount?: number;
 }
 
-const ProductCards: FC<Props> = ({ uniqueKey, emptyComment, products, linkTo, mockCount = 8 }) => {
+const ProductCards: FC<Props> = ({
+  uniqueKey,
+  emptyComment,
+  products,
+  linkTo,
+  mockCount = 8,
+  showDistance,
+  showExpiredAt,
+}) => {
   if (products && !products.length) {
     return (
       <Flex h="200px" justifyContent="center" alignItems="center">
@@ -40,15 +48,7 @@ const ProductCards: FC<Props> = ({ uniqueKey, emptyComment, products, linkTo, mo
 
       {products?.map(product => (
         <Link key={uniqueKey + product.id} to={linkTo(product.id)}>
-          <ProductCard
-            imageSRC={product.imageSRC}
-            type={product.type}
-            title={product.title}
-            price={product.price}
-            expiredAt={product.expiredAt}
-            latitude={product.latitude}
-            longitude={product.longitude}
-          />
+          <ProductCard product={product} showDistance={showDistance} showExpiredAt={showExpiredAt} />
         </Link>
       ))}
     </Grid>
