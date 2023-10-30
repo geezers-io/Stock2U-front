@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Grid,
-  Link,
   Modal,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { useCustomToast } from '@/hooks/useCustomToast';
@@ -16,19 +19,18 @@ const ReservationButton = () => {
   const [isReserved, setIsReserved] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
+  const navigate = useNavigate();
 
   const onReserve = () => {
     setIsReserved(true);
-  };
-
-  const onlyReserve = () => {
     toast.success('예약에 성공했어요!');
   };
 
   const cancelReserve = () => {
     setIsReserved(false);
-    toast.info('예약 요청이 취소되었습니다.');
+    toast.info('예약이 취소되었어요.');
   };
+
   return (
     <>
       {!isReserved && (
@@ -45,21 +47,24 @@ const ReservationButton = () => {
           </Button>
         </Grid>
       )}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>예약됐습니다😊 채팅으로 바로 이동할까요?</ModalHeader>
+          <ModalCloseButton />
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={isOpen}>
-              <Link to="../">채팅하러 갈래요!</Link>
+          <ModalHeader />
+          <ModalBody py={6}>
+            <Text textAlign="center">예약됐습니다😊 채팅으로 바로 이동할까요?</Text>
+          </ModalBody>
+
+          <ModalFooter gap={2}>
+            <Button role="link" onClick={() => navigate('/chat')} colorScheme="blue" flex={1}>
+              채팅하러 갈래요!
             </Button>
 
-            <Grid onClick={onlyReserve}>
-              <Button variant="ghost" onClick={onClose}>
-                아니요. 예약만 할게요
-              </Button>
-            </Grid>
+            <Button variant="ghost" onClick={onClose} flex={1}>
+              아니요. 예약만 할게요
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
