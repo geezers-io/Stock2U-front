@@ -1,5 +1,5 @@
 import { AuthVendor, UserRole } from './@enums';
-import { PageRequest } from '@/api/@types/@shared';
+import { Coordinate, PageRequest } from '@/api/@types/@shared';
 
 export interface SellerDetails {
   id: number;
@@ -29,7 +29,7 @@ export interface PurchaserSignUpRequest {
   vendor: AuthVendor;
 }
 
-export interface SellerSignUpRequest {
+export interface SellerSignUpRequest extends Coordinate {
   username: string;
   email: string;
   licenseNumber: string;
@@ -41,8 +41,6 @@ export interface SellerSignUpRequest {
   phone: string;
   verification: string;
   vendor: AuthVendor;
-  latitude: number;
-  longitude: number;
 }
 
 export interface SignInRequest {

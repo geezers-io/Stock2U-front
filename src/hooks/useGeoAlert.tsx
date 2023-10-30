@@ -3,21 +3,18 @@ import { Flex, Text, ToastId, UseToastOptions } from '@chakra-ui/react';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
 
-export function useGeoLocationAlert() {
+export function useGeoAlert() {
   const toast = useCustomToast();
-  const [geoLocation, startGeoLocationTracking] = useBoundedStore(state => [
-    state.geoLocation,
-    state.startGeoLocationTracking,
-  ]);
+  const [geo, startGeoTracking] = useBoundedStore(state => [state.geo, state.startGeoTracking]);
   const [errorToastId, setErrorToastId] = useState<ToastId>();
   const [warningToastId, setWarningToastId] = useState<ToastId>();
 
   useEffect(() => {
-    startGeoLocationTracking();
+    startGeoTracking();
   }, []);
 
   useEffect(() => {
-    if (!geoLocation.status.supported) {
+    if (!geo.status.supported) {
       if (errorToastId) {
         toast.close(errorToastId);
       }
@@ -30,7 +27,7 @@ export function useGeoLocationAlert() {
       return;
     }
 
-    if (!geoLocation.status.allowed) {
+    if (!geo.status.allowed) {
       if (warningToastId) {
         toast.close(warningToastId);
       }
@@ -49,7 +46,7 @@ export function useGeoLocationAlert() {
 
       setWarningToastId(id);
     }
-  }, [geoLocation.status]);
+  }, [geo.status]);
 }
 
 const toastOptions: UseToastOptions = {

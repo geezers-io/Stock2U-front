@@ -1,6 +1,6 @@
 import { ProductType, ReservationStatus } from './@enums';
 import { SimpleFile } from './File';
-import { PageRequest, PageResponse } from '@/api/@types/@shared';
+import { Coordinate, PageRequest, PageResponse } from '@/api/@types/@shared';
 
 export interface ProductSeller {
   id: number;
@@ -23,23 +23,16 @@ export interface ProductDetail {
   productImages: SimpleFile[];
 }
 
-export interface ProductSummary {
+export interface ProductSummary extends Coordinate {
   id: number;
   productCount: number;
   distance: number;
-  latitude: number;
-  longitude: number;
   price: number;
   title: string;
   expiredAt: string;
   createdAt: string;
   productType: ProductType;
   thumbnailUrl: string;
-}
-
-export interface GetMainPageProductsRequest {
-  latitude: number;
-  longitude: number;
 }
 
 export interface GetMainPageProductsResponse {
@@ -81,9 +74,7 @@ export enum Distance {
   Five = 5,
   Ten = 10,
 }
-export interface SearchProductsRequest extends PageRequest {
-  latitude: number;
-  longitude: number;
+export interface SearchProductsRequest extends PageRequest, Coordinate {
   distance?: Distance;
   category?: ProductType;
   minPrice?: number;
@@ -91,7 +82,7 @@ export interface SearchProductsRequest extends PageRequest {
 }
 
 export interface ProductsClient {
-  getMainPageList(request: GetMainPageProductsRequest): Promise<GetMainPageProductsResponse>;
+  getMainPageList(request: Coordinate): Promise<GetMainPageProductsResponse>;
   create(request: CreateProductRequest): Promise<CreateProductResponse>;
   getDetail(request: GetProductDetailRequest): Promise<ProductDetail>;
   edit(request: EditProductRequest): Promise<ProductDetail>;

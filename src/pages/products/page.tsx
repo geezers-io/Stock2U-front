@@ -18,14 +18,14 @@ import { pick } from '@/utils/object';
 const ProductsSearchPage: FC = () => {
   const theme = useTheme();
   const toast = useCustomToast();
-  const geoLocation = useBoundedStore(state => state.geoLocation);
+  const geo = useBoundedStore(state => state.geo);
   const { data, loading, nextPage, pageable, request, setRequest } = usePagination(ProductsService.search, {
     ...DEFAULT_PAGE_REQUEST,
     size: 30,
     distance: Distance.Ten,
     minPrice: MIN_PRICE,
-    latitude: geoLocation.latitude,
-    longitude: geoLocation.longitude,
+    latitude: geo.latitude,
+    longitude: geo.longitude,
   });
   const { isOpen: filterDrawerOpen, onOpen: openFilterDrawer, onClose: closeFilterDrawer } = useDisclosure();
 

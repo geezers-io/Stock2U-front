@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
-import { useGeoLocationAlert } from '@/hooks/useGeoLocationAlert';
+import { useGeoAlert } from '@/hooks/useGeoAlert';
 import OAuthRedirectPage from '@/pages/auth/oauth-redirect/page';
 import SignInPage from '@/pages/auth/sign-in/page';
 import ChoiceRolePage from '@/pages/auth/sign-up/page';
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  useGeoLocationAlert();
+  useGeoAlert();
 
   return (
     <ChakraProvider theme={theme}>

@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { createGeoLocationSlice, GeoLocationSlice } from '@/stores/geoLocation';
+import { createGeoSlice, GeoSlice } from '@/stores/geo';
 import { createUserSlice, UserSlice } from '@/stores/user';
 import { pick } from '@/utils/object';
 
-export const useBoundedStore = create<UserSlice & GeoLocationSlice>()(
+export const useBoundedStore = create<UserSlice & GeoSlice>()(
   persist(
     (...args) => ({
       ...createUserSlice(...args),
-      ...createGeoLocationSlice(...args),
+      ...createGeoSlice(...args),
     }),
     {
       name: 'bounded-store',
