@@ -1,4 +1,4 @@
-import { FC, useState, useRef, MouseEventHandler, ChangeEventHandler } from 'react';
+import { FC, useState, useRef, MouseEventHandler, ChangeEventHandler, Dispatch, SetStateAction } from 'react';
 import { Flex, Button, Image, Badge, Grid, Box, Text } from '@chakra-ui/react';
 import { SimpleFile } from '@/api/@types/File';
 import { FileService } from '@/api/services/File';
@@ -7,9 +7,14 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 const MAX = 5;
 const HORIZONTAL_POINT = 'md';
 
-const ImageUploader: FC = () => {
+interface Props {
+  images: SimpleFile[];
+  setImages: Dispatch<SetStateAction<SimpleFile[]>>;
+}
+
+const ImageUploader: FC<Props> = ({ images, setImages }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<SimpleFile[]>([]);
+
   const [thumbImage, setThumbImage] = useState<SimpleFile | null>(null);
   const toast = useCustomToast();
 

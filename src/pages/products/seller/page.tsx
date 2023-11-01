@@ -1,77 +1,192 @@
-import { FC } from 'react';
-import {
-  Flex,
-  Input,
-  Button,
-  FormControl,
-  FormLabel,
-  Select,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Textarea,
-  Divider,
-} from '@chakra-ui/react';
+import { FC, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+import {
+  Button,
+  Divider,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+  Textarea,
+} from '@chakra-ui/react';
+import { Field, Form, Formik } from 'formik';
+import { ProductType } from '@/api/@types/@enums';
+import { SimpleFile } from '@/api/@types/File';
+import { CreateProductRequest } from '@/api/@types/Products';
+import { ProductsService } from '@/api/services/Products';
 import ImageUploader from '@/components/domains/products/ImageUploader';
+import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
+import { MAX_INT } from '@/constants/number';
+import { PRODUCT_MIN_PRICE, PRODUCT_MAX_COUNT } from '@/constants/product';
+import { useCustomToast } from '@/hooks/useCustomToast';
+import { generateValidators } from '@/utils/formik';
+
+type FormValues = Omit<CreateProductRequest, 'imagesId'>;
+
+const { validators, getFormikStates } = generateValidators<FormValues>({
+  title: { required: true, range: { min: 4, max: 30 }, regex: 'korEngNumSpace' },
+  name: { required: true, range: { max: 20 }, regex: 'korEngNumSpace' },
+  price: { required: true, range: { min: PRODUCT_MIN_PRICE, max: MAX_INT } },
+  type: { required: true },
+  description: { required: true, range: { min: 3, max: 1000 }, regex: 'korEngNumSpace' },
+  productCount: { required: true, range: { min: 1, max: PRODUCT_MAX_COUNT } },
+  expiredAt: { required: true },
+});
 
 const ProductRegistrationPage: FC = () => {
+  const toast = useCustomToast();
+  const [images, setImages] = useState<SimpleFile[]>([]);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (values: FormValues) => {
+    if (!images.length) {
+      return;
+    }
+
+    try {
+      const { id } = await ProductsService.create({
+        ...values,
+        imageIds: images.map(image => image.id),
+      });
+      navigate(`/products/${id}`);
+    } catch (e) {
+      toast.error(e);
+    }
+  };
+
   return (
-    <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
-      <Flex>
-        <ImageUploader />
-      </Flex>
+    <Formik<FormValues>
+      initialValues={{
+        title: '',
+        name: '',
+        price: 1000,
+        type: null as unknown as ProductType,
+        description: '',
+        productCount: 1,
+        expiredAt: '',
+        imageIds: [],
+      }}
+      onSubmit={handleSubmit}
+    >
+      {props => {
+        const { showErrorDict, canSubmit, errors, values } = getFormikStates(props);
+        return (
+          <Form>
+            <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
+              <Flex>
+                <ImageUploader images={images} setImages={setImages} />
+              </Flex>
 
-      {/*게시글 제목*/}
-      <FormControl isRequired>
-        <FormLabel as="h4" size="md">
-          게시글 제목
-        </FormLabel>
-        <Input placeholder="title" />
-      </FormControl>
-      {/*재고 이름*/}
-      <FormControl isRequired>
-        <FormLabel>재고 이름</FormLabel>
-        <Input placeholder="name" />
-      </FormControl>
-      {/*재고분류*/}
-      <FormControl isRequired>
-        <FormLabel>재고 분류</FormLabel>
-        <Select placeholder="식품">
-          <option>숙소</option>
-          <option>티켓</option>
-        </Select>
-      </FormControl>
+              {/*게시글 제목*/}
+              <Field name="title" validate={validators.title}>
+                {({ field }) => (
+                  <FormControl isRequired isInvalid={showErrorDict.title}>
+                    <FormLabel as="h4" size="md">
+                      게시글 제목
+                    </FormLabel>
+                    <Input {...field} />
+                    <FormErrorMessage>{errors.title}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-      <FormControl isRequired>
-        <FormLabel>판매 금액</FormLabel>
+              {/*재고 이름*/}
+              <Field name="name" validate={validators.name}>
+                {({ field }) => (
+                  <FormControl isRequired isInvalid={showErrorDict.name}>
+                    <FormLabel as="h4" size="md">
+                      재고 이름
+                    </FormLabel>
+                    <Input {...field} />
+                    <FormErrorMessage>{errors.name}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-        <NumberInput step={5000} defaultValue={10000} min={100} max={1000000}>
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </FormControl>
+              {/*재고분류*/}
+              <Field name="type" validate={validators.type}>
+                {({ field }) => (
+                  <FormControl isRequired isInvalid={showErrorDict.type}>
+                    <FormLabel as="h4" size="md">
+                      재고 분류
+                    </FormLabel>
+                    <Select {...field} color={values.type ? undefined : 'gray.500'}>
+                      <option selected hidden disabled value="">
+                        -- 분류 선택 --
+                      </option>
+                      {Object.entries(PRODUCT_TYPE_LABEL).map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </Select>
+                    <FormErrorMessage>{errors.type}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-      {/*게시마감기한*/}
-      <FormControl isRequired>
-        <FormLabel>게시 마감 기한</FormLabel>
-        <Input placeholder="Select Date" size="md" type="datetime-local" bgColor="gray.100" />
-      </FormControl>
-      {/*재고 상세 소개*/}
-      <Divider />
-      <FormControl>
-        <FormLabel>재고 상품 상세 소개</FormLabel>
-        <Textarea placeholder="상품을 소개해주세요 :)" />
-      </FormControl>
-      <Button color="white" colorScheme="brand" variant="solid">
-        판매글 게시하기
-      </Button>
-    </Flex>
+              {/* 판매 금액 */}
+              <Field name="price" validate={validators.price}>
+                {({ field }) => (
+                  <FormControl isRequired isInvalid={showErrorDict.price}>
+                    <FormLabel>판매 금액</FormLabel>
+                    <Input {...field} type="number" />
+                    <FormErrorMessage>{errors.price}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/* 판매 수량*/}
+              <Field name="productCount" validate={validators.productCount}>
+                {({ field }) => (
+                  <FormControl isRequired isInvalid={showErrorDict.productCount}>
+                    <FormLabel>판매 수량</FormLabel>
+                    <Input {...field} type="number" />
+                    <FormErrorMessage>{errors.productCount}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/*게시마감기한*/}
+              <Field name="expiredAt" validate={validators.expiredAt}>
+                {({ field }) => (
+                  <FormControl isRequired>
+                    <FormLabel>게시 마감 기한</FormLabel>
+                    <Input {...field} placeholder="Select Date" size="md" type="datetime-local" />
+                    <FormErrorMessage>{errors.expiredAt}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              {/*재고 상세 소개*/}
+              <Divider />
+              <Field name="description" validate={validators.description}>
+                {({ field }) => (
+                  <FormControl isRequired isInvalid={showErrorDict.description}>
+                    <FormLabel>재고 상품 상세 소개</FormLabel>
+                    <Textarea {...field} placeholder="상품을 소개해주세요 :)" rows={8} />
+                    <FormErrorMessage>{errors.description}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              <Button
+                type="submit"
+                color="white"
+                colorScheme="brand"
+                variant="solid"
+                isDisabled={!canSubmit || !images.length}
+              >
+                판매글 게시하기
+              </Button>
+            </Flex>
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 
