@@ -65,7 +65,7 @@ const ProductDetailPage: FC = () => {
         <Text fontSize="xl">{productDetail.detail}</Text>
       </Flex>
 
-      <Box>
+      <Box mt="auto">
         {/*seller*/}
         <Flex>
           <Avatar
