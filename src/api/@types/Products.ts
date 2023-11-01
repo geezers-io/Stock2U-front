@@ -6,6 +6,7 @@ export interface ProductSeller {
   id: number;
   username: string;
   phone: string;
+  profileImageUrl: string;
   salesCount: number;
   reviewCount: number;
 }
@@ -19,6 +20,7 @@ export interface ProductDetail {
   productCount: number;
   expiredAt: string;
   status?: ReservationStatus; // 예약 상태(예약 한 건만 받기 체크 && 예약 진행 중일 시 표기 됨)
+  isSubscribe: boolean;
   seller: ProductSeller;
   productImages: SimpleFile[];
 }
