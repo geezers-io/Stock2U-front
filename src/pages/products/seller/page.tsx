@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import {
   Flex,
   Input,
@@ -18,16 +18,6 @@ import {
 import ImageUploader from '@/components/domains/products/ImageUploader';
 
 const ProductRegistrationPage: FC = () => {
-  const FetchSellerServer = async () => {
-    try {
-      setMockData(MockData);
-    } catch (e) {}
-  };
-
-  useEffect(() => {
-    FetchSellerServer();
-  });
-
   return (
     <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
       <Flex>
