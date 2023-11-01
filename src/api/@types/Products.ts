@@ -19,7 +19,7 @@ export interface ProductDetail {
   description: string;
   productCount: number;
   expiredAt: string;
-  status?: ReservationStatus; // 예약 상태(예약 한 건만 받기 체크 && 예약 진행 중일 시 표기 됨)
+  status?: ReservationStatus; // 예약 상태
   isSubscribe: boolean;
   seller: ProductSeller;
   productImages: SimpleFile[];
