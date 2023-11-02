@@ -37,3 +37,8 @@ export interface PageResponse<T> {
   last: boolean;
   empty: boolean;
 }
+
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}

@@ -2,6 +2,7 @@ import { FC, MouseEventHandler, useLayoutEffect, useState } from 'react';
 import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Select, useDisclosure } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import { AuthVendor } from '@/api/@types/@enums';
+import { Coordinate } from '@/api/@types/@shared';
 import { Bank, SellerSignUpRequest } from '@/api/@types/Auth';
 import { AuthService } from '@/api/services/Auth';
 import AddressFinderModal from '@/components/domains/auth/AddressFinderModal';
@@ -45,7 +46,7 @@ const SellerSignUpPage: FC = () => {
     onClose: closeAddressFinderModal,
   } = useDisclosure();
 
-  const getCoordinates = (loadAddress: string): Promise<{ latitude: number; longitude: number }> => {
+  const getCoordinates = (loadAddress: string): Promise<Coordinate> => {
     return new Promise((resolve, reject) => {
       const geocoder = new kakao.maps.services.Geocoder();
       geocoder.addressSearch(loadAddress, (result, status) => {

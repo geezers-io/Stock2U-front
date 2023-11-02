@@ -1,20 +1,19 @@
 import { StateCreator } from 'zustand/esm/vanilla';
+import { Coordinate } from '@/api/@types/@shared';
 
-interface GeoLocationStatus {
+interface GeoStatus {
   supported: boolean;
   allowed: boolean;
 }
-interface GeoLocation {
-  latitude: number;
-  longitude: number;
-  status: GeoLocationStatus;
+interface Geo extends Coordinate {
+  status: GeoStatus;
 }
-export type GeoLocationSlice = {
-  geoLocation: GeoLocation;
-  startGeoLocationTracking: () => void;
+export type GeoSlice = {
+  geo: Geo;
+  startGeoTracking: () => void;
 };
 
-const SEOUL_GEO: GeoLocation = {
+const SEOUL_GEO: Geo = {
   latitude: 37.5665,
   longitude: 126.978,
   status: {
@@ -23,14 +22,14 @@ const SEOUL_GEO: GeoLocation = {
   },
 };
 
-export const createGeoLocationSlice: StateCreator<GeoLocationSlice, [], [], GeoLocationSlice> = set => ({
-  geoLocation: SEOUL_GEO,
+export const createGeoSlice: StateCreator<GeoSlice, [], [], GeoSlice> = set => ({
+  geo: SEOUL_GEO,
 
-  startGeoLocationTracking: () => {
+  startGeoTracking: () => {
     if (!navigator?.geolocation) {
       set(state => ({
-        geoLocation: {
-          ...state.geoLocation,
+        geo: {
+          ...state.geo,
           status: { supported: false, allowed: false },
         },
       }));
@@ -40,7 +39,7 @@ export const createGeoLocationSlice: StateCreator<GeoLocationSlice, [], [], GeoL
     navigator.geolocation.watchPosition(
       position => {
         set({
-          geoLocation: {
+          geo: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             status: { supported: true, allowed: true },
@@ -50,8 +49,8 @@ export const createGeoLocationSlice: StateCreator<GeoLocationSlice, [], [], GeoL
       error => {
         if (error.code === error.PERMISSION_DENIED || error.code === error.TIMEOUT) {
           set(state => ({
-            geoLocation: {
-              ...state.geoLocation,
+            geo: {
+              ...state.geo,
               status: { supported: true, allowed: false },
             },
           }));
