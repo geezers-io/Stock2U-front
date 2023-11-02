@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Spacer, Text, LinkOverlay } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { GetMainPageProductsResponse } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
@@ -71,7 +71,7 @@ const IndexPage: FC = () => {
         uniqueKey="aiRecommended"
         products={products?.aiRecommends}
         emptyComment="아직 추천된 재고가 없어요 :("
-        linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
+        linkTo={id => `/products/${id}`}
         mockCount={4}
       />
 
@@ -82,7 +82,7 @@ const IndexPage: FC = () => {
         uniqueKey="myNeighborhoods"
         products={products?.myNeighborhoods}
         emptyComment="아직 마감 임박된 재고가 없어요 :("
-        linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
+        linkTo={id => `/products/${id}`}
         showDistance={false}
         mockCount={4}
       />
@@ -116,14 +116,14 @@ const IndexPage: FC = () => {
         uniqueKey="myNeighborhoods"
         products={products?.myNeighborhoods}
         emptyComment="근처에 있는 재고가 없어요 :("
-        linkTo={id => `/.../${id}` /* TODO: Routing to detail */}
+        linkTo={id => `/products/${id}`}
         showExpiredAt={false}
         mockCount={4}
       />
       {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
-          <Link to="..." /* TODO: Routing to list page with filter */>
+          <LinkOverlay as={Link} to="/products">
             <Flex
               flexDirection="column"
               alignItems="center"
@@ -139,7 +139,7 @@ const IndexPage: FC = () => {
                 재고 더 보기
               </Button>
             </Flex>
-          </Link>
+          </LinkOverlay>
         </>
       )}
 
@@ -150,7 +150,7 @@ const IndexPage: FC = () => {
           더 많은 정보를 확인하세요!
         </Heading>
         <Spacer h={6} flex="unset" />
-        <Link to="..." /* TODO: Routing to list page without filter */>
+        <Link to="/products">
           <Button colorScheme="brand" size="lg" tabIndex={-1}>
             모든 재고 둘러보기
           </Button>
