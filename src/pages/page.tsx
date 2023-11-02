@@ -16,7 +16,7 @@ const IndexPage: FC = () => {
   const [products, setProducts] = useState<GetMainPageProductsResponse>();
   const [bannerImages, setBannerImages] = useState<string[]>([]);
   const toast = useCustomToast();
-  const geo = useBoundedStore(state => state.geoLocation);
+  const geo = useBoundedStore(state => state.geo);
 
   const fetchDataFromAPI = async () => {
     try {
