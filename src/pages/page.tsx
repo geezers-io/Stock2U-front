@@ -3,36 +3,28 @@ import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { ProductSummary } from '@/api/@types/Products';
-import { mockProducts } from '@/api/__mock__/mockProduct';
+import { GetMainPageProductsResponse } from '@/api/@types/Products';
+import { ProductsService } from '@/api/services/Products';
 import ProductCards from '@/components/domains/products/ProductCards';
 import ImageSlider from '@/components/shared/ImageCarousel';
-import { delay } from '@/utils/delay';
+import { useCustomToast } from '@/hooks/useCustomToast';
+import { useBoundedStore } from '@/stores';
+import { pick } from '@/utils/object';
 
 const IndexPage: FC = () => {
   const theme = useTheme();
-  const [recommendedProducts, setRecommendedProducts] = useState<ProductSummary[]>();
-  const [nearExpirationProducts, setNearExpirationProducts] = useState<ProductSummary[]>();
-  const [nearProducts, setNearProducts] = useState<ProductSummary[]>();
+  const [products, setProducts] = useState<GetMainPageProductsResponse>();
   const [bannerImages, setBannerImages] = useState<string[]>([]);
+  const toast = useCustomToast();
+  const geoLocation = useBoundedStore(state => state.geoLocation);
 
-  const fetchRecommendedProducts = async () => {
+  const fetchDataFromAPI = async () => {
     try {
-      await delay();
-      setRecommendedProducts(mockProducts.slice(0, 4));
-    } catch (e) {}
-  };
-  const fetchNearExpirationProducts = async () => {
-    try {
-      await delay();
-      setNearExpirationProducts(mockProducts.slice(0, 8));
-    } catch (e) {}
-  };
-  const fetchNearProducts = async () => {
-    try {
-      await delay();
-      setNearProducts(mockProducts.slice(0, 8));
-    } catch (e) {}
+      const response = await ProductsService.getMainPageList(pick(geoLocation, ['latitude', 'longitude']));
+      setProducts(response);
+    } catch (e) {
+      toast.error(e);
+    }
   };
 
   const fetchBannerImages = async () => {
@@ -45,13 +37,13 @@ const IndexPage: FC = () => {
         'https://dthezntil550i.cloudfront.net/25/latest/252001022015123200005691112/1280_960/68ee10fa-84b8-44b6-bcc2-94df2f5fac05.png',
       ];
       setBannerImages(images);
-    } catch (e) {}
+    } catch (error) {
+      console.error('이미지를 불러올 수 없습니다.:', error);
+    }
   };
 
   useEffect(() => {
-    fetchRecommendedProducts();
-    fetchNearExpirationProducts();
-    fetchNearProducts();
+    fetchDataFromAPI();
     fetchBannerImages();
   }, []);
 
@@ -76,23 +68,25 @@ const IndexPage: FC = () => {
       </Heading>
 
       <ProductCards
-        uniqueKey="recommended"
-        products={recommendedProducts}
+        uniqueKey="aiRecommended"
+        products={products?.aiRecommends}
         emptyComment="아직 추천된 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
+        mockCount={4}
       />
 
       <Heading size="lg" mt="60px" mb="20px">
         마감 임박 <Fire style={{ display: 'inline', verticalAlign: 'text-top', color: theme.colors['red']['500'] }} />
       </Heading>
       <ProductCards
-        uniqueKey="nearExpiration"
-        products={nearExpirationProducts}
+        uniqueKey="myNeighborhoods"
+        products={products?.myNeighborhoods}
         emptyComment="아직 마감 임박된 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail page */}
         showDistance={false}
+        mockCount={4}
       />
-      {nearExpirationProducts && (
+      {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
           <Link to="..." /* TODO: Routing to list page with filter */>
@@ -119,13 +113,14 @@ const IndexPage: FC = () => {
         근처에 있어요
       </Heading>
       <ProductCards
-        uniqueKey="near"
-        products={nearProducts}
+        uniqueKey="myNeighborhoods"
+        products={products?.myNeighborhoods}
         emptyComment="근처에 있는 재고가 없어요 :("
         linkTo={id => `/.../${id}` /* TODO: Routing to detail */}
         showExpiredAt={false}
+        mockCount={4}
       />
-      {nearProducts && (
+      {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
           <Link to="..." /* TODO: Routing to list page with filter */>
