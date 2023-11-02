@@ -16,11 +16,11 @@ const IndexPage: FC = () => {
   const [products, setProducts] = useState<GetMainPageProductsResponse>();
   const [bannerImages, setBannerImages] = useState<string[]>([]);
   const toast = useCustomToast();
-  const geoLocation = useBoundedStore(state => state.geoLocation);
+  const geo = useBoundedStore(state => state.geoLocation);
 
   const fetchDataFromAPI = async () => {
     try {
-      const response = await ProductsService.getMainPageList(pick(geoLocation, ['latitude', 'longitude']));
+      const response = await ProductsService.getMainPageList(pick(geo, ['latitude', 'longitude']));
       setProducts(response);
     } catch (e) {
       toast.error(e);
