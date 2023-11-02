@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import {
   Flex,
   Input,
@@ -15,22 +15,9 @@ import {
   Divider,
 } from '@chakra-ui/react';
 
-import { MockProduct } from '@/api/__mock__/mockProduct';
 import ImageUploader from '@/components/domains/products/ImageUploader';
 
 const ProductRegistrationPage: FC = () => {
-  const [MockData, setMockData] = useState<MockProduct>();
-
-  const FetchSellerServer = async () => {
-    try {
-      setMockData(MockData);
-    } catch (e) {}
-  };
-
-  useEffect(() => {
-    FetchSellerServer();
-  });
-
   return (
     <Flex flexDirection="column" padding="1.2rem 0" gap="20px">
       <Flex>
