@@ -9,25 +9,32 @@ interface Props {
 
 const DistanceSlider: FC<Props> = ({ value, setValue }) => {
   const handleChange = (v: number) => {
-    if (v < 3) return setValue(Distance.One);
-    if (v < 5) return setValue(Distance.Three);
-    if (v < 8) return setValue(Distance.Five);
-    return setValue(Distance.Ten);
+    if (v < 1) return setValue(Distance.Half);
+    if (v < 2) return setValue(Distance.One);
+    if (v < 4) return setValue(Distance.Three);
+    return setValue(Distance.Five);
   };
 
   return (
-    <Slider min={Distance.One} max={Distance.Ten} colorScheme="brand" value={value} onChange={handleChange}>
-      <SliderMark value={Distance.One} mt="3" fontSize="sm">
+    <Slider
+      step={0.5}
+      min={Distance.Half}
+      max={Distance.Five}
+      colorScheme="brand"
+      value={value}
+      onChange={handleChange}
+    >
+      <SliderMark value={Distance.Half} mt="3" fontSize="sm">
+        {Distance.Half * 1000}m
+      </SliderMark>
+      <SliderMark value={Distance.One} mt="3" ml="-2.5" fontSize="sm">
         {Distance.One}km
       </SliderMark>
       <SliderMark value={Distance.Three} mt="3" ml="-2.5" fontSize="sm">
         {Distance.Three}km
       </SliderMark>
-      <SliderMark value={Distance.Five} mt="3" ml="-2.5" fontSize="sm">
+      <SliderMark value={Distance.Five} mt="3" ml="-9" fontSize="sm">
         {Distance.Five}km
-      </SliderMark>
-      <SliderMark value={Distance.Ten} mt="3" ml="-9" fontSize="sm">
-        {Distance.Ten}km
       </SliderMark>
       <SliderTrack>
         <SliderFilledTrack />
