@@ -5,39 +5,34 @@ import { useTheme } from '@emotion/react';
 import { ProductType } from '@/api/@types/@enums';
 import { Distance } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
+import MapDrawer from '@/components/domains/products/MapDrawer';
 import ProductCards from '@/components/domains/products/ProductCards';
 import SearchFilterDrawer, { FilterValues } from '@/components/domains/products/SearchFilterDrawer';
 import InfiniteScroll from '@/components/shared/InfinityScroll';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 import { PRODUCT_MIN_PRICE } from '@/constants/product';
-import { useCustomToast } from '@/hooks/useCustomToast';
 import { DEFAULT_PAGE_REQUEST, usePagination } from '@/hooks/usePagination';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
 
 const ProductsSearchPage: FC = () => {
   const theme = useTheme();
-  const toast = useCustomToast();
   const geo = useBoundedStore(state => state.geo);
   const { data, loading, nextPage, pageable, request, setRequest } = usePagination(ProductsService.search, {
     ...DEFAULT_PAGE_REQUEST,
     size: 30,
-    distance: Distance.Ten,
+    distance: Distance.Five,
     minPrice: PRODUCT_MIN_PRICE,
     latitude: geo.latitude,
     longitude: geo.longitude,
   });
   const { isOpen: filterDrawerOpen, onOpen: openFilterDrawer, onClose: closeFilterDrawer } = useDisclosure();
+  const { isOpen: mapDrawerOpen, onOpen: openMapDrawer, onClose: closeMapDrawer } = useDisclosure();
 
   const handleClickProductType: MouseEventHandler<HTMLButtonElement> = e => {
     const { filterId } = e.currentTarget.dataset;
     const productType = filterId === 'all' ? undefined : (filterId as ProductType);
     setRequest(prev => ({ ...prev, category: productType }));
-  };
-
-  const handleClickMap: MouseEventHandler<HTMLButtonElement> = () => {
-    // TODO: map drawer
-    toast.warning('미구현');
   };
 
   return (
@@ -65,11 +60,13 @@ const ProductsSearchPage: FC = () => {
             icon={<Filter size={32} color={theme.colors.gray['600']} />}
             onClick={openFilterDrawer}
           />
-          <HeaderIconButton
-            aria-label="map"
-            icon={<Map size={21} color={theme.colors.gray['600']} />}
-            onClick={handleClickMap}
-          />
+          {geo.status.initialized && (
+            <HeaderIconButton
+              aria-label="map"
+              icon={<Map size={21} color={theme.colors.gray['600']} />}
+              onClick={openMapDrawer}
+            />
+          )}
         </Flex>
       </Flex>
 
@@ -100,6 +97,8 @@ const ProductsSearchPage: FC = () => {
         }}
         initialValues={pick(request, ['distance', 'minPrice', 'maxPrice']) as FilterValues}
       />
+
+      {geo.status.initialized && <MapDrawer isOpen={mapDrawerOpen} close={closeMapDrawer} />}
     </Box>
   );
 };
