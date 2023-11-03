@@ -7,6 +7,7 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Input,
   Select,
@@ -20,7 +21,7 @@ import { ProductsService } from '@/api/services/Products';
 import ImageUploader from '@/components/domains/products/ImageUploader';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 import { MAX_INT } from '@/constants/number';
-import { PRODUCT_MIN_PRICE, PRODUCT_MAX_COUNT } from '@/constants/product';
+import { PRODUCT_MIN_PRICE, PRODUCT_MAX_COUNT, PRODUCT_MIN_TEXT, PRODUCT_MAX_TEXT } from '@/constants/product';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
 
@@ -33,7 +34,7 @@ const { validators, getFormikStates } = generateValidators<FormValues>({
   type: { required: true },
   description: { required: true, range: { min: 3, max: 1000 }, regex: 'korEngNumSpace' },
   productCount: { required: true, range: { min: 1, max: PRODUCT_MAX_COUNT } },
-  expiredAt: { required: true },
+  expiredAt: { required: true, range: { min: PRODUCT_MIN_TEXT, max: PRODUCT_MAX_TEXT } },
 });
 
 const ProductRegistrationPage: FC = () => {
@@ -87,6 +88,7 @@ const ProductRegistrationPage: FC = () => {
                     <FormLabel as="h4" size="md">
                       게시글 제목
                     </FormLabel>
+                    <FormHelperText>글자 수는 4~30자 입니다.</FormHelperText>
                     <Input {...field} />
                     <FormErrorMessage>{errors.title}</FormErrorMessage>
                   </FormControl>
@@ -100,6 +102,7 @@ const ProductRegistrationPage: FC = () => {
                     <FormLabel as="h4" size="md">
                       재고 이름
                     </FormLabel>
+                    <FormHelperText>글자 수는 20자 이하여야 합니다.</FormHelperText>
                     <Input {...field} />
                     <FormErrorMessage>{errors.name}</FormErrorMessage>
                   </FormControl>
@@ -133,6 +136,7 @@ const ProductRegistrationPage: FC = () => {
                 {({ field }) => (
                   <FormControl isRequired isInvalid={showErrorDict.price}>
                     <FormLabel>판매 금액</FormLabel>
+                    <FormHelperText>금액은 {PRODUCT_MIN_PRICE}원 이상이어야 합니다.</FormHelperText>
                     <Input {...field} type="number" />
                     <FormErrorMessage>{errors.price}</FormErrorMessage>
                   </FormControl>
@@ -144,6 +148,7 @@ const ProductRegistrationPage: FC = () => {
                 {({ field }) => (
                   <FormControl isRequired isInvalid={showErrorDict.productCount}>
                     <FormLabel>판매 수량</FormLabel>
+                    <FormHelperText>수량은 {PRODUCT_MAX_COUNT}개 이하여야 합니다.</FormHelperText>
                     <Input {...field} type="number" />
                     <FormErrorMessage>{errors.productCount}</FormErrorMessage>
                   </FormControl>
@@ -167,6 +172,9 @@ const ProductRegistrationPage: FC = () => {
                 {({ field }) => (
                   <FormControl isRequired isInvalid={showErrorDict.description}>
                     <FormLabel>재고 상품 상세 소개</FormLabel>
+                    <FormHelperText>
+                      글자 수는 {PRODUCT_MIN_TEXT} ~ {PRODUCT_MAX_TEXT}자입니다.
+                    </FormHelperText>
                     <Textarea {...field} placeholder="상품을 소개해주세요 :)" rows={8} />
                     <FormErrorMessage>{errors.description}</FormErrorMessage>
                   </FormControl>
