@@ -24,6 +24,7 @@ import { MAX_INT } from '@/constants/number';
 import { PRODUCT_MIN_PRICE, PRODUCT_MAX_COUNT, PRODUCT_MIN_TEXT, PRODUCT_MAX_TEXT } from '@/constants/product';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { generateValidators } from '@/utils/formik';
+import { processer } from '@/utils/process';
 
 type FormValues = Omit<CreateProductRequest, 'imagesId'>;
 
@@ -41,6 +42,7 @@ const ProductRegistrationPage: FC = () => {
   const toast = useCustomToast();
   const [images, setImages] = useState<SimpleFile[]>([]);
   const navigate = useNavigate();
+  const now = new Date();
 
   const handleSubmit = async (values: FormValues) => {
     if (!images.length) {
@@ -67,7 +69,7 @@ const ProductRegistrationPage: FC = () => {
         type: null as unknown as ProductType,
         description: '',
         productCount: 1,
-        expiredAt: '',
+        expiredAt: processer.date(now),
         imageIds: [],
       }}
       onSubmit={handleSubmit}
@@ -155,12 +157,18 @@ const ProductRegistrationPage: FC = () => {
                 )}
               </Field>
 
-              {/*게시마감기한*/}
+              {/*게시 마감 기한*/}
               <Field name="expiredAt" validate={validators.expiredAt}>
                 {({ field }) => (
                   <FormControl isRequired>
                     <FormLabel>게시 마감 기한</FormLabel>
-                    <Input {...field} placeholder="Select Date" size="md" type="datetime-local" />
+                    <Input
+                      {...field}
+                      placeholder="날짜를 입력하세요"
+                      size="md"
+                      type="datetime-local"
+                      min={processer.date(now)}
+                    />
                     <FormErrorMessage>{errors.expiredAt}</FormErrorMessage>
                   </FormControl>
                 )}
