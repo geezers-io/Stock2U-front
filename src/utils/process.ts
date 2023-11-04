@@ -13,4 +13,8 @@ export const processer = {
   },
   dateToHHmm: (d: string) => dayjs(d).format('HH:mm'),
   suppressIfOneHundred: (count: number) => (count > 99 ? '99+' : String(count)),
+  remain: (v: number, max: number) => {
+    if (v > max) return `${max}+`;
+    return v;
+  },
 };

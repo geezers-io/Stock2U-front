@@ -60,3 +60,5 @@ export interface PurchaserGetAccountInfo {
   buyCount: number;
   reviewCount: number;
 }
+
+export type ZoomDirection = 'in' | 'out';

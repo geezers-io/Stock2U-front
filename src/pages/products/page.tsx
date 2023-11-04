@@ -1,12 +1,15 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC, MouseEventHandler, useCallback, useMemo, useState } from 'react';
 import { Filter, Map } from 'react-bootstrap-icons';
 import { Badge, BadgeProps, Box, Flex, IconButton, IconButtonProps, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { ProductType } from '@/api/@types/@enums';
-import { Distance } from '@/api/@types/Products';
+import { Distance, ProductSummary } from '@/api/@types/Products';
+import { generateMockProducts } from '@/api/__mock__/mockProduct';
 import { ProductsService } from '@/api/services/Products';
 import MapDrawer from '@/components/domains/products/MapDrawer';
 import ProductCards from '@/components/domains/products/ProductCards';
+import ProductMapMarker from '@/components/domains/products/ProductMapMarker';
+import ProductMarkerOverlay from '@/components/domains/products/ProductMarkerOverlay';
 import SearchFilterDrawer, { FilterValues } from '@/components/domains/products/SearchFilterDrawer';
 import InfiniteScroll from '@/components/shared/InfinityScroll';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
@@ -28,12 +31,24 @@ const ProductsSearchPage: FC = () => {
   });
   const { isOpen: filterDrawerOpen, onOpen: openFilterDrawer, onClose: closeFilterDrawer } = useDisclosure();
   const { isOpen: mapDrawerOpen, onOpen: openMapDrawer, onClose: closeMapDrawer } = useDisclosure();
+  const mockProducts = useMemo(() => generateMockProducts(geo, 500, 5), [geo]);
+  const [clickedMarker, setClickedMarker] = useState<{
+    product: ProductSummary;
+    position: kakao.maps.LatLng;
+  }>();
 
   const handleClickProductType: MouseEventHandler<HTMLButtonElement> = e => {
     const { filterId } = e.currentTarget.dataset;
     const productType = filterId === 'all' ? undefined : (filterId as ProductType);
     setRequest(prev => ({ ...prev, category: productType }));
   };
+
+  const handleClickMapMarker = useCallback((marker: kakao.maps.Marker, product: ProductSummary) => {
+    setClickedMarker({
+      product,
+      position: marker.getPosition(),
+    });
+  }, []);
 
   return (
     <Box minH="inherit" pt={4}>
@@ -98,7 +113,23 @@ const ProductsSearchPage: FC = () => {
         initialValues={pick(request, ['distance', 'minPrice', 'maxPrice']) as FilterValues}
       />
 
-      {geo.status.initialized && <MapDrawer isOpen={mapDrawerOpen} close={closeMapDrawer} />}
+      {geo.status.initialized && (
+        <MapDrawer
+          isOpen={mapDrawerOpen}
+          close={closeMapDrawer}
+          data={mockProducts}
+          renderMarker={({ data }) => <ProductMapMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
+          customOverlay={
+            clickedMarker && (
+              <ProductMarkerOverlay
+                latitude={clickedMarker.position.getLat()}
+                longitude={clickedMarker.position.getLng()}
+                product={clickedMarker.product}
+              />
+            )
+          }
+        />
+      )}
     </Box>
   );
 };

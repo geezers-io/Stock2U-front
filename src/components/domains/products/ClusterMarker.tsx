@@ -7,7 +7,7 @@ interface ClusterMarkerProps {
   minLevel?: number;
 }
 
-const ClusterMarker: React.FC<ClusterMarkerProps> = ({ coordinates }) => {
+const ClusterMarker: React.FC<ClusterMarkerProps> = ({ coordinates, minLevel }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const ClusterMarker: React.FC<ClusterMarkerProps> = ({ coordinates }) => {
       map,
       averageCenter: true,
       texts: size => size.toLocaleString(),
-      clickable: false,
+      minLevel,
     });
 
     const markers = coordinates.map(

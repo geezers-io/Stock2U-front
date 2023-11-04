@@ -1,7 +1,7 @@
 import { Coordinate } from '@/api/@types/@shared';
 
 export function generateMockCoords<G extends Coordinate>(
-  currGeo: G,
+  standardGeo: G,
   numberOfCoords: number = 20,
   radius: number = 0.5,
 ): Coordinate[] {
@@ -13,9 +13,10 @@ export function generateMockCoords<G extends Coordinate>(
     // 랜덤한 반지름 (0 ~ radius)
     const randomRadius = Math.random() * radius;
 
-    const newLat = currGeo.latitude + (randomRadius * Math.cos(angle)) / 111.32;
+    const newLat = standardGeo.latitude + (randomRadius * Math.cos(angle)) / 111.32;
     const newLng =
-      currGeo.longitude + (randomRadius * Math.sin(angle)) / (111.32 * Math.cos(currGeo.latitude * (Math.PI / 180)));
+      standardGeo.longitude +
+      (randomRadius * Math.sin(angle)) / (111.32 * Math.cos(standardGeo.latitude * (Math.PI / 180)));
 
     coords.push({ latitude: newLat, longitude: newLng });
   }
