@@ -32,9 +32,9 @@ const { validators, getFormikStates } = generateValidators<FormValues>({
   name: { required: true, range: { max: 20 }, regex: 'korEngNumSpace' },
   price: { required: true, range: { min: PRODUCT_MIN_PRICE, max: MAX_INT } },
   type: { required: true },
-  description: { required: true, range: { min: 3, max: 1000 }, regex: 'korEngNumSpace' },
+  description: { required: true, range: { min: PRODUCT_MIN_TEXT, max: PRODUCT_MAX_TEXT }, regex: 'korEngNumSpace' },
   productCount: { required: true, range: { min: 1, max: PRODUCT_MAX_COUNT } },
-  expiredAt: { required: true, range: { min: PRODUCT_MIN_TEXT, max: PRODUCT_MAX_TEXT } },
+  expiredAt: { required: true },
 });
 
 const ProductRegistrationPage: FC = () => {
