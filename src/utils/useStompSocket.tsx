@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Client } from '@stomp/stompjs';
+import { User } from '@/api/@types/Auth';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
 
@@ -13,24 +13,29 @@ const useStompSocket = () => {
   }));
   const { info } = useCustomToast();
 
-  useEffect(() => {
-    if (!user) {
+  /**
+   * 소켓 연결을 수행하여 객체를 초기화합니다.
+   * @param userInject 유저객체는 외부 주입으로 초기화할 수도 있습니다
+   */
+  const connect = (userInject?: User) => {
+    const adjustedUser = userInject ?? user;
+
+    if (!adjustedUser) {
       throw Error('로그인이 필요합니다.');
     }
 
     // 객체 초기화(소켓 연결) 수행
     if (!client) {
       const headers = {
-        userId: String(user.id),
-        phone: user.phone,
+        userId: String(adjustedUser.id),
+        phone: adjustedUser.phone,
       };
       const client = new Client({
         brokerURL: SOCKET_URL,
         connectHeaders: headers,
         onConnect: () => {
-          console.debug('소켓 커넥션이 수행됨');
           client.subscribe(
-            `/topic/alert/${user.id}`,
+            `/topic/alert/${adjustedUser.id}`,
             o => {
               info(o.body);
             },
@@ -38,16 +43,15 @@ const useStompSocket = () => {
           );
         },
         onStompError: frame => {
-          console.error('stomp 에러 발생');
           console.log(frame.body);
         },
       });
       client.activate();
       setClient(client);
     }
-  }, [client, user]);
+  };
 
-  return client;
+  return { client, connect };
 };
 
 export default useStompSocket;

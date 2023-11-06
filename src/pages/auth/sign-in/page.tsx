@@ -8,6 +8,7 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 import { useRedirect } from '@/hooks/useRedirect';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
+import useStompSocket from '@/utils/useStompSocket';
 
 const popupDefaultSize: Record<AuthVendor, { width: number; height: number }> = {
   [AuthVendor.GOOGLE]: { width: 485, height: 710 },
@@ -17,6 +18,7 @@ const popupDefaultSize: Record<AuthVendor, { width: number; height: number }> = 
 
 const SignInPage: FC = () => {
   const setUser = useBoundedStore(state => state.setUser);
+  const { connect } = useStompSocket();
   const toast = useCustomToast();
   const popupWindow = useRef<Window | null>(null);
   const { redirect, navigateWithRedirectPath } = useRedirect();
@@ -36,6 +38,7 @@ const SignInPage: FC = () => {
       }
 
       setUser(res.user);
+      connect(res.user);
       redirect();
     } catch (e) {
       toast.error(e);
