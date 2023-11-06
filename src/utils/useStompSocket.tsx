@@ -3,7 +3,7 @@ import { User } from '@/api/@types/Auth';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
 
-const SOCKET_URL = 'ws://localhost:8081/api/ws';
+const SOCKET_URL = 'ws://galaxy4276.asuscomm.com:8081/api/ws';
 
 const useStompSocket = () => {
   const { user, client, setClient } = useBoundedStore(({ user, client, setClient }) => ({
