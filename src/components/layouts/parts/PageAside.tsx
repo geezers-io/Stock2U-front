@@ -26,7 +26,7 @@ const PageAside: FC = () => {
   };
 
   return (
-    <Box as="aside" w="100%" h={appStyles.asideHeight} position="fixed" bottom={0} zIndex={999}>
+    <Box as="aside" w="100%" h={appStyles.asideHeight} position="fixed" bottom={0}>
       <Flex as="nav" h="100%" maxW={appStyles.maxWidth} margin="0 auto">
         <NavLink to="/products" /* TODO: with filter */ icon={{ normal: GeoAlt, active: GeoAltFill }} text="내주변" />
         <NavLink to="/chat" icon={{ normal: Chat, active: ChatFill }} text="채팅" />
