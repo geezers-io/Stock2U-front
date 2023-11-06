@@ -14,6 +14,7 @@ export interface ProductSeller {
 export interface ProductDetail {
   id: number;
   title: string;
+  name: string;
   price: number;
   type: ProductType;
   description: string;
