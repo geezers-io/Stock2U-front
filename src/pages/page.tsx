@@ -8,9 +8,12 @@ import { mockProducts } from '@/api/__mock__/mockProduct';
 import ProductCards from '@/components/domains/products/ProductCards';
 import ImageSlider from '@/components/shared/ImageCarousel';
 import { delay } from '@/utils/delay';
+import useStompSocket from '@/utils/useStompSocket';
 
 const IndexPage: FC = () => {
   const theme = useTheme();
+  useStompSocket(); // WebSocket Lazy Initialization
+
   const [recommendedProducts, setRecommendedProducts] = useState<ProductSummary[]>();
   const [nearExpirationProducts, setNearExpirationProducts] = useState<ProductSummary[]>();
   const [nearProducts, setNearProducts] = useState<ProductSummary[]>();
