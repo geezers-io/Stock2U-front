@@ -6,9 +6,9 @@ import OAuthButton from '@/components/domains/auth/OAuthButton';
 import { AUTH_VENDOR_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useRedirect } from '@/hooks/useRedirect';
+import useStompSocket from '@/hooks/useStompSocket';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
-import useStompSocket from '@/utils/useStompSocket';
 
 const popupDefaultSize: Record<AuthVendor, { width: number; height: number }> = {
   [AuthVendor.GOOGLE]: { width: 485, height: 710 },
