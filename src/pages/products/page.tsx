@@ -9,7 +9,7 @@ import ProductCards from '@/components/domains/products/ProductCards';
 import SearchFilterDrawer, { FilterValues } from '@/components/domains/products/SearchFilterDrawer';
 import InfiniteScroll from '@/components/shared/InfinityScroll';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
-import { MIN_PRICE } from '@/constants/product';
+import { PRODUCT_MIN_PRICE } from '@/constants/product';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { DEFAULT_PAGE_REQUEST, usePagination } from '@/hooks/usePagination';
 import { useBoundedStore } from '@/stores';
@@ -23,7 +23,7 @@ const ProductsSearchPage: FC = () => {
     ...DEFAULT_PAGE_REQUEST,
     size: 30,
     distance: Distance.Ten,
-    minPrice: MIN_PRICE,
+    minPrice: PRODUCT_MIN_PRICE,
     latitude: geo.latitude,
     longitude: geo.longitude,
   });
