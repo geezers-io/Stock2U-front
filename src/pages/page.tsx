@@ -89,7 +89,7 @@ const IndexPage: FC = () => {
       {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
-          <Link to="..." /* TODO: Routing to list page with filter */>
+          <Link to="/products">
             <Flex
               flexDirection="column"
               alignItems="center"
