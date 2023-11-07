@@ -8,6 +8,7 @@ import SignInPage from '@/pages/auth/sign-in/page';
 import ChoiceRolePage from '@/pages/auth/sign-up/page';
 import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
+import ChatListPage from '@/pages/chat/page';
 import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
 import ProductDetailPage from '@/pages/products/[id]/page';
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'chat',
-        element: <div>chat page</div>,
+        element: <ChatListPage />,
       },
       {
         path: 'wishlist',
