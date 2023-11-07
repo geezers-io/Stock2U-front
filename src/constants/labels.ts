@@ -23,3 +23,9 @@ export const USER_ROLE_LABEL: Record<UserRole, string> = {
   [UserRole.SELLER]: '판매자',
   [UserRole.ADMIN]: '관리자',
 };
+
+export const badgeColorschemeDict: Record<ProductType, string> = {
+  [ProductType.FOOD]: 'blue',
+  [ProductType.ACCOMMODATION]: 'yellow',
+  [ProductType.TICKET]: 'purple',
+};
