@@ -11,6 +11,7 @@ import { delay } from '@/utils/delay';
 
 const IndexPage: FC = () => {
   const theme = useTheme();
+
   const [recommendedProducts, setRecommendedProducts] = useState<ProductSummary[]>();
   const [nearExpirationProducts, setNearExpirationProducts] = useState<ProductSummary[]>();
   const [nearProducts, setNearProducts] = useState<ProductSummary[]>();
