@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Text, Heading, Box, Button, Avatar, Flex, Badge, Stack } from '@chakra-ui/react';
+import dayjs from 'dayjs';
 import { ProductType } from '@/api/@types/@enums';
 import { ProductDetail } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
@@ -54,6 +55,8 @@ const ProductDetailPage = () => {
     return;
   }
 
+  const formattedDate = dayjs(product.expiredAt).format('YYYY년 MM월 DD일 HH시 MM분까지');
+
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
       <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
@@ -64,8 +67,8 @@ const ProductDetailPage = () => {
           <Badge fontSize="xl" variant="outline" colorScheme="brand">
             DEADLINE
           </Badge>
-          <Text fontSize="xl" as="b" color="brand.500">
-            {product.expiredAt}
+          <Text fontSize="xl" as="b">
+            {formattedDate}
           </Text>
         </Flex>
 
