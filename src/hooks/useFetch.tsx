@@ -18,7 +18,7 @@ const useFetch = <T extends unknown>(fetch: () => T, options?: UseFetchOptions<T
   const { error } = useCustomToast();
 
   const refetch = async () => {
-    setLoading(false);
+    setLoading(true);
 
     await tryCatch({
       tryFn: async () => {
@@ -35,7 +35,7 @@ const useFetch = <T extends unknown>(fetch: () => T, options?: UseFetchOptions<T
       },
     });
 
-    setLoading(true);
+    setLoading(false);
   };
 
   useEffect(() => {
