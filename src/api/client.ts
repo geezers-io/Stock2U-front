@@ -10,5 +10,14 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+export const mswInstance = axios.create({
+  baseURL: '/',
+  timeout: 4000,
+  validateStatus: status => status >= 200 && status < 400,
+  withCredentials: true,
+});
+
 axiosInstance.interceptors.request.use(logRequest);
 axiosInstance.interceptors.response.use(flow([logResponse, unwrapResponse]), logAndProcessError);
+
+mswInstance.interceptors.response.use(unwrapResponse);
