@@ -2,18 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Text, Heading, Box, Button, Avatar, Flex, Badge, Stack } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { ProductType } from '@/api/@types/@enums';
 import { ProductDetail } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
+import { badgeColorschemeDict } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
-const badgeColorschemeDict: Record<ProductType, string> = {
-  [ProductType.FOOD]: 'blue',
-  [ProductType.ACCOMMODATION]: 'yellow',
-  [ProductType.TICKET]: 'purple',
-};
+const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH시 MM분까지');
 
 const ProductDetailPage = () => {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
@@ -55,8 +51,6 @@ const ProductDetailPage = () => {
     return;
   }
 
-  const formattedDate = dayjs(product.expiredAt).format('YYYY년 MM월 DD일 HH시 MM분까지');
-
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
       <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
@@ -68,7 +62,7 @@ const ProductDetailPage = () => {
             DEADLINE
           </Badge>
           <Text fontSize="xl" as="b">
-            {formattedDate}
+            {formattedDate(product.expiredAt)}
           </Text>
         </Flex>
 
@@ -92,7 +86,7 @@ const ProductDetailPage = () => {
           <Avatar
             size="xl"
             name={product.seller.username}
-            src={product.seller.profileImageUrl ? product.seller.profileImageUrl : 'https://bit.ly/broken-link'}
+            src={product.seller?.profileImageUrl ?? 'https://bit.ly/broken-link'}
           />
           <Box ml="3" w="100%">
             <Badge fontSize="xl" colorScheme="green">
