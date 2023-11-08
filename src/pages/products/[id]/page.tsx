@@ -125,7 +125,7 @@ const ProductDetailPage = () => {
           </Stack>
         </Box>
       </Box>
-      <ReservationButton />
+      <ReservationButton productId={product.id} />
     </Flex>
   );
 };
