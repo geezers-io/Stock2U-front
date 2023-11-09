@@ -1,7 +1,11 @@
 import { ReservationStatus } from './@enums';
 
 export interface CreateReservationRequest {
-  productId: string;
+  productId: number;
+}
+
+export interface CreateReservationResponse {
+  id: number;
 }
 
 export interface CancelReservationRequest {
@@ -11,6 +15,10 @@ export interface CancelReservationRequest {
 export interface ApproveReservationRequest {
   productId: string;
   roomId: string;
+}
+
+export interface ApproveReservationResponse {
+  progress: ReservationStatus[];
 }
 
 export interface SearchReservationRequest {
@@ -89,9 +97,9 @@ export interface ChangeReservationResponse {
 }
 
 export interface ReservationClient {
-  create(request: CreateReservationRequest): Promise<void>;
+  create(request: CreateReservationRequest): Promise<CreateReservationResponse>;
   cancel(request: CancelReservationRequest): Promise<void>;
-  approve(request: ApproveReservationRequest): Promise<void>;
+  approve(request: ApproveReservationRequest): Promise<ApproveReservationResponse>;
   search(request: SearchReservationRequest): Promise<SearchReservationResponse>;
   declared(request: DeclaredReservationRequest): Promise<void>;
   commonSearch(request: CommonSearchReservationRequest): Promise<SearchReservationResponse>;

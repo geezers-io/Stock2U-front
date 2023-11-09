@@ -18,13 +18,17 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 
 const ReservationButton = ({ productId }) => {
   const [isReserved, setIsReserved] = useState<boolean>(false);
+  const [reservationId, setReservationId] = useState<number>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
   const navigate = useNavigate();
-  // const [cancelTokenSource, setCancelTokenSource] = useState(null);
+
   const onReserve = async ({ productId }) => {
     try {
-      await ReservationService.create({ productId });
+      const { id } = await ReservationService.create({ productId });
+      console.log(id);
+      if (!id) return;
+      setReservationId(id);
       setIsReserved(true);
       toast.success('예약 요청에 성공했어요!');
     } catch {
@@ -32,24 +36,20 @@ const ReservationButton = ({ productId }) => {
     }
   };
 
-  {
-    /*const cancelReserve = async ({ reservationId }) => {
-    const cancelToken = axios.CancelToken.source();
-    setCancelTokenSource(cancelToken);
+  const cancelReserve = async reservationId => {
     try {
-      await ReservationService.create({ productId }); 
+      await ReservationService.cancel(reservationId);
       setIsReserved(false);
       toast.success('예약 요청이 취소되었어요.');
     } catch {
       toast.error('에약 취소 요청 전송에 실패했어요.');
     }
-  };*/
-  }
+  };
 
   return (
     <>
       {!isReserved && (
-        <Grid p="1.2rem 0" onClick={onReserve({ productId })}>
+        <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
           <Button colorScheme="brand" onClick={onOpen}>
             구매 예약 요청하기
           </Button>
@@ -57,7 +57,9 @@ const ReservationButton = ({ productId }) => {
       )}
       {isReserved && (
         <Grid p="1.2rem 0">
-          <Button colorScheme="gray" /*onClick={cancelReserve}*/>구매 예약 요청 취소하기</Button>
+          <Button colorScheme="gray" onClick={() => cancelReserve({ reservationId })}>
+            구매 예약 요청 취소하기
+          </Button>
         </Grid>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
