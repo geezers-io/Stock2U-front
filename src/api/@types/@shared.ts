@@ -51,3 +51,12 @@ export interface ProductSeller {
   salesCount: number;
   reviewCount: number;
 }
+
+export interface ProductPurchaser {
+  id: number;
+  username: string;
+  phone: string;
+  profileImageUrl: string;
+  salesCount: number;
+  reviewCount: number;
+}
