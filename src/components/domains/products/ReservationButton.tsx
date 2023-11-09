@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -16,7 +16,11 @@ import {
 import { ReservationService } from '@/api/services/Reservation';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
-const ReservationButton = ({ productId }) => {
+interface ReservationButtonProps {
+  productId: number;
+}
+
+const ReservationButton: FC<ReservationButtonProps> = ({ productId }) => {
   const [isReserved, setIsReserved] = useState<boolean>(false);
   const [reservationId, setReservationId] = useState<number>();
   const { isOpen, onOpen, onClose } = useDisclosure();

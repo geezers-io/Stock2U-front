@@ -1,4 +1,5 @@
 import { ReservationStatus } from './@enums';
+import { PageRequest, PageRequest, PageResponse } from './@shared';
 
 export interface CreateReservationRequest {
   productId: number;
@@ -33,58 +34,14 @@ export interface LatestChat {
   createdAt: string;
 }
 
-export interface ReservationSummary {
-  id: number;
-  title: string;
-  name: string;
-  status: ReservationStatus;
-  uploadUrl: string;
-}
-
-export interface Content {
-  latestChat: LatestChat;
-  reservationSummary: ReservationSummary[];
-}
-
-export interface Sort {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
-export interface Pagerable {
-  offset: number;
-  sort: Sort;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
-export interface SearchReservationResponse {
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  content: Content[];
-  number: number;
-  sort: Sort;
-  pagerable: Pagerable[];
-  first: boolean;
-  last: boolean;
-  numberOfElement: number;
-  empty: boolean;
-}
-
 export interface DeclaredReservationRequest {
   reason: string;
   roomId: string;
 }
 
-export interface CommonSearchReservationRequest {
+export interface CommonSearchReservationRequest extends PageRequest {
   startDate: string;
   endDate: string;
-  page: number;
-  size: number;
 }
 
 export interface ChangeReservationRequest {
@@ -100,8 +57,8 @@ export interface ReservationClient {
   create(request: CreateReservationRequest): Promise<CreateReservationResponse>;
   cancel(request: CancelReservationRequest): Promise<void>;
   approve(request: ApproveReservationRequest): Promise<ApproveReservationResponse>;
-  search(request: SearchReservationRequest): Promise<SearchReservationResponse>;
+  search(request: SearchReservationRequest): Promise<PageResponse<T>>;
   declared(request: DeclaredReservationRequest): Promise<void>;
-  commonSearch(request: CommonSearchReservationRequest): Promise<SearchReservationResponse>;
+  commonSearch(request: CommonSearchReservationRequest): Promise<PageResponse<T>>;
   change(request: ChangeReservationRequest): Promise<ChangeReservationResponse>;
 }
