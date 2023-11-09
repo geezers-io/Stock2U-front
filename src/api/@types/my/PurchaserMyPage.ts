@@ -2,11 +2,11 @@ import { PageRequest, PageResponse, ProductPurchaser } from '@/api/@types/@share
 import { ProductSummary } from '@/api/@types/Products';
 
 export interface SubscribePurchaserMyPageRequest {
-  id: string;
+  id: number;
 }
 
 export interface UnsubscribePurchaserMyPageRequest {
-  id: string;
+  id: number;
 }
 
 export interface PurchaserMyPageClient {
