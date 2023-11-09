@@ -28,6 +28,7 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.5.1",
     "dayjs": "^1.11.10",
     "formik": "^2.4.5",
