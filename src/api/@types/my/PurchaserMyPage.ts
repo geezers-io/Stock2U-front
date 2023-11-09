@@ -1,4 +1,4 @@
-import { PageRequest, PageResponse, ProductSeller } from '@/api/@types/@shared';
+import { PageRequest, PageResponse, ProductPurchaser } from '@/api/@types/@shared';
 import { ProductSummary } from '@/api/@types/Products';
 
 export interface SubscribePurchaserMyPageRequest {
@@ -10,7 +10,7 @@ export interface UnsubscribePurchaserMyPageRequest {
 }
 
 export interface PurchaserMyPageClient {
-  search(): Promise<ProductSeller>;
+  search(): Promise<ProductPurchaser>;
   subscribe(request: SubscribePurchaserMyPageRequest): Promise<void>;
   listSearch(request: PageRequest): Promise<PageResponse<ProductSummary>>;
   unsubscribe(request: UnsubscribePurchaserMyPageRequest): Promise<void>;
