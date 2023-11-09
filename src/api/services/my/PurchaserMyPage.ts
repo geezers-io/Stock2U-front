@@ -8,9 +8,9 @@ export const purchaserMyPageService: PurchaserMyPageClient = {
   search: async () => {
     return await axiosInstance.get(`${MY_ROUTE}/${ROUTE}`);
   },
-  subscribe: async request => {
-    return await axiosInstance.post(`${MY_ROUTE}/${ROUTE}/subscribe`, {
-      params: request,
+  subscribe: async params => {
+    return await axiosInstance.post(`${MY_ROUTE}/${ROUTE}/subscribe`, null, {
+      params,
     });
   },
   listSearch: async request => {

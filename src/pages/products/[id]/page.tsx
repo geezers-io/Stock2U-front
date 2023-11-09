@@ -4,6 +4,7 @@ import { Text, Heading, Box, Button, Avatar, Flex, Badge, Stack } from '@chakra-
 import dayjs from 'dayjs';
 import { ProductDetail } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
+import { purchaserMyPageService } from '@/api/services/my/PurchaserMyPage';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
 import { badgeColorschemeDict } from '@/constants/labels';
@@ -26,16 +27,22 @@ const ProductDetailPage = () => {
     }
   };
 
-  const subscribe = () => {
+  const subscribe = async () => {
+    if (!product) return;
+    const sellerId = product.seller.id;
     try {
+      await purchaserMyPageService.subscribe({ id: sellerId });
       setIsSubscribed(true);
     } catch {
-      toast.error('구독 요청 실패:');
+      toast.error('구독 요청 실패');
     }
   };
 
-  const unSubscribe = () => {
+  const unSubscribe = async () => {
+    if (!product) return;
+    const sellerId = product.seller.id;
     try {
+      await purchaserMyPageService.unsubscribe({ id: sellerId });
       setIsSubscribed(false);
     } catch {
       toast.error('구독 취소 요청 실패:');
