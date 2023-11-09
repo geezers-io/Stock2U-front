@@ -1,6 +1,6 @@
 import { ProductType, ReservationStatus } from './@enums';
 import { SimpleFile } from './File';
-import { Coordinate, PageRequest, PageResponse } from '@/api/@types/@shared';
+import { Coordinate, PageRequest, PageResponse, ProductSeller } from '@/api/@types/@shared';
 
 export interface ProductDetail {
   id: number;
