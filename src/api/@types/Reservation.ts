@@ -1,5 +1,6 @@
 import { ReservationStatus } from './@enums';
-import { PageRequest, PageRequest, PageResponse } from './@shared';
+import { PageRequest, PageResponse } from './@shared';
+import { ProductSummary } from './Products';
 
 export interface CreateReservationRequest {
   productId: number;
@@ -57,8 +58,8 @@ export interface ReservationClient {
   create(request: CreateReservationRequest): Promise<CreateReservationResponse>;
   cancel(request: CancelReservationRequest): Promise<void>;
   approve(request: ApproveReservationRequest): Promise<ApproveReservationResponse>;
-  search(request: SearchReservationRequest): Promise<PageResponse<T>>;
+  search(request: SearchReservationRequest): Promise<PageResponse<ProductSummary>>;
   declared(request: DeclaredReservationRequest): Promise<void>;
-  commonSearch(request: CommonSearchReservationRequest): Promise<PageResponse<T>>;
+  commonSearch(request: CommonSearchReservationRequest): Promise<PageResponse<ProductSummary>>;
   change(request: ChangeReservationRequest): Promise<ChangeReservationResponse>;
 }
