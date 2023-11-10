@@ -6,7 +6,7 @@ import {
   RangeSliderThumb,
   RangeSliderTrack,
 } from '@chakra-ui/react';
-import { MIN_PRICE } from '@/constants/product';
+import { PRODUCT_MIN_PRICE } from '@/constants/product';
 
 type MinPrice = number;
 type MaxPrice = number | undefined;
@@ -27,13 +27,13 @@ const PriceSlider: FC<Props> = ({ value, setValue }) => {
   return (
     <RangeSlider
       colorScheme="brand"
-      step={(MAX_CRITICAL_POINT / MIN_PRICE) * 10}
-      min={MIN_PRICE}
+      step={(MAX_CRITICAL_POINT / PRODUCT_MIN_PRICE) * 10}
+      min={PRODUCT_MIN_PRICE}
       max={MAX_CRITICAL_POINT}
       value={[value[0], maxPoint]}
       onChange={handleChange}
     >
-      <RangeSliderMark value={MIN_PRICE} mt="3" fontSize="sm">
+      <RangeSliderMark value={PRODUCT_MIN_PRICE} mt="3" fontSize="sm">
         {value[0]}원
       </RangeSliderMark>
       <RangeSliderMark

@@ -1,68 +1,83 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Text, Heading, Box, Button, Avatar, Flex, Badge, Stack } from '@chakra-ui/react';
-import { ProductType } from '@/api/@types/@enums';
-import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
-import { mockSimpleFiles } from '@/api/__mock__/simpleFile';
+import dayjs from 'dayjs';
+import { ProductDetail } from '@/api/@types/Products';
+import { ProductsService } from '@/api/services/Products';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
+import { badgeColorschemeDict } from '@/constants/labels';
+import { useCustomToast } from '@/hooks/useCustomToast';
 
-const badgeColorschemeDict: Record<ProductType, string> = {
-  [ProductType.FOOD]: 'blue',
-  [ProductType.ACCOMMODATION]: 'yellow',
-  [ProductType.TICKET]: 'purple',
-};
+const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH시 MM분까지');
 
-const ProductDetailPage: FC = () => {
-  const [productDetail, setProductDetail] = useState<MockProductDetail>();
+const ProductDetailPage = () => {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [product, setProduct] = useState<ProductDetail>();
+  const toast = useCustomToast();
+  const { id } = useParams();
 
-  const fetchProductDetail = async () => {
+  const fetchProductDetail = async (id: number) => {
     try {
-      setProductDetail(mockProductDetail);
-    } catch (e) {}
+      const response = await ProductsService.getDetail({ id });
+      setProduct(response);
+    } catch (e) {
+      toast.error(e);
+    }
+  };
+
+  const subscribe = () => {
+    try {
+      setIsSubscribed(true);
+    } catch {
+      toast.error('구독 요청 실패:');
+    }
+  };
+
+  const unSubscribe = () => {
+    try {
+      setIsSubscribed(false);
+    } catch {
+      toast.error('구독 취소 요청 실패:');
+    }
   };
 
   useEffect(() => {
-    fetchProductDetail();
+    if (!id) return;
+    fetchProductDetail(Number(id));
   }, []);
 
-  if (!productDetail) {
-    return null;
+  if (!product) {
+    return;
   }
-  const cancelSubscribe = () => {
-    setIsSubscribed(false);
-  };
-  const subscribe = () => {
-    setIsSubscribed(true);
-  };
 
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
       <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
         <Heading as="h3" size="lg">
-          {productDetail.title}
+          {product.title}
         </Heading>
         <Flex alignItems="center" gap="10px" justifyContent="right">
           <Badge fontSize="xl" variant="outline" colorScheme="brand">
             DEADLINE
           </Badge>
-          <Text fontSize="xl" as="b" color="brand.500">
-            {productDetail.date}{' '}
+          <Text fontSize="xl" as="b">
+            {formattedDate(product.expiredAt)}
           </Text>
         </Flex>
 
-        <ImageViewer images={mockSimpleFiles /* TODO: API 에서 내려온 값 넣어주기 */} />
+        <ImageViewer images={product?.productImages} />
 
         <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
-          <Badge fontSize="xl" colorScheme={badgeColorschemeDict[productDetail.productType]}>
-            {productDetail.productType}
+          <Badge fontSize="xl" colorScheme={badgeColorschemeDict[product.type]}>
+            {product.type}
           </Badge>
           <Text fontSize="xl" as="b">
-            {productDetail.stockName}
+            {product.name}
           </Text>
         </Flex>
 
-        <Text fontSize="xl">{productDetail.detail}</Text>
+        <Text fontSize="xl">{product.description}</Text>
       </Flex>
 
       <Box mt="auto">
@@ -70,23 +85,23 @@ const ProductDetailPage: FC = () => {
         <Flex>
           <Avatar
             size="xl"
-            name={mockProductDetail.seller.nickname}
-            src={mockProductDetail.seller.profile ? mockProductDetail.seller.profile : 'https://bit.ly/broken-link'}
+            name={product.seller.username}
+            src={product.seller?.profileImageUrl ?? 'https://bit.ly/broken-link'}
           />
           <Box ml="3" w="100%">
             <Badge fontSize="xl" colorScheme="green">
               판매자
             </Badge>
             <Text fontSize="xl" fontWeight="bold">
-              {mockProductDetail.seller.nickname} 님
+              {product.seller.username} 님
               <Text fontSize="xl" color="gray">
-                판매 재고 {mockProductDetail.seller.stockCount} 후기 {mockProductDetail.seller.reviewCount}
+                판매 재고 {product.seller.salesCount} 후기 {product.seller.reviewCount}
               </Text>
             </Text>
           </Box>
           <Flex align-items="center">
             {isSubscribed && (
-              <Button colorScheme={'gray'} float="right" onClick={cancelSubscribe}>
+              <Button colorScheme={'gray'} float="right" onClick={unSubscribe}>
                 판매자 구독 취소하기
               </Button>
             )}
@@ -105,7 +120,7 @@ const ProductDetailPage: FC = () => {
               금액
             </Badge>
             <Text fontSize="xl" as="b">
-              {productDetail.price.toLocaleString()}원
+              {product.price.toLocaleString()}원
             </Text>
           </Stack>
         </Box>

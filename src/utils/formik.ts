@@ -28,6 +28,7 @@ const predefinedRegex = {
   email: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
   licenseNumber: /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/,
   account: /^[0-9-]+$/,
+  korEngNumSpace: /^[ㄱ-ㅎ가-힣a-zA-Z0-9 ]+$/,
 };
 
 /**
