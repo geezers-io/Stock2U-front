@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import MyPage from './pages/my/page';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import { useGeoAlert } from '@/hooks/useGeoAlert';
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'my',
-        element: <div>my page</div>,
+        element: <MyPage />,
       },
     ],
   },
