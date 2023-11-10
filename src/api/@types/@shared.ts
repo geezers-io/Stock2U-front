@@ -52,7 +52,7 @@ export interface ProductSeller {
   reviewCount: number;
 }
 
-export interface ProductPurchaser {
+export interface PurchaserGetAccountInfo {
   id: number;
   username: string;
   phone: string;
