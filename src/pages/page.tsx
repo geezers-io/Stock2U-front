@@ -11,12 +11,27 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
 
+interface DistanceEnumType {
+  ONE: number;
+  THREE: number;
+  FIVE: number;
+  TEN: number;
+}
+
+const DistanceEnum: DistanceEnumType = {
+  ONE: 1,
+  THREE: 3,
+  FIVE: 5,
+  TEN: 10,
+};
+
 const IndexPage: FC = () => {
   const theme = useTheme();
   const [products, setProducts] = useState<GetMainPageProductsResponse>();
   const [bannerImages, setBannerImages] = useState<string[]>([]);
   const toast = useCustomToast();
   const geo = useBoundedStore(state => state.geo);
+  const distanceValue = DistanceEnum.THREE;
 
   const fetchDataFromAPI = async () => {
     try {
@@ -123,7 +138,7 @@ const IndexPage: FC = () => {
       {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
-          <Link to={`/products?distance=${3}`}>
+          <Link to={`/products?distance=${distanceValue}`}>
             <Flex
               flexDirection="column"
               alignItems="center"
