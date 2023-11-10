@@ -47,7 +47,7 @@ export interface ProductSeller {
   id: number;
   username: string;
   phone: string;
-  profileImageUrl: string;
+  avatarUrl: string;
   salesCount: number;
   reviewCount: number;
 }
@@ -56,7 +56,7 @@ export interface ProductPurchaser {
   id: number;
   username: string;
   phone: string;
-  profileImageUrl: string;
-  salesCount: number;
+  avatarUrl: string;
+  buyCount: number;
   reviewCount: number;
 }

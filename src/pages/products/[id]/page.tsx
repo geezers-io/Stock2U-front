@@ -13,8 +13,8 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH시 MM분까지');
 
 const ProductDetailPage = () => {
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductDetail>();
+  const [isSubscribe, setIsSubscribe] = useState<boolean>(false);
   const toast = useCustomToast();
   const { id } = useParams();
 
@@ -29,30 +29,28 @@ const ProductDetailPage = () => {
 
   const subscribe = async () => {
     if (!product) return;
-    const sellerId = product.seller.id;
     try {
-      await purchaserMyPageService.subscribe({ id: sellerId });
-      setIsSubscribed(true);
+      await purchaserMyPageService.subscribe({ id: product.seller.id });
+      setIsSubscribe(true);
     } catch {
-      toast.error('구독 요청 실패');
+      toast.error('구독 요청에 실패했습니다.');
     }
   };
 
   const unSubscribe = async () => {
     if (!product) return;
-    const sellerId = product.seller.id;
     try {
-      await purchaserMyPageService.unsubscribe({ id: sellerId });
-      setIsSubscribed(false);
+      await purchaserMyPageService.unsubscribe({ id: product.seller.id });
+      setIsSubscribe(false);
     } catch {
-      toast.error('구독 취소 요청 실패:');
+      toast.error('구독 취소 요청에 실패했습니다.');
     }
   };
 
   useEffect(() => {
     if (!id) return;
     fetchProductDetail(Number(id));
-  }, [isSubscribed]);
+  }, [isSubscribe]);
 
   if (!product) {
     return;
@@ -87,13 +85,13 @@ const ProductDetailPage = () => {
         <Text fontSize="xl">{product.description}</Text>
       </Flex>
 
+      {/*seller*/}
       <Box mt="auto">
-        {/*seller*/}
         <Flex>
           <Avatar
             size="xl"
             name={product.seller.username}
-            src={product.seller?.profileImageUrl ?? 'https://bit.ly/broken-link'}
+            src={product.seller?.avatarUrl ?? 'https://bit.ly/broken-link'}
           />
           <Box ml="3" w="100%">
             <Badge fontSize="xl" colorScheme="green">
