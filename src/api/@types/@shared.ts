@@ -42,3 +42,21 @@ export interface Coordinate {
   latitude: number;
   longitude: number;
 }
+
+export interface ProductSeller {
+  id: number;
+  username: string;
+  phone: string;
+  avatarUrl: string;
+  salesCount: number;
+  reviewCount: number;
+}
+
+export interface PurchaserGetAccountInfo {
+  id: number;
+  username: string;
+  phone: string;
+  avatarUrl: string;
+  buyCount: number;
+  reviewCount: number;
+}
