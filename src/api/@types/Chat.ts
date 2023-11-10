@@ -2,8 +2,9 @@ import { ReservationStatus } from '@/api/@types/@enums';
 import { PageRequest, PageResponse } from '@/api/@types/@shared';
 
 export interface ChatRoomResponse {
-  latestChat: Message;
+  latestChat: OutsideChatMessage;
   reservationSummary: ReservationSummary;
+  count: number;
 }
 
 export interface ReservationSummary {
@@ -14,15 +15,37 @@ export interface ReservationSummary {
   uploadUrl: string;
 }
 
-export interface Message {
+export interface OutsideChatMessage {
   username: string;
   message: string;
   read: boolean;
-  createdAt: Date;
+  createdAt: string;
+  imageId: number;
 }
 
 export interface GetChatRoomsRequest extends PageRequest {
   title?: string;
+}
+
+export enum PubAlertType {
+  CREATION = 'CREATION',
+  MESSAGE = 'MESSAGE',
+  CANCEL = 'CANCEL',
+  PROGRESS = 'PROGRESS',
+  COMPLETION = 'COMPLETION',
+}
+
+/**
+ * 채팅 알림
+ */
+export interface ChatPubAlert {
+  type: PubAlertType;
+  title?: string;
+  thumbnailUrl?: string;
+  userName: string;
+  userId: number;
+  message: string;
+  reservationId: number;
 }
 
 export interface ChatClient {

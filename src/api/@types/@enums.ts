@@ -14,6 +14,7 @@ export enum ReservationStatus {
   PROGRESS = 'PROGRESS',
   CANCEL = 'CANCEL',
   COMPLETION = 'COMPLETION',
+  REQUESTED = 'REQUESTED',
 }
 
 export enum UserRole {
