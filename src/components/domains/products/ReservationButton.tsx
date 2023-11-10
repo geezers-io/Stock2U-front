@@ -30,13 +30,11 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId }) => {
   const onReserve = async ({ productId }) => {
     try {
       const { id } = await ReservationService.create({ productId });
-      console.log(id);
-      if (!id) return;
       setReservationId(id);
       setIsReserved(true);
       toast.success('예약 요청에 성공했어요!');
     } catch {
-      toast.error('에약 요청 전송에 실패했어요');
+      toast.error('에약 요청에 실패했어요');
     }
   };
 
@@ -46,7 +44,7 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId }) => {
       setIsReserved(false);
       toast.success('예약 요청이 취소되었어요.');
     } catch {
-      toast.error('에약 취소 요청 전송에 실패했어요.');
+      toast.error('에약 취소 요청에 실패했어요.');
     }
   };
 

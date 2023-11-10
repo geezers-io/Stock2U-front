@@ -23,10 +23,8 @@ export interface ApproveReservationResponse {
   progress: ReservationStatus[];
 }
 
-export interface SearchReservationRequest {
+export interface SearchReservationRequest extends PageRequest {
   title?: string;
-  page: number;
-  size: number;
 }
 
 export interface LatestChat {
