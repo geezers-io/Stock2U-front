@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Text, Heading, Box, Button, Avatar, Flex, Badge, Stack } from '@chakra-ui/react';
+import { Text, Heading, Box, Avatar, Flex, Badge, Stack, Button } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { ProductDetail } from '@/api/@types/Products';
+import { MyService } from '@/api/services/My';
 import { ProductsService } from '@/api/services/Products';
-import { purchaserMyPageService } from '@/api/services/my/PurchaserMyPage';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
 import { badgeColorschemeDict } from '@/constants/labels';
@@ -14,7 +14,6 @@ const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH�
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState<ProductDetail>();
-  const [isSubscribe, setIsSubscribe] = useState<boolean>(false);
   const toast = useCustomToast();
   const { id } = useParams();
 
@@ -27,21 +26,28 @@ const ProductDetailPage = () => {
     }
   };
 
+  const toggleSubscribe = () => {
+    setProduct(prev => {
+      if (!prev) return;
+      return { ...prev, isSubscribe: !prev.isSubscribe };
+    });
+  };
+
   const subscribe = async () => {
     if (!product) return;
     try {
-      await purchaserMyPageService.subscribe({ id: product.seller.id });
-      setIsSubscribe(true);
+      await MyService.purchaserSubscribe({ id: product.seller.id });
+      toggleSubscribe();
     } catch {
       toast.error('구독 요청에 실패했습니다.');
     }
   };
 
-  const unSubscribe = async () => {
+  const unsubscribe = async () => {
     if (!product) return;
     try {
-      await purchaserMyPageService.unsubscribe({ id: product.seller.id });
-      setIsSubscribe(false);
+      await MyService.purchaserUnsubscribe({ id: product.seller.id });
+      toggleSubscribe();
     } catch {
       toast.error('구독 취소 요청에 실패했습니다.');
     }
@@ -50,7 +56,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     if (!id) return;
     fetchProductDetail(Number(id));
-  }, [isSubscribe]);
+  }, []);
 
   if (!product) {
     return;
@@ -105,16 +111,8 @@ const ProductDetailPage = () => {
             </Text>
           </Box>
           <Flex align-items="center">
-            {product.isSubscribe && (
-              <Button colorScheme={'gray'} float="right" onClick={unSubscribe}>
-                판매자 구독 취소하기
-              </Button>
-            )}
-            {!product.isSubscribe && (
-              <Button colorScheme={'brand'} float="right" onClick={subscribe}>
-                판매자 구독하기
-              </Button>
-            )}
+            {product.isSubscribe && <Button onClick={unsubscribe}>구독 취소</Button>}
+            {!product.isSubscribe && <Button onClick={subscribe}>구독하기</Button>}
           </Flex>
         </Flex>
 
