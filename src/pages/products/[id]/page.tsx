@@ -52,7 +52,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     if (!id) return;
     fetchProductDetail(Number(id));
-  }, []);
+  }, [isSubscribed]);
 
   if (!product) {
     return;
@@ -107,12 +107,12 @@ const ProductDetailPage = () => {
             </Text>
           </Box>
           <Flex align-items="center">
-            {isSubscribed && (
+            {product.isSubscribe && (
               <Button colorScheme={'gray'} float="right" onClick={unSubscribe}>
                 판매자 구독 취소하기
               </Button>
             )}
-            {!isSubscribed && (
+            {!product.isSubscribe && (
               <Button colorScheme={'brand'} float="right" onClick={subscribe}>
                 판매자 구독하기
               </Button>
