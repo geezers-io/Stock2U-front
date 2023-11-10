@@ -123,7 +123,7 @@ const IndexPage: FC = () => {
       {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
-          <Link to={`/products?distance=${Distance}`}>
+          <Link to={`/products?distance=${Distance.Three}`}>
             <Flex
               flexDirection="column"
               alignItems="center"
