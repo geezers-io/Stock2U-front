@@ -3,7 +3,7 @@ import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { GetMainPageProductsResponse } from '@/api/@types/Products';
+import { Distance, GetMainPageProductsResponse } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
 import ProductCards from '@/components/domains/products/ProductCards';
 import ImageSlider from '@/components/shared/ImageCarousel';
@@ -11,27 +11,12 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
 
-interface DistanceEnumType {
-  ONE: number;
-  THREE: number;
-  FIVE: number;
-  TEN: number;
-}
-
-const DistanceEnum: DistanceEnumType = {
-  ONE: 1,
-  THREE: 3,
-  FIVE: 5,
-  TEN: 10,
-};
-
 const IndexPage: FC = () => {
   const theme = useTheme();
   const [products, setProducts] = useState<GetMainPageProductsResponse>();
   const [bannerImages, setBannerImages] = useState<string[]>([]);
   const toast = useCustomToast();
   const geo = useBoundedStore(state => state.geo);
-  const distanceValue = DistanceEnum.THREE;
 
   const fetchDataFromAPI = async () => {
     try {
@@ -138,7 +123,7 @@ const IndexPage: FC = () => {
       {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
-          <Link to={`/products?distance=${distanceValue}`}>
+          <Link to={`/products?distance=${Distance}`}>
             <Flex
               flexDirection="column"
               alignItems="center"
