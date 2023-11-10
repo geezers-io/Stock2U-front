@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { Box, Button, Flex, Heading, Spacer, Text, LinkOverlay } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { GetMainPageProductsResponse } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
@@ -123,7 +123,7 @@ const IndexPage: FC = () => {
       {products?.myNeighborhoods && (
         <>
           <Spacer h={8} />
-          <LinkOverlay as={Link} to="/products">
+          <Link to={`/products?distance=${3}`}>
             <Flex
               flexDirection="column"
               alignItems="center"
@@ -139,7 +139,7 @@ const IndexPage: FC = () => {
                 재고 더 보기
               </Button>
             </Flex>
-          </LinkOverlay>
+          </Link>
         </>
       )}
 
