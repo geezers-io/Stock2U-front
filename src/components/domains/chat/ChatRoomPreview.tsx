@@ -11,6 +11,7 @@ interface ChatRoomPreviewProps {
 
 const ChatRoomPreview = ({ data: { latestChat, reservationSummary, count } }: ChatRoomPreviewProps) => {
   const overflowCount = count > 99;
+  const chatCount = processer.suppressIfOneHundred(count);
 
   return (
     <Link to={`/chat/${reservationSummary.id}`}>
@@ -38,18 +39,20 @@ const ChatRoomPreview = ({ data: { latestChat, reservationSummary, count } }: Ch
               <Text fontSize={['sm', 'md']} color="gray.800">
                 {reservationSummary.title}
               </Text>
-              <Flex
-                justify="center"
-                align="center"
-                w={overflowCount ? '32px' : '24px'}
-                h="24px"
-                bgColor="red.400"
-                rounded="3xl"
-                fontSize="xs"
-                textColor="white"
-              >
-                {processer.suppressIfOneHundred(count)}
-              </Flex>
+              {count > 0 && (
+                <Flex
+                  justify="center"
+                  align="center"
+                  w={overflowCount ? '32px' : '24px'}
+                  h="24px"
+                  bgColor="red.400"
+                  rounded="3xl"
+                  fontSize="xs"
+                  textColor="white"
+                >
+                  {chatCount}
+                </Flex>
+              )}
             </Flex>
             <Flex columnGap={2}>
               <Text
