@@ -41,16 +41,16 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
   };
   return (
     <>
-      {isReserved && (
+      {!isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
           <Button colorScheme="brand" onClick={onOpen}>
             구매 예약 요청하기
           </Button>
         </Grid>
       )}
-      {!isReserved && (
+      {isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
-          <Button colorScheme="gray">{isReserved ? ReservationStatus[isReserved] : '이미 예약 요청 중'}</Button>
+          <Button colorScheme="gray">{ReservationStatus[isReserved]}</Button>
         </Grid>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
