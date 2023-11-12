@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { ReservationStatus } from '@/api/@types/@enums';
 import { ReservationService } from '@/api/services/Reservation';
+import { RESERVATION_STATUS_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 interface ReservationButtonProps {
@@ -50,7 +51,7 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
       )}
       {isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
-          <Button colorScheme="gray">{ReservationStatus[isReserved]}</Button>
+          <Button colorScheme="gray">{RESERVATION_STATUS_LABEL[isReserved]}</Button>
         </Grid>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
