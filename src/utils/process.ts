@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export const processer = {
   distance: (v: number) => `${Math.round(v * 10) / 10}km`,
   price: (v: number) => `${v.toLocaleString()}원`,
@@ -9,4 +11,6 @@ export const processer = {
     const minutes = String(dateTime.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   },
+  dateToHHmm: (d: string) => dayjs(d).format('HH:mm'),
+  suppressIfOneHundred: (count: number) => (count > 99 ? '99+' : String(count)),
 };

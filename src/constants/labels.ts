@@ -16,6 +16,7 @@ export const RESERVATION_STATUS_LABEL: Record<ReservationStatus, string> = {
   [ReservationStatus.PROGRESS]: '예약 진행중',
   [ReservationStatus.CANCEL]: '예약 취소됨',
   [ReservationStatus.COMPLETION]: '구매 완료됨',
+  [ReservationStatus.REQUESTED]: '예약 신청됨',
 };
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
