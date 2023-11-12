@@ -51,7 +51,7 @@ const ProductDetailPage = () => {
     return;
   }
 
-  console.log(product.status);
+  console.log(product);
 
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
