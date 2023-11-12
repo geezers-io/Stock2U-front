@@ -106,10 +106,13 @@ export interface FindAddressResponse {
   results: Address[];
 }
 
+type SignInDevParam = { who: 'Patt' | 'Matt' };
+
 export interface AuthClient {
   signUpPurchaser(request: PurchaserSignUpRequest): Promise<User>;
   signUpSeller(request: SellerSignUpRequest): Promise<User>;
   signIn(request: SignInRequest): Promise<SignInResponse>;
+  signInDev(req: SignInDevParam): Promise<SignInResponse>;
   verifyCode(request: VerifyCodeRequest): Promise<void>;
   withdraw(request: WithDrawRequest): Promise<void>;
   signInURL(request: SignInURLRequest): Promise<SignInURLResponse>;

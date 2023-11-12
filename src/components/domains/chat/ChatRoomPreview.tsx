@@ -1,16 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Flex, Image, Text } from '@chakra-ui/react';
-import dayjs from 'dayjs';
 import { ReservationStatus } from '@/api/@types/@enums';
 import { ChatRoomResponse } from '@/api/@types/Chat';
 import { RESERVATION_STATUS_LABEL } from '@/constants/labels';
+import { processer } from '@/utils/process';
 
 interface ChatRoomPreviewProps {
   data: ChatRoomResponse;
 }
-
-const format = (ds: string) => dayjs(ds).format('HH:mm');
-const pressureCount = (count: number) => (count > 99 ? '99+' : String(count));
 
 const ChatRoomPreview = ({ data: { latestChat, reservationSummary, count } }: ChatRoomPreviewProps) => {
   const overflowCount = count > 99;
@@ -51,7 +48,7 @@ const ChatRoomPreview = ({ data: { latestChat, reservationSummary, count } }: Ch
                 fontSize="xs"
                 textColor="white"
               >
-                {pressureCount(count)}
+                {processer.suppressIfOneHundred(count)}
               </Flex>
             </Flex>
             <Flex columnGap={2}>
@@ -69,7 +66,7 @@ const ChatRoomPreview = ({ data: { latestChat, reservationSummary, count } }: Ch
                 {latestChat.message}
               </Text>
               <Text color="gray.500" fontSize="sm">
-                {format(latestChat.createdAt)}
+                {processer.dateToHHmm(latestChat.createdAt)}
               </Text>
             </Flex>
           </Flex>

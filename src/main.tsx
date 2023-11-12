@@ -3,8 +3,9 @@ import App from './App';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { mswWorker } from '@/mocks/handler';
 
-// 개발용
-mswWorker.start();
+if (import.meta.env.DEV) {
+  mswWorker.start();
+}
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ErrorBoundary>
