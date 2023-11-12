@@ -4,10 +4,14 @@ import tryCatch from '@/utils/tryCatch';
 
 interface UseFetchOptions<T> {
   initialValues: Awaited<T>;
-  errorFn: (err: unknown) => void;
+  errorFn?: (err: unknown) => void;
 }
 
-const useFetch = <T extends unknown>(fetch: () => T, options?: UseFetchOptions<T>) => {
+const useFetch = <T extends unknown>(
+  key: string | string[] | number[],
+  fetch: () => T,
+  options?: UseFetchOptions<T>,
+) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Awaited<T> | null>(() => {
     if (options && options.initialValues) {
@@ -26,7 +30,7 @@ const useFetch = <T extends unknown>(fetch: () => T, options?: UseFetchOptions<T
         setData(data);
       },
       catchFn: err => {
-        if (options && options.errorFn) {
+        if (options && options?.errorFn) {
           options.errorFn(err);
         } else {
           error(err);
