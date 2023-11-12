@@ -47,6 +47,20 @@ const SignInPage: FC = () => {
     }
   };
 
+  const tryLoginDev = async (who: 'Patt' | 'Matt') => {
+    try {
+      const res = await AuthService.signInDev({ who });
+      if (!res.exists) {
+        return;
+      }
+      setUser(res.user);
+      connect(res.user);
+      redirect();
+    } catch (e) {
+      toast.error(e);
+    }
+  };
+
   const openPopupWindow = (url: string, size?: string) => {
     if (!popupWindow.current || popupWindow.current.closed) {
       popupWindow.current = window.open(url, 'popupWindow', size);
@@ -95,6 +109,10 @@ const SignInPage: FC = () => {
         const vendor = vendor_ as AuthVendor;
         return <OAuthButton key={vendor} vendor={vendor} label={label} onClick={() => oauthHandler(vendor)} />;
       })}
+
+      {/* 개발 목적 */}
+      <OAuthButton vendor={AuthVendor.GOOGLE} label="Patt 로 로그인(구매자)" onClick={() => tryLoginDev('Patt')} />
+      <OAuthButton vendor={AuthVendor.GOOGLE} label="Matt 로 로그인(판매자)" onClick={() => tryLoginDev('Matt')} />
     </Flex>
   );
 };

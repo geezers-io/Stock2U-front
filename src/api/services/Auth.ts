@@ -13,6 +13,11 @@ export const AuthService: AuthClient = {
   signIn: async request => {
     return await axiosInstance.post(`${ROUTE}/signin`, request);
   },
+  signInDev: async params => {
+    return await axiosInstance.post(`${ROUTE}/signin/dev`, null, {
+      params,
+    });
+  },
   verifyCode: async request => {
     return await axiosInstance.post(`${ROUTE}/code/verify`, request);
   },
