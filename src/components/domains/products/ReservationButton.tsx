@@ -27,8 +27,6 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
   const toast = useCustomToast();
   const navigate = useNavigate();
 
-  const hasReservation: boolean = isReserved !== undefined;
-
   const onReserve = async ({ productId }) => {
     try {
       await ReservationService.create({ productId });
@@ -43,14 +41,14 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
   };
   return (
     <>
-      {hasReservation && (
+      {isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
           <Button colorScheme="brand" onClick={onOpen}>
             구매 예약 요청하기
           </Button>
         </Grid>
       )}
-      {!hasReservation && (
+      {!isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
           <Button colorScheme="gray">{isReserved}</Button>
         </Grid>
