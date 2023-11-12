@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -27,17 +27,29 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
   const navigate = useNavigate();
+  const [reservationId, setReservationId] = useState<number>();
 
   const onReserve = async ({ productId }) => {
     try {
-      await ReservationService.create({ productId });
+      const { id } = await ReservationService.create({ productId });
+      setReservationId(id);
       toast.success('예약 요청에 성공했어요!');
-    } catch (error: Error) {
+    } catch (error: AxiosError) {
       if (error.response && error.response.status === 410) {
         toast.info('이미 예약이 요청되어 있습니다. 판매자 측에서 처리될 때까지 기다려주세요');
       } else {
         toast.error('에약 요청에 실패했어요');
       }
+    }
+  };
+
+  const cancelReserve = async reservationId => {
+    try {
+      await ReservationService.cancel(reservationId);
+
+      toast.success('예약 요청이 취소되었어요.');
+    } catch {
+      toast.error('에약 취소 요청에 실패했어요.');
     }
   };
   return (
@@ -51,7 +63,12 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
       )}
       {isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
-          <Button colorScheme="gray">{RESERVATION_STATUS_LABEL[isReserved]}</Button>
+          <Button colorScheme="gray" m="5px">
+            {RESERVATION_STATUS_LABEL[isReserved]}
+          </Button>
+          <Button colorScheme="red" m="5px" onClick={() => cancelReserve({ reservationId })}>
+            예약 취소하기
+          </Button>
         </Grid>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>

@@ -114,7 +114,11 @@ const ProductDetailPage = () => {
           </Box>
           <Flex align-items="center">
             {product.isSubscribe && <Button onClick={unsubscribe}>구독 취소</Button>}
-            {!product.isSubscribe && <Button onClick={subscribe}>구독하기</Button>}
+            {!product.isSubscribe && (
+              <Button onClick={subscribe} colorScheme="brand">
+                구독하기
+              </Button>
+            )}
           </Flex>
         </Flex>
 
