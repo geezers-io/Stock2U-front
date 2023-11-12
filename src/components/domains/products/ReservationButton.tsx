@@ -50,7 +50,7 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
       )}
       {!isReserved && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
-          <Button colorScheme="gray">{isReserved}</Button>
+          <Button colorScheme="gray">{isReserved ? ReservationStatus[isReserved] : '이미 예약 요청 중'}</Button>
         </Grid>
       )}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
