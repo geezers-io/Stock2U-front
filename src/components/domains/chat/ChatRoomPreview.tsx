@@ -9,7 +9,7 @@ interface ChatRoomPreviewProps {
   data: ChatRoomResponse;
 }
 
-const formatHHMM = (ds: string) => dayjs(ds).format('HH:MM');
+const formatHHMM = (ds: string) => dayjs(ds).format('HH:mm');
 const pressureCount = (count: number) => (count > 99 ? '99+' : String(count));
 
 const ChatRoomPreview = ({ data: { latestChat, reservationSummary, count } }: ChatRoomPreviewProps) => {
