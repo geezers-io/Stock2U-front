@@ -27,7 +27,11 @@ export interface GetChatRoomsRequest extends PageRequest {
   title?: string;
 }
 
-export enum PubAlertType {
+export enum ChatRoomAlertType {
+  // For Inner Management
+  FORCE_UPDATE = 'FORCE_UPDATE',
+
+  // For Server Message
   CREATION = 'CREATION',
   MESSAGE = 'MESSAGE',
   CANCEL = 'CANCEL',
@@ -39,13 +43,12 @@ export enum PubAlertType {
  * 채팅 알림
  */
 export interface ChatPubAlert {
-  type: PubAlertType;
-  title?: string;
-  thumbnailUrl?: string;
+  type: ChatRoomAlertType;
   userName: string;
   userId: number;
   message: string;
   reservationId: number;
+  chatRoomSummary?: ChatRoomResponse;
 }
 
 export interface ChatClient {

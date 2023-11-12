@@ -1,11 +1,13 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch } from 'react';
 import { Client } from '@stomp/stompjs';
 import { User } from '@/api/@types/Auth';
-import { ChatPubAlert, ChatRoomResponse } from '@/api/@types/Chat';
+import { ChatPubAlert } from '@/api/@types/Chat';
+import { ChatRoomAlertAction } from '@/hooks/domain/chat/useChatRoomReducer';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
 
 const SOCKET_URL = 'ws://localhost:8081/api/ws';
+// const SOCKET_URL = 'ws://galaxy4276.asuscomm.com:8081/api/ws';
 
 const useStompSocket = () => {
   const { user, client, setClient } = useBoundedStore(({ user, client, setClient }) => ({
@@ -14,15 +16,17 @@ const useStompSocket = () => {
     setClient,
   }));
   const toast = useCustomToast();
+
   /**
    * 소켓 연결을 수행하여 객체를 초기화합니다.
    * @param userInject 유저객체는 외부 주입으로 초기화할 수도 있습니다
    */
-  const connect = (userInject?: User) => {
+  const connect = async (userInject?: User): Promise<boolean | undefined> => {
     const adjustedUser = userInject ?? user;
 
     if (!adjustedUser) {
-      return toast.error('로그인이 필요합니다.');
+      toast.error('로그인이 필요합니다.');
+      return Promise.resolve(false);
     }
 
     // 객체 초기화(소켓 연결) 수행
@@ -50,49 +54,41 @@ const useStompSocket = () => {
       });
       client.activate();
       setClient(client);
+
+      return await new Promise(resolve => {
+        let tick = 0;
+        setInterval(() => {
+          if (tick === 8) {
+            // 4000ms
+            resolve(false);
+          }
+          tick++;
+          if (client.connected) {
+            resolve(true);
+          }
+        }, 500);
+      });
     }
   };
 
-  const observeAllRoomAlert = (setRooms: Dispatch<SetStateAction<ChatRoomResponse[]>>) => {
+  const observeAllRoomAlert = (dispatch: Dispatch<ChatRoomAlertAction>) => {
     if (!user) {
       toast.error('로그인이 필요합니다.');
       return;
     }
-    if (!client) {
-      connect();
-      console.log('observeAllRoomAlert 에서 초기화');
-    }
 
-    if (!client) {
-      toast.error('소켓 객체가 초기화되지 않았습니다');
+    if (!client?.connected) {
+      toast.error('서버 연결 간 에러가 발생하였습니다.');
       return;
     }
 
-    const sub = client.subscribe(
+    const sub = (client as Client).subscribe(
       `/topic/chat/alert/${user.id}`,
       socket => {
         const alert = JSON.parse(socket.body) as ChatPubAlert;
-        const { reservationId, message } = alert;
-
-        // if (type === PubAlertType.CREATION) {
-        //   setRooms(prev => [newRoom, ...prev]);
-        //   return sub.id;
-        // }
-
-        setRooms(rooms => {
-          const targetIdx = rooms.findIndex(r => r.reservationSummary.id === reservationId);
-          const results = [...rooms];
-          const row = { ...rooms[targetIdx] };
-          results[targetIdx] = {
-            ...row,
-            latestChat: {
-              ...row.latestChat,
-              message,
-            },
-            count: row.count + 1,
-          };
-          return results;
-        });
+        const { type } = alert;
+        console.debug({ alert });
+        dispatch({ type, data: alert });
       },
       {
         userId: String(user.id),
