@@ -6,7 +6,7 @@ import { ProductDetail } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
-import { badgeColorschemeDict } from '@/constants/labels';
+import { PRODUCT_TYPE_LABEL, badgeColorschemeDict } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH시 MM분까지');
@@ -61,7 +61,7 @@ const ProductDetailPage = () => {
         </Heading>
         <Flex alignItems="center" gap="10px" justifyContent="right">
           <Badge fontSize="xl" variant="outline" colorScheme="brand">
-            DEADLINE
+            마감 기한
           </Badge>
           <Text fontSize="xl" as="b">
             {formattedDate(product.expiredAt)}
@@ -72,7 +72,7 @@ const ProductDetailPage = () => {
 
         <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
           <Badge fontSize="xl" colorScheme={badgeColorschemeDict[product.type]}>
-            {product.type}
+            {PRODUCT_TYPE_LABEL[product.type]}
           </Badge>
           <Text fontSize="xl" as="b">
             {product.name}
