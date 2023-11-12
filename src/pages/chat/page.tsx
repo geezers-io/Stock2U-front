@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Flex, Input } from '@chakra-ui/react';
-import { ChatRoomResponse } from '@/api/@types/Chat';
+import { ChatRoomAlertType } from '@/api/@types/Chat';
 import { ChatService } from '@/api/services/Chat';
 import ChatRoomPreview from '@/components/domains/chat/ChatRoomPreview';
 import InfiniteScroll from '@/components/shared/InfinityScroll';
+import useChatRoomReducer from '@/hooks/domain/chat/useChatRoomReducer';
+import useOnSubscribe from '@/hooks/useOnSubscribe';
 import { usePagination } from '@/hooks/usePagination';
 import useStompSocket from '@/hooks/useStompSocket';
 
@@ -11,33 +13,32 @@ import useStompSocket from '@/hooks/useStompSocket';
 
 const ChatListPage = () => {
   const [title, setTitle] = useState<string>();
-  console.log({ title });
   const { data, nextPage, loading, pageable } = usePagination(ChatService.getChatRooms, {
     page: 0,
     size: 15,
     title,
   });
-  const { observeAllRoomAlert, client } = useStompSocket();
-
+  const { observeAllRoomAlert } = useStompSocket();
   // 카운트 값을 따로 갱신해야하기 때문에 ChatRoomResponse[] 상태를 따로 관리함
-  const [rooms, setRooms] = useState<ChatRoomResponse[]>([]);
+  // const [rooms, setRooms] = useState<ChatRoomResponse[]>([]);
+  const {
+    state: { rooms },
+    dispatch,
+  } = useChatRoomReducer();
+  useOnSubscribe(() => observeAllRoomAlert(dispatch));
 
   useEffect(() => {
     if (!data) return;
     const currLen = rooms.length;
     if (currLen === 0) {
-      return setRooms(data);
+      dispatch({ type: ChatRoomAlertType.FORCE_UPDATE, forceUpdateValues: data });
     }
-    const updatedParts = data.slice(currLen - 1);
-    setRooms(prevList => prevList.concat(updatedParts));
-  }, [data, rooms.length]);
 
-  useEffect(() => {
-    const subId = observeAllRoomAlert(setRooms);
-    return () => {
-      subId && client?.unsubscribe(subId);
-    };
-  }, [client, observeAllRoomAlert]);
+    const existsIds = rooms.map(r => r.reservationSummary.id);
+    const updatedParts = data.filter(p => !existsIds.includes(p.reservationSummary.id));
+    const forUpdate = rooms.concat(updatedParts);
+    dispatch({ type: ChatRoomAlertType.FORCE_UPDATE, forceUpdateValues: forUpdate });
+  }, [data]);
 
   return (
     <Flex flexDir="column">

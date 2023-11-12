@@ -16,6 +16,7 @@ export const createMockChatRoom = (title: string = ''): ChatRoomResponse => ({
     message: fakerKO.lorem.paragraph(),
     read: randomTrueOrFalse(),
     username: fakerKO.person.fullName(),
+    imageId: 1,
   },
   reservationSummary: {
     id: fakerKO.number.int(),
