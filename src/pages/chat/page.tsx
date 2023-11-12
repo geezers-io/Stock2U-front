@@ -19,8 +19,6 @@ const ChatListPage = () => {
     title,
   });
   const { observeAllRoomAlert } = useStompSocket();
-  // 카운트 값을 따로 갱신해야하기 때문에 ChatRoomResponse[] 상태를 따로 관리함
-  // const [rooms, setRooms] = useState<ChatRoomResponse[]>([]);
   const {
     state: { rooms },
     dispatch,
