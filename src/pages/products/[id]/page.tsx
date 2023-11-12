@@ -51,6 +51,8 @@ const ProductDetailPage = () => {
     return;
   }
 
+  console.log(product.status);
+
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
       <Flex flexDirection="column" padding="1.2rem 0" gap="5px">
@@ -125,7 +127,7 @@ const ProductDetailPage = () => {
           </Stack>
         </Box>
       </Box>
-      <ReservationButton productId={product.id} />
+      <ReservationButton productId={product.id} isReserved={product.status} />
     </Flex>
   );
 };
