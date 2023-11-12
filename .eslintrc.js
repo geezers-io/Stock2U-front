@@ -58,7 +58,7 @@ module.exports = {
     'promise/always-return': 0,
     'react/prop-types': 0,
     'react/jsx-no-target-blank': 0,
-    'react-hooks/exhaustive-deps': 1,
+    'react-hooks/exhaustive-deps': 0,
     'react/display-name': 0,
     'react/no-unknown-property': 0,
     'react/jsx-key': 0,
