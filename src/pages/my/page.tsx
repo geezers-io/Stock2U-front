@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Avatar,
@@ -11,6 +12,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   Divider,
+  Flex,
 } from '@chakra-ui/react';
 import { MyService } from '@/api/services/My';
 
@@ -21,6 +23,7 @@ interface PurchaserGetAccountInfo {
 
 const MyPage: FC = () => {
   const [purchaserInfo, setPurchaserInfo] = useState<PurchaserGetAccountInfo>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPurchaserInfo = async () => {
@@ -34,7 +37,19 @@ const MyPage: FC = () => {
         }
       } catch (error) {
         console.error('구매자 정보를 가져오는중 오류가 발생했습니다.', error);
+      } finally {
+        setLoading(false);
       }
+    };
+
+    const renderAvatar = () => {
+      if (loading) {
+        return <div>Loading...</div>;
+      }
+      if (purchaserInfo) {
+        return <Avatar size="lg" name={purchaserInfo.username} src={purchaserInfo.avatarUrl} />;
+      }
+      return <div>No data available</div>; // You can replace this with an appropriate message
     };
 
     fetchPurchaserInfo();
@@ -57,9 +72,11 @@ const MyPage: FC = () => {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              <Text>구매 내역</Text>
-              <Text>예약 내역</Text>
-              <Text>찜한 상품</Text>
+              <Flex direction="column">
+                <Link to={''}>구매 내역</Link>
+                <Link to={''}>예약 내역</Link>
+                <Link to={''}>찜한 상품</Link>
+              </Flex>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
@@ -72,8 +89,10 @@ const MyPage: FC = () => {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              <Text>정보 관리</Text>
-              <Text>결제 관리</Text>
+              <Flex direction="column">
+                <Link to={''}>정보 관리</Link>
+                <Link to={''}>결제 관리</Link>
+              </Flex>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
