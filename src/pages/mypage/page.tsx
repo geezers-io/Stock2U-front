@@ -1,8 +1,7 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Box,
   VStack,
-  Image,
   Link,
   Text,
   Button,
@@ -14,12 +13,22 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Avatar,
+  Flex,
+  Badge,
 } from '@chakra-ui/react';
+import { MockProductDetail, mockProductDetail } from '@/api/__mock__/product';
 
 const MyPage: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [profile, setProfile] = useState<MockProductDetail>();
 
-  const userImageUrl = '';
+  const fetchMockData = async () => {
+    setProfile(mockProductDetail);
+    if (!profile) return;
+  };
+
+  //const userImageUrl = '';
   const purchaseHistoryUrl = '';
   const reservationHistoryUrl = '';
   const subscribedSellersUrl = '';
@@ -28,17 +37,32 @@ const MyPage: FC = () => {
     console.log('로그아웃');
   };
 
+  useEffect(() => {
+    fetchMockData();
+  }, []);
+
   return (
     <Box p={4}>
       <VStack align="start" spacing={4}>
-        <Box>
-          <Link onClick={onOpen}>
-            <Image
-              src={userImageUrl || 'https://w7.pngwing.com/pngs/665/132/png-transparent-user-defult-avatar.png'}
-              boxSize="100px"
-              borderRadius="full"
+        <Box mt="auto">
+          <Flex onClick={onOpen} role="button">
+            <Avatar
+              size="xl"
+              name={profile?.seller.nickname}
+              src={profile?.seller.profile ?? 'https://bit.ly/broken-link'}
             />
-          </Link>
+            <Box ml="3" w="100%">
+              <Badge fontSize="xl" colorScheme="green">
+                판매자
+              </Badge>
+              <Text fontSize="xl" fontWeight="bold">
+                {profile?.seller.nickname} 님
+                <Text fontSize="xl" color="gray">
+                  판매 재고 {profile?.seller.stockCount} 후기 {profile?.seller.reviewCount}
+                </Text>
+              </Text>
+            </Box>
+          </Flex>
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
