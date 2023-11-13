@@ -15,9 +15,9 @@ import {
 } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { Coordinate } from '@/api/@types/@shared';
-import BackToUserCoordsButton from '@/components/domains/products/BackToUserCoordsButton';
-import ClusterMarker from '@/components/domains/products/ClusterMarker';
-import MapPoint from '@/components/domains/products/MapPoint';
+import BackToUserCoordsButton from '@/components/domains/products/map/BackToUserCoordsButton';
+import ClusterMarker from '@/components/domains/products/map/ClusterMarker';
+import MapPoint from '@/components/domains/products/map/MapPoint';
 import PageHeader from '@/components/layouts/parts/PageHeader';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';

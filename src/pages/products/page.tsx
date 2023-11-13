@@ -6,11 +6,11 @@ import { ProductType } from '@/api/@types/@enums';
 import { Distance, ProductSummary } from '@/api/@types/Products';
 import { generateMockProducts } from '@/api/__mock__/mockProduct';
 import { ProductsService } from '@/api/services/Products';
-import MapDrawer from '@/components/domains/products/MapDrawer';
 import ProductCards from '@/components/domains/products/ProductCards';
-import ProductMapMarker from '@/components/domains/products/ProductMapMarker';
-import ProductMarkerOverlay from '@/components/domains/products/ProductMarkerOverlay';
 import SearchFilterDrawer, { FilterValues } from '@/components/domains/products/SearchFilterDrawer';
+import MapDrawer from '@/components/domains/products/map/MapDrawer';
+import ProductMarker from '@/components/domains/products/map/ProductMarker';
+import ProductMarkerOverlay from '@/components/domains/products/map/ProductMarkerOverlay';
 import InfiniteScroll from '@/components/shared/InfinityScroll';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 import { PRODUCT_MIN_PRICE } from '@/constants/product';
@@ -122,7 +122,7 @@ const ProductsSearchPage: FC = () => {
           isOpen={mapDrawerOpen}
           close={closeMapDrawer}
           data={mockProducts}
-          renderMarker={({ data }) => <ProductMapMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
+          renderMarker={({ data }) => <ProductMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
           onClickBackToUserCoords={onClickBackToUserCoords}
           customOverlay={
             clickedMarker && (

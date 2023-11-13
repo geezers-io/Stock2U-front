@@ -8,7 +8,7 @@ interface Props {
   onClick: (marker: kakao.maps.Marker, product: ProductSummary) => void;
 }
 
-const ProductMapMarker: FC<Props> = memo(({ product, onClick }) => {
+const ProductMarker: FC<Props> = memo(({ product, onClick }) => {
   const map = useMap();
 
   return (
@@ -36,4 +36,4 @@ const imageSrcDict: Record<ProductType, string> = {
   [ProductType.TICKET]: '/image/map-marker/ticket.png',
 };
 
-export default ProductMapMarker;
+export default ProductMarker;
