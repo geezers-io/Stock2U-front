@@ -22,4 +22,14 @@ export const MyService: MyClient = {
       params: request,
     });
   },
+  publicAvatar: async request => {
+    return await axiosInstance.post(`${ROUTE}/my/avatar`, {
+      params: request,
+    });
+  },
+  publicPhone: async request => {
+    return await axiosInstance.patch(`${ROUTE}/my/phone`, {
+      params: request,
+    });
+  },
 };

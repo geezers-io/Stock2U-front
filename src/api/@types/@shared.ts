@@ -60,3 +60,11 @@ export interface PurchaserGetAccountInfo {
   buyCount: number;
   reviewCount: number;
 }
+
+export interface PublicAvatarRequest {
+  file: string;
+}
+
+export interface PublicPhoneRequest {
+  phone: string;
+}
