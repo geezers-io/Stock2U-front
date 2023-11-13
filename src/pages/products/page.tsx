@@ -31,7 +31,7 @@ const ProductsSearchPage: FC = () => {
   });
   const { isOpen: filterDrawerOpen, onOpen: openFilterDrawer, onClose: closeFilterDrawer } = useDisclosure();
   const { isOpen: mapDrawerOpen, onOpen: openMapDrawer, onClose: closeMapDrawer } = useDisclosure();
-  const mockProducts = useMemo(() => generateMockProducts(geo, 500, 5), [geo]);
+  const mockProducts = useMemo(() => generateMockProducts(geo, 200, 5), [geo]);
   const [clickedMarker, setClickedMarker] = useState<{
     product: ProductSummary;
     position: kakao.maps.LatLng;
