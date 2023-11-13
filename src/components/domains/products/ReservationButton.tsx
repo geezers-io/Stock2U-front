@@ -13,6 +13,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { AxiosError } from 'axios';
 import { ReservationStatus } from '@/api/@types/@enums';
 import { ReservationService } from '@/api/services/Reservation';
 import { RESERVATION_STATUS_COLOR, RESERVATION_STATUS_LABEL } from '@/constants/labels';
@@ -20,7 +21,7 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 
 interface ReservationButtonProps {
   productId: number;
-  reservationStatus: ReservationStatus | undefined;
+  reservationStatus?: ReservationStatus;
   reservationId?: number;
 }
 
@@ -33,17 +34,18 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, reservationS
     status: reservationStatus,
   }));
 
-  const canRequestReservation = !reservation.id;
+  const canReservation = !reservation.id;
 
-  const onReserve = async productId => {
+  const onReserve = async () => {
     try {
-      const { id } = await ReservationService.create(productId);
+      const { id } = await ReservationService.create({ productId });
       setReservation({
         id,
         status: ReservationStatus.REQUESTED,
       });
       toast.success('예약 요청에 성공했어요!');
-    } catch (error: any) {
+    } catch (e) {
+      const error = e as AxiosError;
       if (error.response && error.response.status === 410) {
         toast.info('이미 예약이 요청되어 있습니다. 판매자 측에서 처리될 때까지 기다려주세요');
       } else {
@@ -65,15 +67,15 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, reservationS
 
   return (
     <>
-      {canRequestReservation && (
-        <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
+      {canReservation && (
+        <Grid p="1.2rem 0" onClick={onReserve}>
           <Button colorScheme="brand" onClick={onOpen}>
             구매 예약 요청하기
           </Button>
         </Grid>
       )}
 
-      {!canRequestReservation && reservationStatus && (
+      {!canReservation && reservationStatus && (
         <Grid p="1.2rem 0">
           <Button colorScheme={RESERVATION_STATUS_COLOR[reservationStatus]} m="5px" disabled>
             {RESERVATION_STATUS_LABEL[reservationStatus]}

@@ -27,7 +27,7 @@ const ImageViewer: FC<Props> = ({ images }) => {
         <Flex
           flex={{ base: 'auto', [HORIZONTAL_POINT]: '4' }}
           w="100%"
-          h={{ base: 'auto', [HORIZONTAL_POINT]: '25vh' }}
+          h={{ base: 'auto', [HORIZONTAL_POINT]: '265px' }}
           justifyContent="center"
           alignItems="center"
           bg={thumbImage ? undefined : 'gray.100'}
