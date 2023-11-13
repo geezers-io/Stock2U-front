@@ -23,7 +23,6 @@ interface PurchaserGetAccountInfo {
 
 const MyPage: FC = () => {
   const [purchaserInfo, setPurchaserInfo] = useState<PurchaserGetAccountInfo>();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPurchaserInfo = async () => {
@@ -37,19 +36,7 @@ const MyPage: FC = () => {
         }
       } catch (error) {
         console.error('구매자 정보를 가져오는중 오류가 발생했습니다.', error);
-      } finally {
-        setLoading(false);
       }
-    };
-
-    const renderAvatar = () => {
-      if (loading) {
-        return <div>Loading...</div>;
-      }
-      if (purchaserInfo) {
-        return <Avatar size="lg" name={purchaserInfo.username} src={purchaserInfo.avatarUrl} />;
-      }
-      return <div>No data available</div>; // You can replace this with an appropriate message
     };
 
     fetchPurchaserInfo();
