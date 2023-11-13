@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -20,19 +20,32 @@ import { useCustomToast } from '@/hooks/useCustomToast';
 
 interface ReservationButtonProps {
   productId: number;
-  ReservedStatus: ReservationStatus | undefined;
+  reservationStatus: ReservationStatus | undefined;
+  reservationId?: number;
 }
 
-const ReservationButton: FC<ReservationButtonProps> = ({ productId, ReservedStatus, reservationId }) => {
+const ReservationButton: FC<ReservationButtonProps> = ({ productId, reservationStatus, reservationId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
   const navigate = useNavigate();
+  const [reservation, setReservation] = useState(() => ({
+    id: reservationId,
+    status: reservationStatus,
+  }));
+
+  const canRequestReservation = !reservation.id;
+  console.log({ reservation, canRequestReservation });
 
   const onReserve = async ({ productId }) => {
     try {
-      await ReservationService.create({ productId });
+      const { id } = await ReservationService.create({ productId });
+      console.log({ id });
+      setReservation({
+        id,
+        status: ReservationStatus.REQUESTED,
+      });
       toast.success('예약 요청에 성공했어요!');
-    } catch (error: AxiosError) {
+    } catch (error: any) {
       if (error.response && error.response.status === 410) {
         toast.info('이미 예약이 요청되어 있습니다. 판매자 측에서 처리될 때까지 기다려주세요');
       } else {
@@ -41,30 +54,33 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, ReservedStat
     }
   };
 
-  const cancelReserve = async reservationId => {
+  const cancelReserve = async () => {
     try {
-      await ReservationService.cancel(reservationId);
+      if (!reservation.id) return;
+      await ReservationService.cancel({ reservationId: reservation.id });
+      setReservation(prev => ({ ...prev, id: undefined }));
       toast.success('예약 요청이 취소되었어요.');
     } catch {
       toast.error('에약 취소 요청에 실패했어요.');
     }
   };
+
   return (
     <>
-      {ReservedStatus && ReservedStatus === 'CANCEL' && undefined}
-      {!ReservedStatus && (
+      {canRequestReservation && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
           <Button colorScheme="brand" onClick={onOpen}>
             구매 예약 요청하기
           </Button>
         </Grid>
       )}
-      {ReservedStatus && (
+
+      {!canRequestReservation && reservationStatus && (
         <Grid p="1.2rem 0">
-          <Button colorScheme={RESERVATION_STATUS_COLOR[ReservedStatus]} m="5px">
-            {RESERVATION_STATUS_LABEL[ReservedStatus]}
+          <Button colorScheme={RESERVATION_STATUS_COLOR[reservationStatus]} m="5px" disabled>
+            {RESERVATION_STATUS_LABEL[reservationStatus]}
           </Button>
-          <Button colorScheme="red" m="5px" onClick={() => cancelReserve({ reservationId })}>
+          <Button colorScheme="red" m="5px" onClick={cancelReserve}>
             예약 취소하기
           </Button>
         </Grid>

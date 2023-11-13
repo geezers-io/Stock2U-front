@@ -133,7 +133,11 @@ const ProductDetailPage = () => {
           </Stack>
         </Box>
       </Box>
-      <ReservationButton productId={product.id} ReservedStatus={product.status} reservationId={product.reservationId} />
+      <ReservationButton
+        productId={product.id}
+        reservationStatus={product.status}
+        reservationId={product.reservationId}
+      />
     </Flex>
   );
 };

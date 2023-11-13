@@ -11,7 +11,7 @@ export interface CreateReservationResponse {
 }
 
 export interface CancelReservationRequest {
-  reservationId: string;
+  reservationId: number;
 }
 
 export interface ApproveReservationRequest {
