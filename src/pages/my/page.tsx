@@ -42,7 +42,7 @@ const MyPage: FC = () => {
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>프로필 페이지</ModalHeader>
+              <ModalHeader>회원 정보 수정</ModalHeader>
               <ModalCloseButton />
               <ModalBody>{/* 프로필 페이지 내용 */}</ModalBody>
               <ModalFooter>
