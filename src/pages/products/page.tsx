@@ -50,6 +50,10 @@ const ProductsSearchPage: FC = () => {
     });
   }, []);
 
+  const onClickBackToUserCoords = useCallback(() => {
+    setClickedMarker(undefined);
+  }, []);
+
   return (
     <Box minH="inherit" pt={4}>
       <Flex as="header" justifyContent="space-between" alignItems="center" flexWrap="wrap-reverse" gap={2}>
@@ -119,6 +123,7 @@ const ProductsSearchPage: FC = () => {
           close={closeMapDrawer}
           data={mockProducts}
           renderMarker={({ data }) => <ProductMapMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
+          onClickBackToUserCoords={onClickBackToUserCoords}
           customOverlay={
             clickedMarker && (
               <ProductMarkerOverlay

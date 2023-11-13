@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { Coordinate } from '@/api/@types/@shared';
+import BackToUserCoordsButton from '@/components/domains/products/BackToUserCoordsButton';
 import ClusterMarker from '@/components/domains/products/ClusterMarker';
 import PageHeader from '@/components/layouts/parts/PageHeader';
 import { useBoundedStore } from '@/stores';
@@ -29,6 +30,7 @@ interface Props<T> {
   data: T[];
   clusterLevel?: number;
   renderMarker: (props: MarkerProps<T>) => ReactNode;
+  onClickBackToUserCoords: () => void;
   customOverlay?: ReactNode;
 }
 
@@ -38,6 +40,7 @@ const MapDrawer = <T extends Coordinate>({
   data,
   clusterLevel = 4,
   renderMarker,
+  onClickBackToUserCoords,
   customOverlay,
 }: Props<T>) => {
   const theme = useTheme();
@@ -89,6 +92,14 @@ const MapDrawer = <T extends Coordinate>({
 
                 {level <= clusterLevel && data.map(item => renderMarker({ data: item }))}
                 {level <= clusterLevel && customOverlay}
+
+                <BackToUserCoordsButton
+                  onClick={onClickBackToUserCoords}
+                  position="absolute"
+                  top="0.66em"
+                  right="0.66em"
+                  zIndex={1}
+                />
               </Map>
             )}
           </Box>
