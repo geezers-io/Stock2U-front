@@ -34,12 +34,10 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, reservationS
   }));
 
   const canRequestReservation = !reservation.id;
-  console.log({ reservation, canRequestReservation });
 
-  const onReserve = async ({ productId }) => {
+  const onReserve = async productId => {
     try {
-      const { id } = await ReservationService.create({ productId });
-      console.log({ id });
+      const { id } = await ReservationService.create(productId);
       setReservation({
         id,
         status: ReservationStatus.REQUESTED,
