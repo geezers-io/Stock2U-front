@@ -3,6 +3,7 @@ import { XLg } from 'react-bootstrap-icons';
 import { CustomOverlayMap, Map } from 'react-kakao-maps-sdk';
 import {
   Box,
+  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -29,6 +30,11 @@ interface Props<T> {
   isOpen: boolean;
   close: () => void;
   data: T[];
+  loadMore?: {
+    fn: () => void;
+    currentPage: number;
+    totalPages: number;
+  };
   clusterLevel?: number;
   renderMarker: (props: MarkerProps<T>) => ReactNode;
   onClickBackToUserCoords: () => void;
@@ -39,6 +45,7 @@ const MapDrawer = <T extends Coordinate>({
   isOpen,
   close,
   data,
+  loadMore,
   clusterLevel = 4,
   renderMarker,
   onClickBackToUserCoords,
@@ -98,6 +105,37 @@ const MapDrawer = <T extends Coordinate>({
                 )}
                 {level <= clusterLevel && data.map(item => renderMarker({ data: item }))}
                 {level <= clusterLevel && customOverlay}
+
+                {/* 재고 더 보기 버튼 */}
+                {loadMore && loadMore.currentPage + 1 < loadMore.totalPages && (
+                  <Button
+                    onClick={loadMore.fn}
+                    colorScheme="brand"
+                    variant="outline"
+                    bgColor="white"
+                    position="absolute"
+                    zIndex={1}
+                    top="1em"
+                    left="50%"
+                    transform="translateX(-50%)"
+                    _active={{
+                      transform: 'translateX(-50%) scale(0.98)',
+                    }}
+                    size="sm"
+                    py="1.2em"
+                    boxShadow="0 0.2rem 0.8rem 0 rgba(0,0,0,.2)"
+                    fontWeight={400}
+                    gap={1}
+                  >
+                    재고 더 보기
+                    <Text>
+                      <Text as="span" fontWeight={700} mr="0.2em">
+                        {loadMore.currentPage + 1}
+                      </Text>
+                      / {loadMore.totalPages}
+                    </Text>
+                  </Button>
+                )}
 
                 {/* 내 위치로 돌아가기 버튼 */}
                 <BackToUserCoordsButton

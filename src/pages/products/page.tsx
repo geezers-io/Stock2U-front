@@ -121,6 +121,11 @@ const ProductsSearchPage: FC = () => {
           isOpen={mapDrawerOpen}
           close={closeMapDrawer}
           data={mockProducts}
+          loadMore={{
+            fn: nextPage,
+            currentPage: pageable.currentPage,
+            totalPages: pageable.totalPages,
+          }}
           renderMarker={({ data }) => <ProductMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
           onClickBackToUserCoords={onClickBackToUserCoords}
           customOverlay={
