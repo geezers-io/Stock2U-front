@@ -1,77 +1,115 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Box,
+  Avatar,
   VStack,
-  Image,
-  Link,
+  HStack,
   Text,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Divider,
 } from '@chakra-ui/react';
+import { MyService } from '@/api/services/My';
+
+interface PurchaserGetAccountInfo {
+  username: string;
+  avatarUrl: string;
+}
 
 const MyPage: FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [purchaserInfo, setPurchaserInfo] = useState<PurchaserGetAccountInfo>();
 
-  const userImageUrl = '';
-  const purchaseHistoryUrl = '';
-  const reservationHistoryUrl = '';
-  const subscribedSellersUrl = '';
+  useEffect(() => {
+    const fetchPurchaserInfo = async () => {
+      try {
+        const { username, avatarUrl } = await MyService.purchaserGetAccountInfo();
 
-  const handleLogout = () => {
-    console.log('로그아웃');
-  };
+        if (username && avatarUrl) {
+          setPurchaserInfo({ username, avatarUrl });
+        } else {
+          console.error('구매자 정보를 가져오지 못했습니다.');
+        }
+      } catch (error) {
+        console.error('구매자 정보를 가져오는중 오류가 발생했습니다.', error);
+      }
+    };
+
+    fetchPurchaserInfo();
+  }, []);
 
   return (
-    <Box p={4}>
+    <Box display="flex" flexDirection="row" p={4} pt={10}>
       <VStack align="start" spacing={4}>
-        <Box>
-          <Link onClick={onOpen}>
-            <Image
-              src={userImageUrl || 'https://w7.pngwing.com/pngs/665/132/png-transparent-user-defult-avatar.png'}
-              boxSize="100px"
-              borderRadius="full"
-            />
-          </Link>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>회원 정보 수정</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>{/* 프로필 페이지 내용 */}</ModalBody>
-              <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
-                  닫기
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </Box>
-        <Box>
-          <Link href={purchaseHistoryUrl}>
-            <Text>구매 내역 페이지로 이동</Text>
-          </Link>
-        </Box>
-        <Box>
-          <Link href={reservationHistoryUrl}>
-            <Text>예약 내역 페이지로 이동</Text>
-          </Link>
-        </Box>
-        <Box>
-          <Link href={subscribedSellersUrl}>
-            <Text>구독한 판매자 리스트 페이지로 이동</Text>
-          </Link>
-        </Box>
-        <Box alignSelf="flex-end">
-          <Button onClick={handleLogout}>로그아웃</Button>
-        </Box>
+        <Text fontWeight="bold" fontSize="xl">
+          마이페이지
+        </Text>
+        <Accordion defaultIndex={[0]} allowMultiple>
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <Box flex="1" textAlign="left">
+                  <Text fontWeight="bold">나의 쇼핑</Text>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Text>구매 내역</Text>
+              <Text>예약 내역</Text>
+              <Text>찜한 상품</Text>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <Box flex="1" textAlign="left">
+                  <Text fontWeight="bold">내 정보</Text>
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Text>정보 관리</Text>
+              <Text>결제 관리</Text>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </VStack>
+
+      <Box ml={8}>
+        <HStack spacing={4}>
+          <Avatar size="lg" name={purchaserInfo?.username} src={purchaserInfo?.avatarUrl} />
+          <VStack align="start">
+            <Text fontSize="xl" fontWeight="bold">
+              {purchaserInfo?.username}
+            </Text>
+            <Text fontSize="md" color="gray.500">
+              사용자 설명 또는 상태 메시지
+            </Text>
+          </VStack>
+        </HStack>
+
+        <Box mt={8}>
+          <Text fontSize="xl" fontWeight="bold">
+            구매 내역
+          </Text>
+        </Box>
+        <Divider my={10} />
+        <Box mt={8}>
+          <Text fontSize="xl" fontWeight="bold">
+            예약 내역
+          </Text>
+        </Box>
+        <Divider my={10} />
+        <Box>
+          <Text fontSize="xl" fontWeight="bold">
+            찜한 상품
+          </Text>
+        </Box>
+      </Box>
     </Box>
   );
 };
