@@ -32,8 +32,8 @@ interface Props<T> {
   data: T[];
   loadMore?: {
     fn: () => void;
-    currentPage: number;
-    totalPages: number;
+    buttonVisible: boolean;
+    buttonSuffix?: ReactNode;
   };
   clusterLevel?: number;
   renderMarker: (props: MarkerProps<T>) => ReactNode;
@@ -107,7 +107,7 @@ const MapDrawer = <T extends Coordinate>({
                 {level <= clusterLevel && customOverlay}
 
                 {/* 재고 더 보기 버튼 */}
-                {loadMore && loadMore.currentPage + 1 < loadMore.totalPages && (
+                {loadMore && loadMore.buttonVisible && (
                   <Button
                     onClick={loadMore.fn}
                     colorScheme="brand"
@@ -127,13 +127,7 @@ const MapDrawer = <T extends Coordinate>({
                     fontWeight={400}
                     gap={1}
                   >
-                    재고 더 보기
-                    <Text>
-                      <Text as="span" fontWeight={700} mr="0.2em">
-                        {loadMore.currentPage + 1}
-                      </Text>
-                      / {loadMore.totalPages}
-                    </Text>
+                    재고 더 보기{loadMore.buttonSuffix}
                   </Button>
                 )}
 

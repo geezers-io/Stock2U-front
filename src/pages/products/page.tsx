@@ -1,6 +1,6 @@
 import { FC, MouseEventHandler, useCallback, useMemo, useState } from 'react';
 import { Filter, Map } from 'react-bootstrap-icons';
-import { Badge, BadgeProps, Box, Flex, IconButton, IconButtonProps, useDisclosure } from '@chakra-ui/react';
+import { Badge, BadgeProps, Box, Flex, IconButton, IconButtonProps, Text, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { ProductType } from '@/api/@types/@enums';
 import { Distance, ProductSummary } from '@/api/@types/Products';
@@ -123,8 +123,15 @@ const ProductsSearchPage: FC = () => {
           data={mockProducts}
           loadMore={{
             fn: nextPage,
-            currentPage: pageable.currentPage,
-            totalPages: pageable.totalPages,
+            buttonVisible: !pageable.isLastPage,
+            buttonSuffix: (
+              <Text>
+                <Text as="span" fontWeight={700} mr="0.2em">
+                  {pageable.currentPage + 1}
+                </Text>
+                / {pageable.totalPages}
+              </Text>
+            ),
           }}
           renderMarker={({ data }) => <ProductMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
           onClickBackToUserCoords={onClickBackToUserCoords}
