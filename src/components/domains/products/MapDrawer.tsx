@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { XLg } from 'react-bootstrap-icons';
-import { Map } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map } from 'react-kakao-maps-sdk';
 import {
   Box,
   Drawer,
@@ -17,6 +17,7 @@ import { useTheme } from '@emotion/react';
 import { Coordinate } from '@/api/@types/@shared';
 import BackToUserCoordsButton from '@/components/domains/products/BackToUserCoordsButton';
 import ClusterMarker from '@/components/domains/products/ClusterMarker';
+import MapPoint from '@/components/domains/products/MapPoint';
 import PageHeader from '@/components/layouts/parts/PageHeader';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
@@ -86,13 +87,19 @@ const MapDrawer = <T extends Coordinate>({
                 onZoomChanged={map => setLevel(map.getLevel())}
                 style={{ width: '100%', height: 'inherit' }}
               >
+                {/* 내 위치 */}
+                <CustomOverlayMap position={{ lat: geo.latitude, lng: geo.longitude }}>
+                  <MapPoint />
+                </CustomOverlayMap>
+
+                {/* 재고 마커 */}
                 {level > clusterLevel && (
                   <ClusterMarker coordinates={data.map(item => pick(item, ['latitude', 'longitude']))} />
                 )}
-
                 {level <= clusterLevel && data.map(item => renderMarker({ data: item }))}
                 {level <= clusterLevel && customOverlay}
 
+                {/* 내 위치로 돌아가기 버튼 */}
                 <BackToUserCoordsButton
                   onClick={onClickBackToUserCoords}
                   position="absolute"
