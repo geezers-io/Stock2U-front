@@ -32,7 +32,7 @@ export const createGeoSlice: StateCreator<GeoSlice, [], [], GeoSlice> = set => (
       set(state => ({
         geo: {
           ...state.geo,
-          status: { supported: false, allowed: false, initialized: false },
+          status: { supported: false, allowed: false, initialized: true },
         },
       }));
       return;

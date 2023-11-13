@@ -79,13 +79,12 @@ const ProductsSearchPage: FC = () => {
             icon={<Filter size={32} color={theme.colors.gray['600']} />}
             onClick={openFilterDrawer}
           />
-          {geo.status.initialized && (
-            <HeaderIconButton
-              aria-label="map"
-              icon={<Map size={21} color={theme.colors.gray['600']} />}
-              onClick={openMapDrawer}
-            />
-          )}
+          <HeaderIconButton
+            aria-label="map"
+            icon={<Map size={21} color={theme.colors.gray['600']} />}
+            onClick={openMapDrawer}
+            isLoading={!geo.status.initialized}
+          />
         </Flex>
       </Flex>
 
