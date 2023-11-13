@@ -18,6 +18,12 @@ export const RESERVATION_STATUS_LABEL: Record<ReservationStatus, string> = {
   [ReservationStatus.COMPLETION]: '구매 완료됨',
   [ReservationStatus.REQUESTED]: '예약 신청됨',
 };
+export const RESERVATION_STATUS_COLOR: Record<ReservationStatus, string> = {
+  [ReservationStatus.PROGRESS]: 'blue',
+  [ReservationStatus.CANCEL]: 'orange',
+  [ReservationStatus.COMPLETION]: 'green',
+  [ReservationStatus.REQUESTED]: 'gray',
+};
 
 export const USER_ROLE_LABEL: Record<UserRole, string> = {
   [UserRole.PURCHASER]: '구매자',
@@ -25,7 +31,7 @@ export const USER_ROLE_LABEL: Record<UserRole, string> = {
   [UserRole.ADMIN]: '관리자',
 };
 
-export const badgeColorschemeDict: Record<ProductType, string> = {
+export const PRODUCT_TYPE_BADGE_COLOR: Record<ProductType, string> = {
   [ProductType.FOOD]: 'blue',
   [ProductType.ACCOMMODATION]: 'yellow',
   [ProductType.TICKET]: 'purple',

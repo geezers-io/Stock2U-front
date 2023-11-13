@@ -7,7 +7,7 @@ import { MyService } from '@/api/services/My';
 import { ProductsService } from '@/api/services/Products';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
-import { PRODUCT_TYPE_LABEL, badgeColorschemeDict } from '@/constants/labels';
+import { PRODUCT_TYPE_LABEL, PRODUCT_TYPE_BADGE_COLOR } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH시 MM분까지');
@@ -56,13 +56,11 @@ const ProductDetailPage = () => {
   useEffect(() => {
     if (!id) return;
     fetchProductDetail(Number(id));
-  }, []);
+  }, [product?.status]);
 
   if (!product) {
     return;
   }
-
-  console.log(product);
 
   return (
     <Flex minHeight="inherit" flexDirection="column" justifyContent="space-between">
@@ -78,11 +76,12 @@ const ProductDetailPage = () => {
             {formattedDate(product.expiredAt)}
           </Text>
         </Flex>
-
-        <ImageViewer images={product?.productImages} />
+        <Flex gap="10px" justifyContent="right">
+          <ImageViewer images={product?.productImages} />
+        </Flex>
 
         <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
-          <Badge fontSize="xl" colorScheme={badgeColorschemeDict[product.type]}>
+          <Badge fontSize="xl" colorScheme={PRODUCT_TYPE_BADGE_COLOR[product.type]}>
             {PRODUCT_TYPE_LABEL[product.type]}
           </Badge>
           <Text fontSize="xl" as="b">
@@ -134,7 +133,7 @@ const ProductDetailPage = () => {
           </Stack>
         </Box>
       </Box>
-      <ReservationButton productId={product.id} isReserved={product.status} />
+      <ReservationButton productId={product.id} ReservedStatus={product.status} reservationId={product.reservationId} />
     </Flex>
   );
 };

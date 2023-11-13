@@ -27,13 +27,13 @@ const ImageViewer: FC<Props> = ({ images }) => {
         <Flex
           flex={{ base: 'auto', [HORIZONTAL_POINT]: '4' }}
           w="100%"
-          h={{ base: 'auto', [HORIZONTAL_POINT]: '265px' }}
+          h={{ base: 'auto', [HORIZONTAL_POINT]: '25vh' }}
           justifyContent="center"
           alignItems="center"
           bg={thumbImage ? undefined : 'gray.100'}
           borderRadius="4px"
         >
-          {thumbImage && <Image w="100%" src={thumbImage.uploadPath} />}
+          {thumbImage && <Image h="100%" src={thumbImage.uploadPath} />}
         </Flex>
 
         <Grid

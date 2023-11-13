@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -15,24 +15,22 @@ import {
 } from '@chakra-ui/react';
 import { ReservationStatus } from '@/api/@types/@enums';
 import { ReservationService } from '@/api/services/Reservation';
-import { RESERVATION_STATUS_LABEL } from '@/constants/labels';
+import { RESERVATION_STATUS_COLOR, RESERVATION_STATUS_LABEL } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 interface ReservationButtonProps {
   productId: number;
-  isReserved: ReservationStatus | undefined;
+  ReservedStatus: ReservationStatus | undefined;
 }
 
-const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }) => {
+const ReservationButton: FC<ReservationButtonProps> = ({ productId, ReservedStatus, reservationId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useCustomToast();
   const navigate = useNavigate();
-  const [reservationId, setReservationId] = useState<number>();
 
   const onReserve = async ({ productId }) => {
     try {
-      const { id } = await ReservationService.create({ productId });
-      setReservationId(id);
+      await ReservationService.create({ productId });
       toast.success('예약 요청에 성공했어요!');
     } catch (error: AxiosError) {
       if (error.response && error.response.status === 410) {
@@ -46,7 +44,6 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
   const cancelReserve = async reservationId => {
     try {
       await ReservationService.cancel(reservationId);
-
       toast.success('예약 요청이 취소되었어요.');
     } catch {
       toast.error('에약 취소 요청에 실패했어요.');
@@ -54,23 +51,25 @@ const ReservationButton: FC<ReservationButtonProps> = ({ productId, isReserved }
   };
   return (
     <>
-      {!isReserved && (
+      {ReservedStatus && ReservedStatus === 'CANCEL' && undefined}
+      {!ReservedStatus && (
         <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
           <Button colorScheme="brand" onClick={onOpen}>
             구매 예약 요청하기
           </Button>
         </Grid>
       )}
-      {isReserved && (
-        <Grid p="1.2rem 0" onClick={() => onReserve({ productId })}>
-          <Button colorScheme="gray" m="5px">
-            {RESERVATION_STATUS_LABEL[isReserved]}
+      {ReservedStatus && (
+        <Grid p="1.2rem 0">
+          <Button colorScheme={RESERVATION_STATUS_COLOR[ReservedStatus]} m="5px">
+            {RESERVATION_STATUS_LABEL[ReservedStatus]}
           </Button>
           <Button colorScheme="red" m="5px" onClick={() => cancelReserve({ reservationId })}>
             예약 취소하기
           </Button>
         </Grid>
       )}
+
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>

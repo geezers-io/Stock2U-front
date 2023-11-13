@@ -10,6 +10,7 @@ export interface ProductDetail {
   type: ProductType;
   description: string;
   productCount: number;
+  reservationId: number;
   expiredAt: string;
   status?: ReservationStatus; // 예약 상태
   isSubscribe: boolean;
