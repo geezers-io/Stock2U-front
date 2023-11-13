@@ -33,7 +33,7 @@ const ImageViewer: FC<Props> = ({ images }) => {
           bg={thumbImage ? undefined : 'gray.100'}
           borderRadius="4px"
         >
-          {thumbImage && <Image w="100%" src={thumbImage.uploadPath} />}
+          {thumbImage && <Image h="100%" src={thumbImage.uploadPath} />}
         </Flex>
 
         <Grid

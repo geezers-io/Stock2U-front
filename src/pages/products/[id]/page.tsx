@@ -7,7 +7,7 @@ import { MyService } from '@/api/services/My';
 import { ProductsService } from '@/api/services/Products';
 import ImageViewer from '@/components/domains/products/ImageViewer';
 import ReservationButton from '@/components/domains/products/ReservationButton';
-import { badgeColorschemeDict } from '@/constants/labels';
+import { PRODUCT_TYPE_LABEL, PRODUCT_TYPE_BADGE_COLOR } from '@/constants/labels';
 import { useCustomToast } from '@/hooks/useCustomToast';
 
 const formattedDate = product => dayjs(product).format('YYYY년 MM월 DD일 HH시 MM분까지');
@@ -56,7 +56,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     if (!id) return;
     fetchProductDetail(Number(id));
-  }, []);
+  }, [product?.status]);
 
   if (!product) {
     return;
@@ -70,18 +70,19 @@ const ProductDetailPage = () => {
         </Heading>
         <Flex alignItems="center" gap="10px" justifyContent="right">
           <Badge fontSize="xl" variant="outline" colorScheme="brand">
-            DEADLINE
+            마감 기한
           </Badge>
           <Text fontSize="xl" as="b">
             {formattedDate(product.expiredAt)}
           </Text>
         </Flex>
-
-        <ImageViewer images={product?.productImages} />
+        <Flex gap="10px" justifyContent="right">
+          <ImageViewer images={product?.productImages} />
+        </Flex>
 
         <Flex alignItems="center" gap="10px" mb="5px" mt="5px">
-          <Badge fontSize="xl" colorScheme={badgeColorschemeDict[product.type]}>
-            {product.type}
+          <Badge fontSize="xl" colorScheme={PRODUCT_TYPE_BADGE_COLOR[product.type]}>
+            {PRODUCT_TYPE_LABEL[product.type]}
           </Badge>
           <Text fontSize="xl" as="b">
             {product.name}
@@ -112,7 +113,11 @@ const ProductDetailPage = () => {
           </Box>
           <Flex align-items="center">
             {product.isSubscribe && <Button onClick={unsubscribe}>구독 취소</Button>}
-            {!product.isSubscribe && <Button onClick={subscribe}>구독하기</Button>}
+            {!product.isSubscribe && (
+              <Button onClick={subscribe} colorScheme="brand">
+                구독하기
+              </Button>
+            )}
           </Flex>
         </Flex>
 
@@ -128,7 +133,11 @@ const ProductDetailPage = () => {
           </Stack>
         </Box>
       </Box>
-      <ReservationButton />
+      <ReservationButton
+        productId={product.id}
+        reservationStatus={product.status}
+        reservationId={product.reservationId}
+      />
     </Flex>
   );
 };
