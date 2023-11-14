@@ -13,38 +13,37 @@ import {
   AccordionIcon,
   Divider,
   Flex,
+  Button,
 } from '@chakra-ui/react';
+import { PurchaserGetAccountInfo } from '@/api/@types/@shared';
 import { MyService } from '@/api/services/My';
-
-interface PurchaserGetAccountInfo {
-  username: string;
-  avatarUrl: string;
-}
+import { useCustomToast } from '@/hooks/useCustomToast';
 
 const MyPage: FC = () => {
   const [purchaserInfo, setPurchaserInfo] = useState<PurchaserGetAccountInfo>();
+  const toast = useCustomToast();
+
+  const fetchPurchaserInfo = async () => {
+    try {
+      const response = await MyService.purchaserGetAccountInfo();
+      if (!response) return;
+      setPurchaserInfo(response);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchPurchaserInfo = async () => {
-      try {
-        const { username, avatarUrl } = await MyService.purchaserGetAccountInfo();
-
-        if (username && avatarUrl) {
-          setPurchaserInfo({ username, avatarUrl });
-        } else {
-          console.error('구매자 정보를 가져오지 못했습니다.');
-        }
-      } catch (error) {
-        console.error('구매자 정보를 가져오는중 오류가 발생했습니다.', error);
-      }
-    };
-
     fetchPurchaserInfo();
   }, []);
 
+  if (!purchaserInfo) {
+    return;
+  }
+
   return (
     <Box display="flex" flexDirection="row" p={4} pt={10}>
-      <VStack align="start" spacing={4}>
+      <VStack align="start" spacing={4} w="150px">
         <Text fontWeight="bold" fontSize="xl">
           마이페이지
         </Text>
@@ -85,17 +84,24 @@ const MyPage: FC = () => {
         </Accordion>
       </VStack>
 
-      <Box ml={8}>
+      <Box ml={8} w="100%">
         <HStack spacing={4}>
-          <Avatar size="lg" name={purchaserInfo?.username} src={purchaserInfo?.avatarUrl} />
-          <VStack align="start">
+          <Avatar size="lg" name={purchaserInfo.name} src={purchaserInfo.avatarUrl} />
+          <VStack align="start" ml="inherit" w="80%">
             <Text fontSize="xl" fontWeight="bold">
-              {purchaserInfo?.username}
+              {purchaserInfo.name}
             </Text>
-            <Text fontSize="md" color="gray.500">
-              사용자 설명 또는 상태 메시지
+            <Text fontSize="xl" color="gray">
+              판매 재고 {purchaserInfo.buyCount} 후기 {purchaserInfo.reviewCount}
             </Text>
           </VStack>
+          <Flex>
+            <Link to="/my/profile">
+              <Button colorScheme="brand" align-items="center" flexDirection="row-reverse">
+                프로필 보기
+              </Button>
+            </Link>
+          </Flex>
         </HStack>
 
         <Box mt={8}>
