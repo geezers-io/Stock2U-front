@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import MyPage from './pages/my/page';
-import ProfilePage from './pages/my/profile';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
 import { useGeoAlert } from '@/hooks/useGeoAlert';
@@ -13,6 +12,7 @@ import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import ChatPage from '@/pages/chat/[id]/page';
 import ChatListPage from '@/pages/chat/page';
 import ProductMapPage from '@/pages/map/ProductMapPage';
+import ProfilePage from '@/pages/my/profile/profile';
 import IndexPage from '@/pages/page';
 import ProductDetailPage from '@/pages/products/[id]/page';
 import ProductsSearchPage from '@/pages/products/page';
@@ -64,7 +64,16 @@ const router = createBrowserRouter([
       },
       {
         path: 'my',
-        element: <MyPage />,
+        children: [
+          {
+            index: true,
+            element: <MyPage />,
+          },
+          {
+            path: 'profile',
+            element: <ProfilePage />,
+          },
+        ],
       },
       {
         path: 'profile',
