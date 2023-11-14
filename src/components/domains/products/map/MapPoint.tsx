@@ -1,7 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
 
-// Define the keyframes animation
 const spreadColor = keyframes`
   0% {
     transform: scale(1);
