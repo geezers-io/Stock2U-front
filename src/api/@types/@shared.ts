@@ -54,7 +54,7 @@ export interface ProductSeller {
 
 export interface PurchaserGetAccountInfo {
   id: number;
-  username: string;
+  name: string;
   phone: string;
   avatarUrl: string;
   buyCount: number;
