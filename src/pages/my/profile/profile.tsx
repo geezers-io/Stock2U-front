@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { Avatar, Box, HStack, VStack, Text, Badge, Divider, Flex } from '@chakra-ui/react';
+import { Avatar, Box, HStack, VStack, Text, Badge, Divider, Flex, Button } from '@chakra-ui/react';
 import { PurchaserGetAccountInfo } from '@/api/@types/@shared';
 import { MyService } from '@/api/services/My';
 import { useCustomToast } from '@/hooks/useCustomToast';
@@ -28,26 +28,28 @@ const ProfilePage: FC = () => {
 
   return (
     <>
-      <Box p={3}>
+      <Box p={3} pt={10}>
         <HStack spacing={4}>
           <Avatar size="lg" name={purchaserInfo.name} src={purchaserInfo.name ?? 'https://bit.ly/broken-link'} />
           <VStack align="start" ml="inherit" w="80%">
             <Text fontSize="xl" fontWeight="bold">
-              {purchaserInfo?.name}
-            </Text>
-            <Text fontSize="md" color="gray.500">
-              사용자 설명 또는 상태 메시지
+              {purchaserInfo.name}
             </Text>
           </VStack>
         </HStack>
       </Box>
-      <Divider orientation="horizontal" />
-      <Flex p="30px" gap="10px">
-        <Badge fontSize="xl" colorScheme="green">
-          전화번호
-        </Badge>
-        <Text> {purchaserInfo?.phone}</Text>
-      </Flex>
+      <Divider orientation="horizontal" mt={3} />
+      <Box align-items="center">
+        <Flex p="30px" gap="10px">
+          <Badge fontSize="xl" colorScheme="green">
+            전화번호
+          </Badge>
+          <Text fontSize="xl" as="b" w="80%">
+            {purchaserInfo.phone}
+          </Text>
+          <Button w="auto"> 수정</Button>
+        </Flex>
+      </Box>
     </>
   );
 };
