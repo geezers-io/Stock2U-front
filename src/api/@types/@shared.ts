@@ -54,9 +54,17 @@ export interface ProductSeller {
 
 export interface PurchaserGetAccountInfo {
   id: number;
-  username: string;
+  name: string;
   phone: string;
   avatarUrl: string;
   buyCount: number;
   reviewCount: number;
+}
+
+export interface PublicAvatarRequest {
+  file: string;
+}
+
+export interface PublicPhoneRequest {
+  phone: string;
 }
