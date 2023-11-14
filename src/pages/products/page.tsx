@@ -1,10 +1,9 @@
-import { FC, MouseEventHandler, useCallback, useMemo, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { Filter, Map } from 'react-bootstrap-icons';
 import { Badge, BadgeProps, Box, Flex, IconButton, IconButtonProps, Text, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { ProductType } from '@/api/@types/@enums';
 import { Distance, ProductSummary } from '@/api/@types/Products';
-import { generateMockProducts } from '@/api/__mock__/mockProduct';
 import { ProductsService } from '@/api/services/Products';
 import ProductCards from '@/components/domains/products/ProductCards';
 import SearchFilterDrawer, { FilterValues } from '@/components/domains/products/SearchFilterDrawer';
@@ -21,7 +20,14 @@ import { pick } from '@/utils/object';
 const ProductsSearchPage: FC = () => {
   const theme = useTheme();
   const geo = useBoundedStore(state => state.geo);
-  const { data, loading, nextPage, pageable, request, setRequest } = usePagination(ProductsService.search, {
+  const {
+    data: products,
+    loading,
+    nextPage,
+    pageable,
+    request,
+    setRequest,
+  } = usePagination(ProductsService.search, {
     ...DEFAULT_PAGE_REQUEST,
     size: 30,
     distance: Distance.Five,
@@ -31,7 +37,6 @@ const ProductsSearchPage: FC = () => {
   });
   const { isOpen: filterDrawerOpen, onOpen: openFilterDrawer, onClose: closeFilterDrawer } = useDisclosure();
   const { isOpen: mapDrawerOpen, onOpen: openMapDrawer, onClose: closeMapDrawer } = useDisclosure();
-  const mockProducts = useMemo(() => generateMockProducts(geo, 200, 5), [geo]);
   const [clickedMarker, setClickedMarker] = useState<{
     product: ProductSummary;
     position: kakao.maps.LatLng;
@@ -58,7 +63,6 @@ const ProductsSearchPage: FC = () => {
     <Box minH="inherit" pt={4}>
       <Flex as="header" justifyContent="space-between" alignItems="center" flexWrap="wrap-reverse" gap={2}>
         <Flex gap={1.5}>
-          {/* TODO: https://chakra-ui.com/docs/components/radio/usage#custom-radio-buttons */}
           <HeaderTextButton data-filter-id="all" onClick={handleClickProductType} active={!request.category}>
             All
           </HeaderTextButton>
@@ -94,13 +98,13 @@ const ProductsSearchPage: FC = () => {
       <InfiniteScroll
         load={nextPage}
         hasMore={!pageable.isLastPage}
-        dataLength={data?.length}
+        dataLength={products?.length}
         isLoading={loading}
         endMessage="더 이상 불러올 재고가 없어요"
       >
         <ProductCards
           uniqueKey="search"
-          products={data}
+          products={products}
           emptyComment="조회된 재고가 없어요 :("
           linkTo={id => `/products/${id}`}
           mockCount={30}
@@ -120,7 +124,7 @@ const ProductsSearchPage: FC = () => {
         <MapDrawer
           isOpen={mapDrawerOpen}
           close={closeMapDrawer}
-          data={mockProducts}
+          data={products ?? []}
           loadMore={{
             fn: nextPage,
             buttonVisible: !pageable.isLastPage,
