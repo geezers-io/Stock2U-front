@@ -7,33 +7,45 @@ interface Props {
   setValue: (v: Distance) => void;
 }
 
+const valueConvertor = {
+  toDistance: (v: number): Distance => {
+    if (v < 1) return Distance.Half;
+    if (v < 3.5) return Distance.One;
+    if (v < 7.5) return Distance.Three;
+    return Distance.Five;
+  },
+  fromDistance: (v?: Distance): number => {
+    if (typeof v === 'undefined' || Distance.Half === v) return 0;
+    if (Distance.One === v) return 2;
+    if (Distance.Three === v) return 5;
+    return 10;
+  },
+};
+
 const DistanceSlider: FC<Props> = ({ value, setValue }) => {
   const handleChange = (v: number) => {
-    if (v < 1) return setValue(Distance.Half);
-    if (v < 2) return setValue(Distance.One);
-    if (v < 4) return setValue(Distance.Three);
-    return setValue(Distance.Five);
+    setValue(valueConvertor.toDistance(v));
   };
 
   return (
     <Slider
       step={0.5}
-      min={Distance.Half}
-      max={Distance.Five}
+      min={0}
+      max={10}
       colorScheme="brand"
-      value={value}
+      value={valueConvertor.fromDistance(value)}
       onChange={handleChange}
     >
-      <SliderMark value={Distance.Half} mt="3" fontSize="sm">
+      <SliderMark value={valueConvertor.fromDistance(Distance.Half)} mt="3" fontSize="sm">
         {Distance.Half * 1000}m
       </SliderMark>
-      <SliderMark value={Distance.One} mt="3" ml="-2.5" fontSize="sm">
+      <SliderMark value={valueConvertor.fromDistance(Distance.One)} mt="3" ml="-2.5" fontSize="sm">
         {Distance.One}km
       </SliderMark>
-      <SliderMark value={Distance.Three} mt="3" ml="-2.5" fontSize="sm">
+      <SliderMark value={valueConvertor.fromDistance(Distance.Three)} mt="3" ml="-2.5" fontSize="sm">
         {Distance.Three}km
       </SliderMark>
-      <SliderMark value={Distance.Five} mt="3" ml="-9" fontSize="sm">
+      <SliderMark value={valueConvertor.fromDistance(Distance.Five)} mt="3" ml="-9" fontSize="sm">
         {Distance.Five}km
       </SliderMark>
       <SliderTrack>

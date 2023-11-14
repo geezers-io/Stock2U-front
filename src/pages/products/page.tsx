@@ -61,7 +61,7 @@ const ProductsSearchPage: FC = () => {
 
   return (
     <Box minH="inherit" pt={4}>
-      <Flex as="header" justifyContent="space-between" alignItems="center" flexWrap="wrap-reverse" gap={2}>
+      <Flex as="header" justifyContent="space-between" alignItems="center" flexWrap="wrap-reverse" gap={2} mb={4}>
         <Flex gap={1.5}>
           <HeaderTextButton data-filter-id="all" onClick={handleClickProductType} active={!request.category}>
             All
@@ -92,8 +92,7 @@ const ProductsSearchPage: FC = () => {
         </Flex>
       </Flex>
 
-      {/* FIXME: 개발 완료되면 제거 */}
-      <pre>{JSON.stringify(request, null, 2)}</pre>
+      {/*<pre>{JSON.stringify(request, null, 2)}</pre>*/}
 
       <InfiniteScroll
         load={nextPage}
