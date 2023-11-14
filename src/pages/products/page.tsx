@@ -126,7 +126,7 @@ const ProductsSearchPage: FC = () => {
           data={products ?? []}
           loadMore={{
             fn: nextPage,
-            buttonVisible: !pageable.isLastPage,
+            buttonDisabled: pageable.isLastPage,
             buttonSuffix: (
               <Text>
                 <Text as="span" fontWeight={700} mr="0.2em">

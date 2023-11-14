@@ -32,7 +32,7 @@ interface Props<T> {
   data: T[];
   loadMore?: {
     fn: () => void;
-    buttonVisible: boolean;
+    buttonDisabled: boolean;
     buttonSuffix?: ReactNode;
   };
   clusterLevel?: number;
@@ -107,9 +107,9 @@ const MapDrawer = <T extends Coordinate>({
                 {level <= clusterLevel && customOverlay}
 
                 {/* 재고 더 보기 버튼 */}
-                {loadMore && loadMore.buttonVisible && (
+                {loadMore && (
                   <Button
-                    onClick={loadMore.fn}
+                    onClick={loadMore.buttonDisabled ? undefined : loadMore.fn}
                     colorScheme="brand"
                     variant="outline"
                     bgColor="white"
@@ -126,6 +126,7 @@ const MapDrawer = <T extends Coordinate>({
                     boxShadow="0 0.2rem 0.8rem 0 rgba(0,0,0,.2)"
                     fontWeight={400}
                     gap={1}
+                    isDisabled={loadMore.buttonDisabled}
                   >
                     재고 더 보기{loadMore.buttonSuffix}
                   </Button>
