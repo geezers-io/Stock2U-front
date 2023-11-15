@@ -17,4 +17,7 @@ export const ChatService: ChatClient = {
       params,
     });
   },
+  getChatHistories: async params => {
+    return await network.client.get(`${ROUTE}/history`, { params });
+  },
 };

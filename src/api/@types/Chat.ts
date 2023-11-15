@@ -1,6 +1,11 @@
 import { ReservationStatus } from '@/api/@types/@enums';
 import { PageRequest, PageResponse } from '@/api/@types/@shared';
 
+export interface GetChatHistoriesRequest {
+  reservationId: number;
+  cursor?: string;
+}
+
 export interface ChatRoomResponse {
   latestChat: OutsideChatMessage;
   reservationSummary: ReservationSummary;
@@ -26,6 +31,46 @@ export interface OutsideChatMessage {
 export interface GetChatRoomsRequest extends PageRequest {
   title?: string;
 }
+
+export interface HistoryResponse {
+  histories: ChatDetails[];
+  cursor: number;
+  last: boolean;
+}
+
+export interface ChatPayload {
+  roomId: number;
+  userId: number;
+  sender: string;
+  message?: string;
+  imageIds?: number[];
+}
+
+export enum ChatType {
+  TEXT = 'TEXT',
+  IMAGE = 'IMAGE',
+  AUTO = 'AUTO',
+}
+
+export type ChatDetails =
+  | {
+      username: string;
+      type: ChatType.TEXT;
+      message: string;
+      createdAt: string;
+      read: boolean;
+      profileImageUrl?: string;
+    }
+  | {
+      username: string;
+      type: ChatType.IMAGE;
+      imageIds: number[];
+      createdAt: string;
+      read: boolean;
+      profileImageUrl?: string;
+    };
+
+export type ChatMessagePayload = Pick<ChatPayload, 'message' | 'imageIds'>;
 
 export enum ChatRoomAlertType {
   // For Inner Management
@@ -54,4 +99,5 @@ export interface ChatPubAlert {
 export interface ChatClient {
   onDebug(): void;
   getChatRooms(req: GetChatRoomsRequest): Promise<PageResponse<ChatRoomResponse>>;
+  getChatHistories(req: GetChatHistoriesRequest): Promise<HistoryResponse>;
 }
