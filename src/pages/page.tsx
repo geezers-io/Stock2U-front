@@ -164,13 +164,13 @@ const IndexPage: FC = () => {
 
       {user.role === UserRole.SELLER && (
         <Link to="/products/register">
-          <ButtonStyle> 재고 상품 업로드하러 가요 😀</ButtonStyle>
+          <RegistrationButton> 재고 상품 업로드하러 가요 😀</RegistrationButton>
         </Link>
       )}
     </Box>
   );
 };
-const ButtonStyle = styled.div`
+const RegistrationButton = styled.div`
   position: sticky;
   bottom: 10%;
   right: 50%;
