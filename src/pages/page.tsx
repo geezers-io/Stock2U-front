@@ -3,7 +3,6 @@ import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 import { UserRole } from '@/api/@types/@enums';
 import { Distance, GetMainPageProductsResponse } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
@@ -49,8 +48,6 @@ const IndexPage: FC = () => {
     fetchDataFromAPI();
     fetchBannerImages();
   }, []);
-
-  if (!user) return;
 
   return (
     <Box pt="40px">
@@ -162,28 +159,39 @@ const IndexPage: FC = () => {
         </Link>
       </Flex>
 
-      {user.role === UserRole.SELLER && (
-        <Link to="/products/register">
-          <RegistrationButton> 재고 상품 업로드하러 가요 😀</RegistrationButton>
-        </Link>
+      {user?.role === UserRole.SELLER && (
+        <Box position="sticky" bottom="10%" right="80%">
+          <Link to="/products/register">
+            <Button
+              role="presentation"
+              colorScheme="brand"
+              boxShadow="0px 5px 15px gray "
+              borderRadius="16px"
+              fontSize="xl"
+              p="25px"
+            >
+              재고 상품 업로드하러 가요 😀
+            </Button>
+          </Link>
+        </Box>
       )}
     </Box>
   );
 };
-const RegistrationButton = styled.div`
-  position: sticky;
-  bottom: 10%;
-  right: 50%;
+// const RegistrationButton = styled.div`
+//   position: fixed;
+//   bottom: 10%;
+//   right: 50%;
 
-  border: none;
-  border-radius: 16px;
-  background: royalblue;
-  color: white;
-  padding: 12px;
-  font-weight: bold;
-  box-shadow: 0px 5px 15px gray;
-  cursor: pointer;
-  width: 220px;
-`;
+//   border: none;
+//   border-radius: 16px;
+//   background:;
+//   color: white;
+//   padding: 12px;
+//   font-weight: bold;
+//   box-shadow: 0px 5px 15px gray;
+//   cursor: pointer;
+//   width: 220px;
+// `;
 
 export default IndexPage;
