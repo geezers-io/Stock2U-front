@@ -1,7 +1,7 @@
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Client } from '@stomp/stompjs';
 import { User } from '@/api/@types/Auth';
-import { ChatPubAlert } from '@/api/@types/Chat';
+import { ChatDetails, ChatMessagePayload, ChatPayload, ChatPubAlert, HistoryResponse } from '@/api/@types/Chat';
 import { ChatRoomAlertAction } from '@/hooks/domain/chat/useChatRoomReducer';
 import { useCustomToast } from '@/hooks/useCustomToast';
 import { useBoundedStore } from '@/stores';
@@ -99,19 +99,70 @@ const useStompSocket = () => {
     return sub.id;
   };
 
-  const observeChat = (reservationId: number) => {
-    if (!client) {
+  const observeChat = (
+    reservationId: number,
+    mutate: Dispatch<SetStateAction<HistoryResponse | null>>,
+  ): string | undefined => {
+    if (!user) {
+      toast.error('로그인이 필요합니다.');
+      return;
+    }
+
+    if (!client?.connected) {
       toast.error('소켓 객체가 초기화되지 않았습니다');
       return;
     }
 
-    client.subscribe(`/topic/chat/room/${reservationId}`, socket => {
-      const alert = JSON.parse(socket.body) as ChatPubAlert;
-      console.log({ alert });
+    const sub = client.subscribe(
+      `/topic/chat/room/${reservationId}`,
+      socket => {
+        const chat = JSON.parse(socket.body) as ChatDetails;
+        console.log({ chat });
+        mutate(prev => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            histories: [...prev.histories, chat],
+          };
+        });
+      },
+      {
+        userId: String(user.id),
+        phone: user.phone,
+      },
+    );
+
+    return sub.id;
+  };
+
+  const sendChat = (reservationId: number, messagePayload: ChatMessagePayload) => {
+    if (!user) {
+      toast.error('로그인이 필요합니다.');
+      return;
+    }
+
+    if (!client?.connected) {
+      return;
+    }
+
+    const payload: ChatPayload = {
+      roomId: reservationId,
+      userId: user.id,
+      sender: user.name,
+      ...messagePayload,
+    };
+
+    client.publish({
+      destination: `/app/chat/${reservationId}`,
+      body: JSON.stringify(payload),
+      headers: {
+        userId: String(user.id),
+        phone: user.phone,
+      },
     });
   };
 
-  return { client, connect, observeAllRoomAlert, observeChat };
+  return { client, connect, observeAllRoomAlert, observeChat, sendChat };
 };
 
 export default useStompSocket;
