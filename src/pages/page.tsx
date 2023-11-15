@@ -184,9 +184,6 @@ const ButtonStyle = styled.div`
   box-shadow: 0px 5px 15px gray;
   cursor: pointer;
   width: 220px;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
 `;
 
 export default IndexPage;
