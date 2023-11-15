@@ -3,6 +3,8 @@ import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { UserRole } from '@/api/@types/@enums';
 import { Distance, GetMainPageProductsResponse } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
 import ProductCards from '@/components/domains/products/ProductCards';
@@ -17,6 +19,7 @@ const IndexPage: FC = () => {
   const [bannerImages, setBannerImages] = useState<string[]>([]);
   const toast = useCustomToast();
   const geo = useBoundedStore(state => state.geo);
+  const user = useBoundedStore(state => state.user);
 
   const fetchDataFromAPI = async () => {
     try {
@@ -46,6 +49,8 @@ const IndexPage: FC = () => {
     fetchDataFromAPI();
     fetchBannerImages();
   }, []);
+
+  if (!user) return;
 
   return (
     <Box pt="40px">
@@ -156,8 +161,32 @@ const IndexPage: FC = () => {
           </Button>
         </Link>
       </Flex>
+
+      {user.role === UserRole.SELLER && (
+        <Link to="/products/register">
+          <ButtonStyle> 재고 상품 업로드하러 가요 😀</ButtonStyle>
+        </Link>
+      )}
     </Box>
   );
 };
+const ButtonStyle = styled.div`
+  position: sticky;
+  bottom: 10%;
+  right: 50%;
+
+  border: none;
+  border-radius: 16px;
+  background: royalblue;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  box-shadow: 0px 5px 15px gray;
+  cursor: pointer;
+  width: 220px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+`;
 
 export default IndexPage;
