@@ -1,33 +1,46 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { Filter, Map } from 'react-bootstrap-icons';
-import { Badge, BadgeProps, Box, Flex, IconButton, IconButtonProps, useDisclosure } from '@chakra-ui/react';
+import { Badge, BadgeProps, Box, Flex, IconButton, IconButtonProps, Text, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { ProductType } from '@/api/@types/@enums';
-import { Distance } from '@/api/@types/Products';
+import { Distance, ProductSummary } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
 import ProductCards from '@/components/domains/products/ProductCards';
 import SearchFilterDrawer, { FilterValues } from '@/components/domains/products/SearchFilterDrawer';
+import MapDrawer from '@/components/domains/products/map/MapDrawer';
+import ProductMarker from '@/components/domains/products/map/ProductMarker';
+import ProductMarkerOverlay from '@/components/domains/products/map/ProductMarkerOverlay';
 import InfiniteScroll from '@/components/shared/InfinityScroll';
 import { PRODUCT_TYPE_LABEL } from '@/constants/labels';
 import { PRODUCT_MIN_PRICE } from '@/constants/product';
-import { useCustomToast } from '@/hooks/useCustomToast';
 import { DEFAULT_PAGE_REQUEST, usePagination } from '@/hooks/usePagination';
 import { useBoundedStore } from '@/stores';
 import { pick } from '@/utils/object';
 
 const ProductsSearchPage: FC = () => {
   const theme = useTheme();
-  const toast = useCustomToast();
   const geo = useBoundedStore(state => state.geo);
-  const { data, loading, nextPage, pageable, request, setRequest } = usePagination(ProductsService.search, {
+  const {
+    data: products,
+    loading,
+    nextPage,
+    pageable,
+    request,
+    setRequest,
+  } = usePagination(ProductsService.search, {
     ...DEFAULT_PAGE_REQUEST,
     size: 30,
-    distance: Distance.Ten,
+    distance: Distance.Five,
     minPrice: PRODUCT_MIN_PRICE,
     latitude: geo.latitude,
     longitude: geo.longitude,
   });
   const { isOpen: filterDrawerOpen, onOpen: openFilterDrawer, onClose: closeFilterDrawer } = useDisclosure();
+  const { isOpen: mapDrawerOpen, onOpen: openMapDrawer, onClose: closeMapDrawer } = useDisclosure();
+  const [clickedMarker, setClickedMarker] = useState<{
+    product: ProductSummary;
+    position: kakao.maps.LatLng;
+  }>();
 
   const handleClickProductType: MouseEventHandler<HTMLButtonElement> = e => {
     const { filterId } = e.currentTarget.dataset;
@@ -35,16 +48,21 @@ const ProductsSearchPage: FC = () => {
     setRequest(prev => ({ ...prev, category: productType }));
   };
 
-  const handleClickMap: MouseEventHandler<HTMLButtonElement> = () => {
-    // TODO: map drawer
-    toast.warning('미구현');
-  };
+  const handleClickMapMarker = useCallback((marker: kakao.maps.Marker, product: ProductSummary) => {
+    setClickedMarker({
+      product,
+      position: marker.getPosition(),
+    });
+  }, []);
+
+  const onClickBackToUserCoords = useCallback(() => {
+    setClickedMarker(undefined);
+  }, []);
 
   return (
     <Box minH="inherit" pt={4}>
-      <Flex as="header" justifyContent="space-between" alignItems="center" flexWrap="wrap-reverse" gap={2}>
+      <Flex as="header" justifyContent="space-between" alignItems="center" flexWrap="wrap-reverse" gap={2} mb={4}>
         <Flex gap={1.5}>
-          {/* TODO: https://chakra-ui.com/docs/components/radio/usage#custom-radio-buttons */}
           <HeaderTextButton data-filter-id="all" onClick={handleClickProductType} active={!request.category}>
             All
           </HeaderTextButton>
@@ -68,24 +86,24 @@ const ProductsSearchPage: FC = () => {
           <HeaderIconButton
             aria-label="map"
             icon={<Map size={21} color={theme.colors.gray['600']} />}
-            onClick={handleClickMap}
+            onClick={openMapDrawer}
+            isLoading={!geo.status.initialized}
           />
         </Flex>
       </Flex>
 
-      {/* FIXME: 개발 완료되면 제거 */}
-      <pre>{JSON.stringify(request, null, 2)}</pre>
+      {/*<pre>{JSON.stringify(request, null, 2)}</pre>*/}
 
       <InfiniteScroll
         load={nextPage}
         hasMore={!pageable.isLastPage}
-        dataLength={data?.length}
+        dataLength={products?.length}
         isLoading={loading}
         endMessage="더 이상 불러올 재고가 없어요"
       >
         <ProductCards
           uniqueKey="search"
-          products={data}
+          products={products}
           emptyComment="조회된 재고가 없어요 :("
           linkTo={id => `/products/${id}`}
           mockCount={30}
@@ -100,6 +118,37 @@ const ProductsSearchPage: FC = () => {
         }}
         initialValues={pick(request, ['distance', 'minPrice', 'maxPrice']) as FilterValues}
       />
+
+      {geo.status.initialized && (
+        <MapDrawer
+          isOpen={mapDrawerOpen}
+          close={closeMapDrawer}
+          data={products ?? []}
+          loadMore={{
+            fn: nextPage,
+            buttonDisabled: pageable.isLastPage,
+            buttonSuffix: (
+              <Text>
+                <Text as="span" fontWeight={700} mr="0.2em">
+                  {pageable.currentPage + 1}
+                </Text>
+                / {pageable.totalPages}
+              </Text>
+            ),
+          }}
+          renderMarker={({ data }) => <ProductMarker key={data.id} product={data} onClick={handleClickMapMarker} />}
+          onClickBackToUserCoords={onClickBackToUserCoords}
+          customOverlay={
+            clickedMarker && (
+              <ProductMarkerOverlay
+                latitude={clickedMarker.position.getLat()}
+                longitude={clickedMarker.position.getLng()}
+                product={clickedMarker.product}
+              />
+            )
+          }
+        />
+      )}
     </Box>
   );
 };
