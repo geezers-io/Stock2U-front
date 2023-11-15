@@ -25,7 +25,7 @@ const ProductCard: FC<ProductCardProps> = ({
 }) => {
   return (
     <Box>
-      <Image src={thumbnailUrl} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" />
+      <Image src={thumbnailUrl} w="100%" h="auto" objectFit="cover" aspectRatio="4/3" borderRadius="6px" />
       <Badge bgColor={badgeColorschemeDict[productType]} color="white">
         {PRODUCT_TYPE_LABEL[productType]}
       </Badge>

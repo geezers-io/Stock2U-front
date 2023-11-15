@@ -64,10 +64,10 @@ export interface RemoveProductRequest {
 }
 
 export enum Distance {
+  Half = 0.5,
   One = 1,
   Three = 3,
   Five = 5,
-  Ten = 10,
 }
 export interface SearchProductsRequest extends PageRequest, Coordinate {
   distance?: Distance;

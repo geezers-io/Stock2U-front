@@ -42,7 +42,7 @@ const PageAside: FC = () => {
                 boxShadow="0 3px 6px -1.5px rgba(0,0,0,.3)"
                 borderRadius="50%"
               >
-                <Image src="svg/brand/logo-fill.svg" w="100%" h="100%" />
+                <Image src="/svg/brand/logo-fill.svg" w="100%" h="100%" />
               </Button>
             )}
             {pathname !== '/' && (
@@ -62,7 +62,7 @@ const PageAside: FC = () => {
                     },
                   }}
                 >
-                  <Image src="svg/brand/logo-fill.svg" w="100%" h="100%" display="none" />
+                  <Image src="/svg/brand/logo-fill.svg" w="100%" h="100%" display="none" />
                   <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
                     <HouseDoor size={20} />
                   </Flex>

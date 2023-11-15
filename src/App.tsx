@@ -10,7 +10,6 @@ import PurchaserSignUpPage from '@/pages/auth/sign-up/purchaser/page';
 import SellerSignUpPage from '@/pages/auth/sign-up/seller/page';
 import ChatPage from '@/pages/chat/[id]/page';
 import ChatListPage from '@/pages/chat/page';
-import ProductMapPage from '@/pages/map/ProductMapPage';
 import IndexPage from '@/pages/page';
 import ProductDetailPage from '@/pages/products/[id]/page';
 import ProductsSearchPage from '@/pages/products/page';
@@ -96,11 +95,6 @@ const router = createBrowserRouter([
         element: <OAuthRedirectPage />,
       },
     ],
-  },
-  {
-    path: 'map',
-    index: true,
-    element: <ProductMapPage />,
   },
 ]);
 

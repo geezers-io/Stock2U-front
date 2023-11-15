@@ -4,6 +4,7 @@ import { Coordinate } from '@/api/@types/@shared';
 interface GeoStatus {
   supported: boolean;
   allowed: boolean;
+  initialized: boolean;
 }
 interface Geo extends Coordinate {
   status: GeoStatus;
@@ -19,6 +20,7 @@ const SEOUL_GEO: Geo = {
   status: {
     supported: true,
     allowed: true,
+    initialized: false,
   },
 };
 
@@ -30,7 +32,7 @@ export const createGeoSlice: StateCreator<GeoSlice, [], [], GeoSlice> = set => (
       set(state => ({
         geo: {
           ...state.geo,
-          status: { supported: false, allowed: false },
+          status: { supported: false, allowed: false, initialized: true },
         },
       }));
       return;
@@ -42,7 +44,7 @@ export const createGeoSlice: StateCreator<GeoSlice, [], [], GeoSlice> = set => (
           geo: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            status: { supported: true, allowed: true },
+            status: { supported: true, allowed: true, initialized: true },
           },
         });
       },
@@ -51,7 +53,7 @@ export const createGeoSlice: StateCreator<GeoSlice, [], [], GeoSlice> = set => (
           set(state => ({
             geo: {
               ...state.geo,
-              status: { supported: true, allowed: false },
+              status: { supported: true, allowed: false, initialized: false },
             },
           }));
         }

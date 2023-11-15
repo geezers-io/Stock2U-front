@@ -7,27 +7,46 @@ interface Props {
   setValue: (v: Distance) => void;
 }
 
+const valueConvertor = {
+  toDistance: (v: number): Distance => {
+    if (v < 1) return Distance.Half;
+    if (v < 3.5) return Distance.One;
+    if (v < 7.5) return Distance.Three;
+    return Distance.Five;
+  },
+  fromDistance: (v?: Distance): number => {
+    if (typeof v === 'undefined' || Distance.Half === v) return 0;
+    if (Distance.One === v) return 2;
+    if (Distance.Three === v) return 5;
+    return 10;
+  },
+};
+
 const DistanceSlider: FC<Props> = ({ value, setValue }) => {
   const handleChange = (v: number) => {
-    if (v < 3) return setValue(Distance.One);
-    if (v < 5) return setValue(Distance.Three);
-    if (v < 8) return setValue(Distance.Five);
-    return setValue(Distance.Ten);
+    setValue(valueConvertor.toDistance(v));
   };
 
   return (
-    <Slider min={Distance.One} max={Distance.Ten} colorScheme="brand" value={value} onChange={handleChange}>
-      <SliderMark value={Distance.One} mt="3" fontSize="sm">
+    <Slider
+      step={0.5}
+      min={0}
+      max={10}
+      colorScheme="brand"
+      value={valueConvertor.fromDistance(value)}
+      onChange={handleChange}
+    >
+      <SliderMark value={valueConvertor.fromDistance(Distance.Half)} mt="3" fontSize="sm">
+        {Distance.Half * 1000}m
+      </SliderMark>
+      <SliderMark value={valueConvertor.fromDistance(Distance.One)} mt="3" ml="-2.5" fontSize="sm">
         {Distance.One}km
       </SliderMark>
-      <SliderMark value={Distance.Three} mt="3" ml="-2.5" fontSize="sm">
+      <SliderMark value={valueConvertor.fromDistance(Distance.Three)} mt="3" ml="-2.5" fontSize="sm">
         {Distance.Three}km
       </SliderMark>
-      <SliderMark value={Distance.Five} mt="3" ml="-2.5" fontSize="sm">
+      <SliderMark value={valueConvertor.fromDistance(Distance.Five)} mt="3" ml="-9" fontSize="sm">
         {Distance.Five}km
-      </SliderMark>
-      <SliderMark value={Distance.Ten} mt="3" ml="-9" fontSize="sm">
-        {Distance.Ten}km
       </SliderMark>
       <SliderTrack>
         <SliderFilledTrack />
