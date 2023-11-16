@@ -97,15 +97,15 @@ const ProductDetailPage = () => {
         <Flex>
           <Avatar
             size="xl"
-            name={product.seller.username}
-            src={product.seller?.avatarUrl ?? 'https://bit.ly/broken-link'}
+            name={product.seller.name}
+            src={product.seller?.profileImageUrl ?? 'https://bit.ly/broken-link'}
           />
           <Box ml="3" w="100%">
             <Badge fontSize="xl" colorScheme="green">
               판매자
             </Badge>
             <Text fontSize="xl" fontWeight="bold">
-              {product.seller.username} 님
+              {product.seller.name} 님
               <Text fontSize="xl" color="gray">
                 판매 재고 {product.seller.salesCount} 후기 {product.seller.reviewCount}
               </Text>

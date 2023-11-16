@@ -22,4 +22,18 @@ export const MyService: MyClient = {
       params: request,
     });
   },
+  sellerGetAccountInfo: async () => {
+    return await axiosInstance.get(`${ROUTE}/seller`);
+  },
+  sellerFixedBankInfo: async request => {
+    return await axiosInstance.patch(`${ROUTE}/seller/bank`, {
+      params: request,
+    });
+  },
+  sellerGetBankInfo: async () => {
+    return await axiosInstance.patch(`${ROUTE}/seller/bank-detail`);
+  },
+  sellerFixedLocationInfo: async request => {
+    return await axiosInstance.patch(`${ROUTE}/seller/location`, request);
+  },
 };

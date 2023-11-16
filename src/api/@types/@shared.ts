@@ -45,9 +45,9 @@ export interface Coordinate {
 
 export interface ProductSeller {
   id: number;
-  username: string;
+  name: string;
   phone: string;
-  avatarUrl: string;
+  profileImageUrl: string;
   salesCount: number;
   reviewCount: number;
 }
