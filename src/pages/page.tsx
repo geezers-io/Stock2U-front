@@ -3,6 +3,7 @@ import { Fire } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { Box, Button, Flex, Heading, Spacer, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
+import { UserRole } from '@/api/@types/@enums';
 import { Distance, GetMainPageProductsResponse } from '@/api/@types/Products';
 import { ProductsService } from '@/api/services/Products';
 import ProductCards from '@/components/domains/products/ProductCards';
@@ -17,6 +18,7 @@ const IndexPage: FC = () => {
   const [bannerImages, setBannerImages] = useState<string[]>([]);
   const toast = useCustomToast();
   const geo = useBoundedStore(state => state.geo);
+  const user = useBoundedStore(state => state.user);
 
   const fetchDataFromAPI = async () => {
     try {
@@ -156,6 +158,23 @@ const IndexPage: FC = () => {
           </Button>
         </Link>
       </Flex>
+
+      {user?.role === UserRole.SELLER && (
+        <Box position="fixed" bottom="100px">
+          <Link to="/products/register">
+            <Button
+              role="presentation"
+              colorScheme="brand"
+              boxShadow="0px 5px 15px gray "
+              borderRadius="16px"
+              fontSize="xl"
+              p="25px"
+            >
+              재고 상품 업로드하러 가요 😀
+            </Button>
+          </Link>
+        </Box>
+      )}
     </Box>
   );
 };
