@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import { UserRole } from '@/api/@types/@enums';
 import AuthLayout from '@/components/layouts/Auth';
 import ServiceLayout from '@/components/layouts/Service';
+import RequireAuth from '@/components/shared/RequireAuth';
 import { useGeoAlert } from '@/hooks/useGeoAlert';
 import OAuthRedirectPage from '@/pages/auth/oauth-redirect/page';
 import SignInPage from '@/pages/auth/sign-in/page';
@@ -34,7 +36,11 @@ const router = createBrowserRouter([
           },
           {
             path: 'register',
-            element: <ProductRegistrationPage />,
+            element: (
+              <RequireAuth role={UserRole.SELLER}>
+                <ProductRegistrationPage />
+              </RequireAuth>
+            ),
           },
           {
             path: ':id',
@@ -47,21 +53,37 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ChatListPage />,
+            element: (
+              <RequireAuth>
+                <ChatListPage />
+              </RequireAuth>
+            ),
           },
           {
             path: ':id',
-            element: <ChatPage />,
+            element: (
+              <RequireAuth>
+                <ChatPage />
+              </RequireAuth>
+            ),
           },
         ],
       },
       {
         path: 'wishlist',
-        element: <div>wishlist page</div>,
+        element: (
+          <RequireAuth>
+            <div>wishlist page</div>
+          </RequireAuth>
+        ),
       },
       {
         path: 'my',
-        element: <div>my page</div>,
+        element: (
+          <RequireAuth>
+            <div>my page</div>
+          </RequireAuth>
+        ),
       },
     ],
   },
