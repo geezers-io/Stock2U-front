@@ -160,7 +160,7 @@ const IndexPage: FC = () => {
       </Flex>
 
       {user?.role === UserRole.SELLER && (
-        <Box position="sticky" bottom="10%" right="80%">
+        <Box position="fixed" bottom="100px">
           <Link to="/products/register">
             <Button
               role="presentation"
@@ -178,20 +178,5 @@ const IndexPage: FC = () => {
     </Box>
   );
 };
-// const RegistrationButton = styled.div`
-//   position: fixed;
-//   bottom: 10%;
-//   right: 50%;
-
-//   border: none;
-//   border-radius: 16px;
-//   background:;
-//   color: white;
-//   padding: 12px;
-//   font-weight: bold;
-//   box-shadow: 0px 5px 15px gray;
-//   cursor: pointer;
-//   width: 220px;
-// `;
 
 export default IndexPage;
