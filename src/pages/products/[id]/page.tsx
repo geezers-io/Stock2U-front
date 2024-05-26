@@ -39,7 +39,7 @@ const ProductDetailPage = () => {
       await MyService.purchaserSubscribe({ id: product.seller.id });
       toggleSubscribe();
     } catch {
-      toast.error('구독 요청에 실패했습니다.');
+      toast.error('구독 요청에 실패했습니다. ');
     }
   };
 
