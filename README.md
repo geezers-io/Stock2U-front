@@ -21,11 +21,11 @@
 
 <div align="center">
 
-|                                            Front-End                                             |                                           Front-End                                            |                                         Front-End                                          |
-| :----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
-| <img src="https://github.com/bear-bear-bear.png?size=120" title="" alt="정민2.png" width="100%"> | <img src="https://github.com/heejung0413.png?size=120" title="" alt="임희정.png" width="100%"> | <img src="https://github.com/Ellsy23.png?size=120" title="" alt="이준현.png" width="100%"> |
-|                                              김재준                                              |                                             임희정                                             |                                           이준현                                           |
-|                       [@bear-bear-bear](https://github.com/bear-bear-bear)                       |                        [@bheejung0413](https://github.com/heejung0413)                         |                           [@Ellsy23](https://github.com/Ellsy23)                           |
+|                                             Front-End                                             |                                           Front-End                                            |                                         Front-End                                          |
+| :-----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
+| <img src="https://github.com/bear-bear-bear.png?size=120" title="" alt="김준재.png" width="100%"> | <img src="https://github.com/heejung0413.png?size=120" title="" alt="임희정.png" width="100%"> | <img src="https://github.com/Ellsy23.png?size=120" title="" alt="이준현.png" width="100%"> |
+|                                              김준재                                               |                                             임희정                                             |                                           이준현                                           |
+|                       [@bear-bear-bear](https://github.com/bear-bear-bear)                        |                         [@heejung0413](https://github.com/heejung0413)                         |                           [@Ellsy23](https://github.com/Ellsy23)                           |
 
 </div>
 
@@ -71,7 +71,7 @@
 
 ## 3. 역할 분담
 
-### 🤩 김재준
+### 🤩 김준재
 
 - **UI**
   - 페이지 : 로그인/회원가입 페이지, 재고 상품 지도 페이지, 레이아웃
