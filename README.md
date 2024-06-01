@@ -1,10 +1,10 @@
 # 📖 재고 판매 웹 서비스, Stock2U
 
-![mainPage](/public/svg/brand/logo-text.svg) <br>
-
 <div align='center'>
 
-[💻 사이트 바로가기](https://www.pastforward.link)
+![mainPage](/public/svg/brand/logo-text.svg) <br>
+
+[💻 사이트 바로가기](stock2u-front.vercel.app)
 <br>
 
 </div>
@@ -122,5 +122,149 @@
 - issue 번호에 따라 브랜치 네임을 정하며 전략에 맞추어 브랜치를 생성하였습니다.
 
 <br>
+
+<br>
+
+### 파일 구조
+
+```
+📦src
+ ┣ 📂api
+ ┃ ┣ 📂@types
+ ┃ ┃ ┣ 📜@enums.ts
+ ┃ ┃ ┣ 📜@shared.ts
+ ┃ ┃ ┣ 📜Auth.ts
+ ┃ ┃ ┣ 📜Chat.ts
+ ┃ ┃ ┣ 📜File.ts
+ ┃ ┃ ┣ 📜My.ts
+ ┃ ┃ ┣ 📜Products.ts
+ ┃ ┃ ┗ 📜Reservation.ts
+ ┃ ┣ 📂__mock__
+ ┃ ┃ ┣ 📜coordinates.ts
+ ┃ ┃ ┣ 📜mockProduct.ts
+ ┃ ┃ ┣ 📜product.ts
+ ┃ ┃ ┗ 📜simpleFile.ts
+ ┃ ┣ 📂interceptors
+ ┃ ┃ ┣ 📜request.ts
+ ┃ ┃ ┗ 📜response.ts
+ ┃ ┣ 📂services
+ ┃ ┃ ┣ 📜Auth.ts
+ ┃ ┃ ┣ 📜Chat.ts
+ ┃ ┃ ┣ 📜File.ts
+ ┃ ┃ ┣ 📜My.ts
+ ┃ ┃ ┣ 📜Products.ts
+ ┃ ┃ ┗ 📜Reservation.ts
+ ┃ ┣ 📜client.ts
+ ┃ ┗ 📜helper.ts
+ ┣ 📂components
+ ┃ ┣ 📂domains
+ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┣ 📜AddressFinderModal.tsx
+ ┃ ┃ ┃ ┣ 📜OAuthButton.tsx
+ ┃ ┃ ┃ ┣ 📜VerificationDrawer.tsx
+ ┃ ┃ ┃ ┗ 📜VerificationInput.tsx
+ ┃ ┃ ┣ 📂chat
+ ┃ ┃ ┃ ┗ 📜ChatRoomPreview.tsx
+ ┃ ┃ ┗ 📂products
+ ┃ ┃ ┃ ┣ 📂map
+ ┃ ┃ ┃ ┃ ┣ 📜BackToUserCoordsButton.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ClusterMarker.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜MapDrawer.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜MapPoint.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ProductMarker.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜ProductMarkerOverlay.tsx
+ ┃ ┃ ┃ ┣ 📜CountdownTimer.tsx
+ ┃ ┃ ┃ ┣ 📜DistanceSlider.tsx
+ ┃ ┃ ┃ ┣ 📜ImageUploader.tsx
+ ┃ ┃ ┃ ┣ 📜ImageViewer.tsx
+ ┃ ┃ ┃ ┣ 📜PriceSlider.tsx
+ ┃ ┃ ┃ ┣ 📜ProductCard.tsx
+ ┃ ┃ ┃ ┣ 📜ProductCards.tsx
+ ┃ ┃ ┃ ┣ 📜ReservationButton.tsx
+ ┃ ┃ ┃ ┗ 📜SearchFilterDrawer.tsx
+ ┃ ┣ 📂layouts
+ ┃ ┃ ┣ 📂parts
+ ┃ ┃ ┃ ┣ 📜PageAside.tsx
+ ┃ ┃ ┃ ┗ 📜PageHeader.tsx
+ ┃ ┃ ┣ 📜Auth.tsx
+ ┃ ┃ ┗ 📜Service.tsx
+ ┃ ┣ 📂shared
+ ┃ ┃ ┣ 📜ImageCarousel.tsx
+ ┃ ┃ ┣ 📜InfinityScroll.tsx
+ ┃ ┃ ┣ 📜Pagination.tsx
+ ┃ ┃ ┗ 📜RequireAuth.tsx
+ ┃ ┗ 📜ErrorBoundary.tsx
+ ┣ 📂constants
+ ┃ ┣ 📜labels.ts
+ ┃ ┣ 📜number.ts
+ ┃ ┗ 📜product.ts
+ ┣ 📂hooks
+ ┃ ┣ 📂domain
+ ┃ ┃ ┗ 📂chat
+ ┃ ┃ ┃ ┗ 📜useChatRoomReducer.tsx
+ ┃ ┣ 📜useCustomToast.tsx
+ ┃ ┣ 📜useDebounce.ts
+ ┃ ┣ 📜useFetch.tsx
+ ┃ ┣ 📜useGeoAlert.tsx
+ ┃ ┣ 📜useOnSubscribe.tsx
+ ┃ ┣ 📜usePagination.ts
+ ┃ ┣ 📜useRedirect.ts
+ ┃ ┣ 📜useSearchParamsObject.ts
+ ┃ ┗ 📜useStompSocket.tsx
+ ┣ 📂mocks
+ ┃ ┣ 📜creator.ts
+ ┃ ┗ 📜handler.ts
+ ┣ 📂pages
+ ┃ ┣ 📂auth
+ ┃ ┃ ┣ 📂oauth-redirect
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂sign-in
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📂sign-up
+ ┃ ┃ ┃ ┣ 📂purchaser
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂seller
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂chat
+ ┃ ┃ ┣ 📂[id]
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂products
+ ┃ ┃ ┣ 📂[id]
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂seller
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┗ 📜page.tsx
+ ┣ 📂stores
+ ┃ ┣ 📜geo.ts
+ ┃ ┣ 📜index.ts
+ ┃ ┣ 📜socket.ts
+ ┃ ┗ 📜user.ts
+ ┣ 📂styles
+ ┃ ┗ 📂theme
+ ┃ ┃ ┣ 📜@colors.ts
+ ┃ ┃ ┣ 📜badge.ts
+ ┃ ┃ ┣ 📜button.ts
+ ┃ ┃ ┣ 📜index.ts
+ ┃ ┃ ┣ 📜modal.ts
+ ┃ ┃ ┣ 📜rangeSlider.ts
+ ┃ ┃ ┣ 📜slider.ts
+ ┃ ┃ ┗ 📜switch.ts
+ ┣ 📂utils
+ ┃ ┣ 📜assert.ts
+ ┃ ┣ 📜color.ts
+ ┃ ┣ 📜delay.ts
+ ┃ ┣ 📜flow.ts
+ ┃ ┣ 📜formik.ts
+ ┃ ┣ 📜log.ts
+ ┃ ┣ 📜object.ts
+ ┃ ┣ 📜process.ts
+ ┃ ┣ 📜qs.ts
+ ┃ ┗ 📜tryCatch.ts
+ ┣ 📜App.tsx
+ ┗ 📜main.tsx
+```
 
 <br>
