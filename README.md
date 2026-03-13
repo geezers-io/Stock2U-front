@@ -25,7 +25,7 @@
 | :-----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
 | <img src="https://github.com/bear-bear-bear.png?size=120" title="" alt="김준재.png" width="100%"> | <img src="https://github.com/heejung0413.png?size=120" title="" alt="임희정.png" width="100%"> | <img src="https://github.com/Ellsy23.png?size=120" title="" alt="이준현.png" width="100%"> |
 |                                              김준재                                               |                                             임희정                                             |                                           이준현                                           |
-|                       [@bear-bear-bear](https://github.com/bear-bear-bear)                        |                         [@heejung0413](https://github.com/heejung0413)                         |                           [@Ellsy23](https://github.com/Ellsy23)                           |
+|                       [@bear-bear-bear](https://github.com/bear-bear-bear)                        |                         [@heejung0413](https://github.com/heejung0413)                         |                           [@Ash8382](https://github.com/Ash8382)                           |
 
 </div>
 
